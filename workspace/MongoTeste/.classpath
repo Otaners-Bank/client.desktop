@@ -7,5 +7,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/aps.poo/workspace/MongoTeste/libs/mongo-java-driver-3.6.0.jar"/>
+	<classpathentry kind="lib" path="C:/aps.poo/workspace/MongoTeste/libs/gson-2.8.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -5,6 +5,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
+
+import control.Control;
+
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import java.util.ArrayList;
@@ -15,15 +18,21 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 @SuppressWarnings("serial")
 public class Acesso extends JFrame {
+
+	// Instancias
+	Control control = new Control();
 
 	// Para armazenar a resolucao da maquina
 	public static Toolkit toolkit = Toolkit.getDefaultToolkit();
@@ -35,7 +44,7 @@ public class Acesso extends JFrame {
 
 	// para guardar a senha digitada pelo usuario e suas combinacoes
 	protected static List<String> ListaDeSenhasPossiveis = new ArrayList<String>();
-	protected static String possibilidades[] = new String[16];
+	protected static String senhasPossiveis[] = new String[16];
 
 	// Componentes
 	private JPanel LoginContentPane;
@@ -73,7 +82,9 @@ public class Acesso extends JFrame {
 		setAlwaysOnTop(false);
 		setTitle("Otaner Bank");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(0, 0, (dimension.width / 2), (dimension.height - 50));
+		setBounds(100, 100, (dimension.width / 2), (dimension.height - 50));
+		// JOptionPane.showMessageDialog(null, "Tamanho: height="+(dimension.width /
+		// 2)+" width="+(dimension.height - 50));
 		LoginContentPane = new JPanel();
 		LoginContentPane.setForeground(Color.YELLOW);
 		LoginContentPane.setBackground(Color.PINK);
@@ -200,28 +211,80 @@ public class Acesso extends JFrame {
 
 		JButton btnAcessar = new JButton("ACESSAR");
 		btnAcessar.addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent arg0) {
-				
+
 				// Esse botao verifica a senha e a conta para efetuar login
-				
+
 				if (txtSenha.getText().length() < 4 || txtConta.getText().length() < 6
-						|| txtConta.getText().equals("    - ")) {
+						|| txtConta.getText().contains(" ")) {
 					JOptionPane.showMessageDialog(null, "Preencha todos os campos para continuar, valeu !", "AVISO",
 							JOptionPane.WARNING_MESSAGE);
 				} else {
 					DefinirPossiveisPadroesDeSenha();
 
-					Principal principal = new Principal();
-					principal.setVisible(true);
-					dispose();
+					if (control.acessarConta(txtConta.getText(), senhasPossiveis)) {
+						Principal.main(null,txtConta.getText());
+						LimparDados();
+						senhasPossiveis = null;
+						dispose();
+					} else {
+						LimparDados();
+						btnSenha1.setText(strSenha1);
+						btnSenha2.setText(strSenha2);
+						btnSenha3.setText(strSenha3);
+						btnSenha4.setText(strSenha4);
+						btnSenha5.setText(strSenha5);
+						JOptionPane.showMessageDialog(null, "Acesso negado", "AVISO", JOptionPane.WARNING_MESSAGE);
+					}
 
 				}
 			}
+
 		});
 		btnAcessar.setFont(new Font("Felix Titling", Font.PLAIN, 11));
 		btnAcessar.setBounds(247, 539, 173, 33);
 		LoginContentPane.add(btnAcessar);
+
+		JLabel lblCriarConta = new JLabel("> n\u00E3o possui conta ainda?");
+		lblCriarConta.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				LimparDados();
+				CriarConta.main(null);
+				dispose();
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				Cursor cursor = new Cursor(Cursor.HAND_CURSOR);
+				lblCriarConta.setCursor(cursor);
+			}
+		});
+		lblCriarConta.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCriarConta.setForeground(Color.BLUE);
+		lblCriarConta.setBounds(247, 583, 173, 14);
+		LoginContentPane.add(lblCriarConta);
+
+		JLabel lblRecuperarSenha = new JLabel("> esqueceu sua senha de acesso?");
+		lblRecuperarSenha.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				LimparDados();
+				RecuperarSenha.main(null);
+				dispose();
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				Cursor cursor = new Cursor(Cursor.HAND_CURSOR);
+				lblRecuperarSenha.setCursor(cursor);
+			}
+		});
+		lblRecuperarSenha.setHorizontalAlignment(SwingConstants.CENTER);
+		lblRecuperarSenha.setForeground(Color.BLUE);
+		lblRecuperarSenha.setBounds(238, 608, 195, 14);
+		LoginContentPane.add(lblRecuperarSenha);
 
 	}
 
@@ -292,6 +355,7 @@ public class Acesso extends JFrame {
 					strSenha3 = senhas_3.get(0) + " ou " + senhas_3.get(1);
 					strSenha4 = senhas_4.get(0) + " ou " + senhas_4.get(1);
 					strSenha5 = senhas_5.get(0) + " ou " + senhas_5.get(1);
+
 					i++;
 				}
 
@@ -309,33 +373,33 @@ public class Acesso extends JFrame {
 
 				if (i < 8) {
 
-					possibilidades[i] = (ListaDeSenhasPossiveis.get(0).substring(0,
+					senhasPossiveis[i] = (ListaDeSenhasPossiveis.get(0).substring(0,
 							ListaDeSenhasPossiveis.get(0).indexOf("|")));
 
 					if (i < 4) {
-						possibilidades[i] += (ListaDeSenhasPossiveis.get(1).substring(0,
+						senhasPossiveis[i] += (ListaDeSenhasPossiveis.get(1).substring(0,
 								ListaDeSenhasPossiveis.get(1).indexOf("|")));
 					} else {
-						possibilidades[i] += (ListaDeSenhasPossiveis.get(1)
+						senhasPossiveis[i] += (ListaDeSenhasPossiveis.get(1)
 								.substring(ListaDeSenhasPossiveis.get(1).indexOf("|")).replace("|", ""));
 					}
 
 					if (j < 2) {
-						possibilidades[i] += (ListaDeSenhasPossiveis.get(2).substring(0,
+						senhasPossiveis[i] += (ListaDeSenhasPossiveis.get(2).substring(0,
 								ListaDeSenhasPossiveis.get(1).indexOf("|")));
 						j++;
 					} else {
-						possibilidades[i] += (ListaDeSenhasPossiveis.get(2)
+						senhasPossiveis[i] += (ListaDeSenhasPossiveis.get(2)
 								.substring(ListaDeSenhasPossiveis.get(1).indexOf("|")).replace("|", ""));
 						if (i % 2 != 0)
 							j = 0;
 					}
 
 					if (i % 2 == 0) {
-						possibilidades[i] += (ListaDeSenhasPossiveis.get(3).substring(0,
+						senhasPossiveis[i] += (ListaDeSenhasPossiveis.get(3).substring(0,
 								ListaDeSenhasPossiveis.get(1).indexOf("|")));
 					} else {
-						possibilidades[i] += (ListaDeSenhasPossiveis.get(3)
+						senhasPossiveis[i] += (ListaDeSenhasPossiveis.get(3)
 								.substring(ListaDeSenhasPossiveis.get(1).indexOf("|")).replace("|", ""));
 					}
 
@@ -343,33 +407,33 @@ public class Acesso extends JFrame {
 
 				} else {
 
-					possibilidades[i] = ((ListaDeSenhasPossiveis.get(0)
+					senhasPossiveis[i] = ((ListaDeSenhasPossiveis.get(0)
 							.substring(ListaDeSenhasPossiveis.get(0).indexOf("|"))).replace("|", ""));
 
 					if (i < 12) {
-						possibilidades[i] += (ListaDeSenhasPossiveis.get(1).substring(0,
+						senhasPossiveis[i] += (ListaDeSenhasPossiveis.get(1).substring(0,
 								ListaDeSenhasPossiveis.get(1).indexOf("|")));
 					} else {
-						possibilidades[i] += (ListaDeSenhasPossiveis.get(1)
+						senhasPossiveis[i] += (ListaDeSenhasPossiveis.get(1)
 								.substring(ListaDeSenhasPossiveis.get(1).indexOf("|")).replace("|", ""));
 					}
 
 					if (j < 2) {
-						possibilidades[i] += (ListaDeSenhasPossiveis.get(2).substring(0,
+						senhasPossiveis[i] += (ListaDeSenhasPossiveis.get(2).substring(0,
 								ListaDeSenhasPossiveis.get(1).indexOf("|")));
 						j++;
 					} else {
-						possibilidades[i] += (ListaDeSenhasPossiveis.get(2)
+						senhasPossiveis[i] += (ListaDeSenhasPossiveis.get(2)
 								.substring(ListaDeSenhasPossiveis.get(1).indexOf("|")).replace("|", ""));
 						if (i % 2 != 0)
 							j = 0;
 					}
 
 					if (i % 2 == 0) {
-						possibilidades[i] += (ListaDeSenhasPossiveis.get(3).substring(0,
+						senhasPossiveis[i] += (ListaDeSenhasPossiveis.get(3).substring(0,
 								ListaDeSenhasPossiveis.get(1).indexOf("|")));
 					} else {
-						possibilidades[i] += (ListaDeSenhasPossiveis.get(3)
+						senhasPossiveis[i] += (ListaDeSenhasPossiveis.get(3)
 								.substring(ListaDeSenhasPossiveis.get(1).indexOf("|")).replace("|", ""));
 					}
 
@@ -381,8 +445,8 @@ public class Acesso extends JFrame {
 
 			/*
 			 * System.out.println("Possibilidades:\n" + ListaDeSenhasPossiveis + "\n\n");
-			 * for (int j = 0; j < possibilidades.length; j++) { if (j == 8)
-			 * System.out.println(); System.out.println(possibilidades[j]); }
+			 * for (int j = 0; j < senhasPossiveis.length; j++) { if (j == 8)
+			 * System.out.println(); System.out.println(senhasPossiveis[j]); }
 			 */
 
 		} catch (Exception e) {
@@ -391,7 +455,8 @@ public class Acesso extends JFrame {
 		}
 	}
 
-	// Isso é um botao de deletar, que vai deletando numero por numero, um de cada vez no campo senha
+	// Isso é um botao de deletar, que vai deletando numero por numero, um de cada
+	// vez no campo senha
 	private static String DeletarUltimoDigitoDaSenha(String strSenhaDigitada) {
 		try {
 
@@ -444,4 +509,17 @@ public class Acesso extends JFrame {
 		return F_Mascara;
 	}
 
+	// Limpa os dados do cliente para segurança
+	private void LimparDados() {
+
+		ListaDeSenhasPossiveis.clear();
+		txtConta.setText("");
+		txtSenha.setText("");
+		strSenha1 = "";
+		strSenha2 = "";
+		strSenha3 = "";
+		strSenha4 = "";
+		strSenha5 = "";
+		DefinirTextoDosBotoesDeSenha(); // Adiciona os textos dos botoes de senha aleatoriamente para seguranca
+	}
 }
