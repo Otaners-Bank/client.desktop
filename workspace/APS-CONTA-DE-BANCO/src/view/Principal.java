@@ -20,14 +20,16 @@ public class Principal extends JFrame {
 	Control control = new Control();
 	
 	private JPanel contentPane;
+	
+	private static String NUMERO_CONTA = "";
 
 	
 	public static void main(String[] args, String numeroConta) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Principal frame = new Principal(numeroConta);
-					frame.setLocationRelativeTo(null);
+					NUMERO_CONTA = numeroConta;
+					Principal frame = new Principal();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -39,7 +41,8 @@ public class Principal extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Principal(String numeroConta) {
+	public Principal() {
+		setExtendedState(6); // Deixa a janela em tela cheia
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -47,15 +50,17 @@ public class Principal extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		Conta conta = control.buscarConta(numeroConta);
 		
-		JLabel lblBemVindo = new JLabel("Bem Vindo, "+ numeroConta + " !" );
+		
+		JLabel lblBemVindo = new JLabel();
 		lblBemVindo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblBemVindo.setBounds(10, 102, 414, 24);
 		contentPane.add(lblBemVindo);
 		setLocationRelativeTo(null);
+		setVisible(true);
 		
-		// JOptionPane.showMessageDialog(null, control.buscarConta(numeroConta));
+		Conta conta = control.buscarConta(NUMERO_CONTA);
+		lblBemVindo.setText("Bem Vindo, "+ conta.NOME + " !" );
 		
 	}
 

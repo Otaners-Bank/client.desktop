@@ -22,19 +22,9 @@ public class Control {
 	public Conta buscarConta(String numeroConta) {
 		
 		String json = model.Buscar(numeroConta);
-		
-		// Conta conta = new Conta("", "","");
-		Conta conta = new Conta() {};
-		
-		// JSON to Obj
 		Gson gson = new Gson();
 		
-		
-		conta = gson.fromJson(json, Conta.class); // deserializes json into target2
-		
-		System.out.println( conta.NOME );
-		
-		return conta;
+		return gson.fromJson(json, Cliente.class);
 	}
 
 	public boolean transferirValor(int numeroContaFonte, int numeroContaDestino, double valor) {

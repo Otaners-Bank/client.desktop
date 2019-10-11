@@ -34,6 +34,7 @@ public class DataAccess {
 		}
 	}
 
+	
 	public boolean Acessar(String numeroConta, String[] senhaConta) {
 		try {
 
@@ -52,6 +53,9 @@ public class DataAccess {
 
 			for (int i = 0; i < senhaConta.length; i++) {
 
+				
+				
+				
 				if (!content.equals("")) {
 					if (content.contains(numeroConta) && content.contains(senhaConta[i])) {
 						content = null;
@@ -142,6 +146,11 @@ public class DataAccess {
 		}
 	}
 
+	
+    
+ 
+	
+	
 	// Insere um documento
 	public void Insert_Document(String strDocument) {
 		try {
