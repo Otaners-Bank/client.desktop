@@ -1,28 +1,26 @@
 package view;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
 
+import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import control.Conta;
 import control.Control;
-
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 @SuppressWarnings("serial")
 public class Principal extends JFrame {
 
+	// Instancias
 	Control control = new Control();
 	
-	private JPanel contentPane;
-	
+	// Numero da conta do Cliente atual
 	private static String NUMERO_CONTA = "";
-
+	
+	// Componentes
+	private JPanel contentPane;
 	
 	public static void main(String[] args, String numeroConta) {
 		EventQueue.invokeLater(new Runnable() {
@@ -53,8 +51,8 @@ public class Principal extends JFrame {
 		
 		
 		JLabel lblBemVindo = new JLabel();
-		lblBemVindo.setHorizontalAlignment(SwingConstants.CENTER);
-		lblBemVindo.setBounds(10, 102, 414, 24);
+		lblBemVindo.setHorizontalAlignment(SwingConstants.LEFT);
+		lblBemVindo.setBounds(10, 11, 414, 24);
 		contentPane.add(lblBemVindo);
 		setLocationRelativeTo(null);
 		setVisible(true);

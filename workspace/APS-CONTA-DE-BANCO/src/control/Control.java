@@ -1,10 +1,6 @@
 package control;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.gson.Gson;
-
 import model.DataAccess;
 
 public class Control {

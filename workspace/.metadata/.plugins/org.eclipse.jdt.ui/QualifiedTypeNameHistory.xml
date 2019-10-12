@@ -25,7 +25,6 @@
     <fullyQualifiedTypeName name="java.awt.Dimension"/>
     <fullyQualifiedTypeName name="java.util.Random"/>
     <fullyQualifiedTypeName name="javax.sound.sampled.LineListener"/>
-    <fullyQualifiedTypeName name="javax.swing.JFormattedTextField"/>
     <fullyQualifiedTypeName name="javax.swing.text.MaskFormatter"/>
     <fullyQualifiedTypeName name="model.DataAccess"/>
     <fullyQualifiedTypeName name="java.lang.Integer"/>
@@ -33,7 +32,6 @@
     <fullyQualifiedTypeName name="view.CriarConta"/>
     <fullyQualifiedTypeName name="view.RecuperarSenha"/>
     <fullyQualifiedTypeName name="view.Principal"/>
-    <fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
     <fullyQualifiedTypeName name="java.util.List"/>
     <fullyQualifiedTypeName name="java.util.ArrayList"/>
     <fullyQualifiedTypeName name="control.Control"/>
@@ -44,14 +42,20 @@
     <fullyQualifiedTypeName name="com.sun.deploy.nativesandbox.comm.Response"/>
     <fullyQualifiedTypeName name="Teste"/>
     <fullyQualifiedTypeName name="com.google.gson.Gson"/>
-    <fullyQualifiedTypeName name="java.lang.String"/>
     <fullyQualifiedTypeName name="control.Conta"/>
     <fullyQualifiedTypeName name="control.Cliente"/>
-    <fullyQualifiedTypeName name="view.Acesso"/>
     <fullyQualifiedTypeName name="javax.swing.JProgressBar"/>
-    <fullyQualifiedTypeName name="java.awt.Color"/>
     <fullyQualifiedTypeName name="java.lang.Exception"/>
     <fullyQualifiedTypeName name="javax.swing.Timer"/>
     <fullyQualifiedTypeName name="com.sun.media.sound.MidiUtils.TempoCache"/>
     <fullyQualifiedTypeName name="java.lang.Thread"/>
+    <fullyQualifiedTypeName name="view.Acesso"/>
+    <fullyQualifiedTypeName name="javax.swing.JFormattedTextField"/>
+    <fullyQualifiedTypeName name="java.util.InputMismatchException"/>
+    <fullyQualifiedTypeName name="java.awt.Color"/>
+    <fullyQualifiedTypeName name="java.lang.String"/>
+    <fullyQualifiedTypeName name="javafx.scene.control.RadioButton"/>
+    <fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
+    <fullyQualifiedTypeName name="javafx.scene.control.PasswordField"/>
+    <fullyQualifiedTypeName name="java.awt.event.KeyEvent"/>
 </qualifiedTypeNameHistroy>

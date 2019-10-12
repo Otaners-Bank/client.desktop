@@ -26,8 +26,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JProgressBar;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.Timer;
 
 @SuppressWarnings("serial")
@@ -48,13 +46,13 @@ public class Acesso extends JFrame {
 	protected static List<String> ListaDeSenhasPossiveis = new ArrayList<String>();
 	protected static String senhasPossiveis[] = new String[16];
 
+	// Variaveis utilizadas pelos timers (temporizadores)
 	Timer timer;
 	Timer timer2;
 	int progresso = 0;
 
 	// Componentes
-	static JPanel LoginContentPane;
-
+	private static JPanel LoginContentPane;
 	private static JTextField txtConta;
 	private static JLabel lblConta;
 	private static JLabel lblSenha;
@@ -65,19 +63,18 @@ public class Acesso extends JFrame {
 	private static JButton btnSenha4;
 	private static JButton btnSenha5;
 	private static JButton btnApagar;
-	private static JProgressBar progressBarAcesso;
+	private static JProgressBar ProgressBar;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Acesso frame = new Acesso(); // Utilizado para configurar a janela
-					frame.setSize((dimension.width / 2), (dimension.height - 50)); // Muda o tamanho da janela
+					Acesso frame = new Acesso();
+					frame.setVisible(true); // Inicia a janela
 					frame.setLocationRelativeTo(null); // Deixa a janela centralizada
-					// frame.setExtendedState(6); // Deixa a janela em tela cheia
-					frame.setVisible(true); // Faz a janela aparecer
 				} catch (Exception e) {
-					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Ocorreu um erro: " + e.getMessage(), "ERRO",
+							JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -85,57 +82,63 @@ public class Acesso extends JFrame {
 
 	@SuppressWarnings("deprecation")
 	public Acesso() {
+		setSize((dimension.width / 2), (dimension.height - 50)); // Muda o tamanho da janela
+		setResizable(false); // Bloqueia que o usuario modifique o tamanho da janela
+		setAlwaysOnTop(false); // Obriga a janela ficar em primeiro plano sempre
+		setTitle("Otaner Bank"); // Altera o titulo da janela
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Muda o que acontece ao clicar no botao "X" da janela
+		setBounds(100, 100, (dimension.width / 2), (dimension.height - 50)); // Altera o tamanho e a posicao da janela
 
-		setResizable(false);
-		setAlwaysOnTop(false);
-		setTitle("Otaner Bank");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, (dimension.width / 2), (dimension.height - 50));
-		// JOptionPane.showMessageDialog(null, "Tamanho: height="+(dimension.width /
-		// 2)+" width="+(dimension.height - 50));
+		// Painel que contém todos os componentes
 		LoginContentPane = new JPanel();
 		LoginContentPane.setForeground(Color.YELLOW);
 		LoginContentPane.setBackground(new Color(255, 255, 255));
 		LoginContentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(LoginContentPane);
 		LoginContentPane.setLayout(null);
+		setContentPane(LoginContentPane);
 
+		// Texto "Bem Vindo ao Otaner Bank !"
 		JLabel lblBemVindo = new JLabel("Bem Vindo ao Otaner Bank !");
 		lblBemVindo.setFont(new Font("Felix Titling", Font.PLAIN, 30));
 		lblBemVindo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblBemVindo.setBounds(10, 11, 647, 55);
 		LoginContentPane.add(lblBemVindo);
 
-		txtConta = new JFormattedTextField(Mascara("####-#"));
-		txtConta.setHorizontalAlignment(SwingConstants.CENTER);
-		txtConta.setBounds(276, 120, 120, 25);
-		LoginContentPane.add(txtConta);
-		txtConta.setColumns(10);
-
+		// Titulo do campo numero da conta
 		lblConta = new JLabel("Conta:");
 		lblConta.setFont(new Font("Felix Titling", Font.PLAIN, 15));
 		lblConta.setHorizontalAlignment(SwingConstants.CENTER);
 		lblConta.setBounds(276, 94, 120, 25);
 		LoginContentPane.add(lblConta);
 
+		// Campo para digitar o numero da Conta
+		txtConta = new JFormattedTextField(Mascara("####-#"));
+		txtConta.setHorizontalAlignment(SwingConstants.CENTER);
+		txtConta.setBounds(276, 120, 120, 25);
+		txtConta.setColumns(10);
+		LoginContentPane.add(txtConta);
+
+		// Titulo do campo senha
 		lblSenha = new JLabel("Senha:");
 		lblSenha.setFont(new Font("Felix Titling", Font.PLAIN, 15));
 		lblSenha.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSenha.setBounds(276, 183, 120, 25);
 		LoginContentPane.add(lblSenha);
 
+		// Campo para inserir a senha
 		txtSenha = new JPasswordField(5);
 		txtSenha.setHorizontalAlignment(SwingConstants.CENTER);
 		txtSenha.setFont(new Font("Tahoma", Font.PLAIN, 99));
 		txtSenha.setBackground(new Color(255, 255, 255));
 		txtSenha.setBounds(155, 209, 359, 74);
 		txtSenha.setEditable(false);
-
 		LoginContentPane.add(txtSenha);
 
-		DefinirTextoDosBotoesDeSenha(); // Adiciona os textos dos botoes de senha aleatoriamente para
-										// seguranca
+		// Adiciona os textos dos botoes de senha aleatoriamente para seguranca
+		DefinirTextoDosBotoesDeSenha();
 
+		// Botoes para o usuario poder "digitar" a senha
+		// numero 1
 		btnSenha1 = new JButton(strSenha1);
 		btnSenha1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -150,6 +153,7 @@ public class Acesso extends JFrame {
 		btnSenha1.setBounds(155, 328, 94, 74);
 		LoginContentPane.add(btnSenha1);
 
+		// numero 2
 		btnSenha2 = new JButton(strSenha2);
 		btnSenha2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -164,6 +168,7 @@ public class Acesso extends JFrame {
 		btnSenha2.setBounds(285, 328, 94, 74);
 		LoginContentPane.add(btnSenha2);
 
+		// numero 3
 		btnSenha3 = new JButton(strSenha3);
 		btnSenha3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -178,6 +183,7 @@ public class Acesso extends JFrame {
 		btnSenha3.setBounds(420, 328, 94, 74);
 		LoginContentPane.add(btnSenha3);
 
+		// numero 4
 		btnSenha4 = new JButton(strSenha4);
 		btnSenha4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -192,6 +198,7 @@ public class Acesso extends JFrame {
 		btnSenha4.setBounds(155, 425, 94, 74);
 		LoginContentPane.add(btnSenha4);
 
+		// numero 5
 		btnSenha5 = new JButton(strSenha5);
 		btnSenha5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -206,6 +213,7 @@ public class Acesso extends JFrame {
 		btnSenha5.setBounds(285, 425, 94, 74);
 		LoginContentPane.add(btnSenha5);
 
+		// Botao para apagar um numero da senha
 		btnApagar = new JButton("APAGAR");
 		btnApagar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -218,6 +226,7 @@ public class Acesso extends JFrame {
 		btnApagar.setBounds(420, 425, 94, 74);
 		LoginContentPane.add(btnApagar);
 
+		// Botao que redireciona para a tela de criacao de conta
 		JLabel lblCriarConta = new JLabel("> n\u00E3o possui conta ainda?");
 		lblCriarConta.setFont(new Font("Felix Titling", Font.PLAIN, 12));
 		lblCriarConta.addMouseListener(new MouseAdapter() {
@@ -239,6 +248,7 @@ public class Acesso extends JFrame {
 		lblCriarConta.setBounds(201, 583, 248, 14);
 		LoginContentPane.add(lblCriarConta);
 
+		// Botao que redireciona para a tela de recuperacao de senha
 		JLabel lblRecuperarSenha = new JLabel("> esqueceu sua senha de acesso?");
 		lblRecuperarSenha.setFont(new Font("Felix Titling", Font.PLAIN, 12));
 		lblRecuperarSenha.addMouseListener(new MouseAdapter() {
@@ -260,15 +270,17 @@ public class Acesso extends JFrame {
 		lblRecuperarSenha.setBounds(211, 608, 238, 14);
 		LoginContentPane.add(lblRecuperarSenha);
 
-		progressBarAcesso = new JProgressBar();
-		progressBarAcesso.setBounds(0, 665, 667, 14);
-		progressBarAcesso.setForeground(Color.GREEN);
-		progressBarAcesso.setValue(0);
-		progressBarAcesso.setStringPainted(false);
-		progressBarAcesso.setMaximum(100);
-		progressBarAcesso.setMinimum(0);
-		LoginContentPane.add(progressBarAcesso);
+		// Progress Bar para deixar o layout mais fluido
+		ProgressBar = new JProgressBar();
+		ProgressBar.setBounds(0, 665, 667, 14);
+		ProgressBar.setForeground(Color.GREEN);
+		ProgressBar.setValue(0);
+		ProgressBar.setStringPainted(false);
+		ProgressBar.setMaximum(100);
+		ProgressBar.setMinimum(0);
+		LoginContentPane.add(ProgressBar);
 
+		// Botao para verificar as credencias e acessar a conta
 		JButton btnAcessar = new JButton("ACESSAR CONTA");
 		btnAcessar.addActionListener(new ActionListener() {
 
@@ -293,6 +305,9 @@ public class Acesso extends JFrame {
 		btnAcessar.setFont(new Font("Felix Titling", Font.PLAIN, 11));
 		btnAcessar.setBounds(247, 539, 173, 33);
 		LoginContentPane.add(btnAcessar);
+
+		
+		
 
 	}
 
@@ -511,27 +526,34 @@ public class Acesso extends JFrame {
 		try {
 			F_Mascara.setMask(Mascara); // Atribui a mascara
 			F_Mascara.setPlaceholderCharacter(' '); // Caracter para preencimento
-		} catch (Exception excecao) {
-			excecao.printStackTrace();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Ocorreu um erro: " + e.getMessage(), "ERRO",
+					JOptionPane.ERROR_MESSAGE);
 		}
 		return F_Mascara;
 	}
 
 	// Limpa os dados do cliente para segurança
 	private static void LimparDados() {
-		progressBarAcesso.setValue(0);
-		ListaDeSenhasPossiveis.clear();
-		txtConta.setText("");
-		txtSenha.setText("");
-		strSenha1 = "";
-		strSenha2 = "";
-		strSenha3 = "";
-		strSenha4 = "";
-		strSenha5 = "";
-		DefinirTextoDosBotoesDeSenha(); // Adiciona os textos dos botoes de senha aleatoriamente para seguranca
+		try {
+			ProgressBar.setValue(0);
+			ListaDeSenhasPossiveis.clear();
+			txtConta.setText("");
+			txtSenha.setText("");
+			strSenha1 = "";
+			strSenha2 = "";
+			strSenha3 = "";
+			strSenha4 = "";
+			strSenha5 = "";
+			DefinirTextoDosBotoesDeSenha(); // Adiciona os textos dos botoes de senha aleatoriamente para seguranca
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Ocorreu um erro: " + e.getMessage(), "ERRO",
+					JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
-	// Metodo responsavel por iniciar a progressBar e leva ao "acesso permito" ou "acesso negado"
+	// Metodo responsavel por iniciar a progressBar e leva ao "acesso permito" ou
+	// "acesso negado"
 	private void IniciarProgressBar() {
 		try {
 
@@ -539,21 +561,26 @@ public class Acesso extends JFrame {
 			timer.start();
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			System.out.println("erro: " + e.getMessage());
+			JOptionPane.showMessageDialog(null, "Ocorreu um erro: " + e.getMessage(), "ERRO",
+					JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
 	// Faz o movimento da progressBar
 	ActionListener AtualizarProgressBar = new ActionListener() {
 		public void actionPerformed(ActionEvent evt) {
-			progresso++;
-			progressBarAcesso.setValue(progresso);
-			if (progresso == 100) {
-				timer.stop();
-				timer2 = new Timer((1), Finalizar);
-				timer2.setRepeats(false); 
-				timer2.start();
+			try {
+				progresso++;
+				ProgressBar.setValue(progresso);
+				if (progresso == 100) {
+					timer.stop();
+					timer2 = new Timer((1), Finalizar);
+					timer2.setRepeats(false);
+					timer2.start();
+				}
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "Ocorreu um erro: " + e.getMessage(), "ERRO",
+						JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	};
@@ -561,26 +588,28 @@ public class Acesso extends JFrame {
 	// Vem após o movimento da progressBar para validar os dados
 	ActionListener Finalizar = new ActionListener() {
 		public void actionPerformed(ActionEvent evt) {
+			try {
+				DefinirPossiveisPadroesDeSenha();
 
-			
-
-			DefinirPossiveisPadroesDeSenha();
-
-			if (control.acessarConta(txtConta.getText(), senhasPossiveis)) {
-				Principal.main(null, txtConta.getText());
-				LimparDados();
-				senhasPossiveis = null;
-				dispose();
-			} else {
-				LimparDados();
-				btnSenha1.setText(strSenha1);
-				btnSenha2.setText(strSenha2);
-				btnSenha3.setText(strSenha3);
-				btnSenha4.setText(strSenha4);
-				btnSenha5.setText(strSenha5);
-				JOptionPane.showMessageDialog(null, "Acesso negado", "AVISO", JOptionPane.WARNING_MESSAGE);
+				if (control.acessarConta(txtConta.getText(), senhasPossiveis)) {
+					Principal.main(null, txtConta.getText());
+					LimparDados();
+					senhasPossiveis = null;
+					dispose();
+				} else {
+					LimparDados();
+					btnSenha1.setText(strSenha1);
+					btnSenha2.setText(strSenha2);
+					btnSenha3.setText(strSenha3);
+					btnSenha4.setText(strSenha4);
+					btnSenha5.setText(strSenha5);
+					JOptionPane.showMessageDialog(null, "Acesso negado", "AVISO", JOptionPane.WARNING_MESSAGE);
+				}
+				timer2.stop();
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "Ocorreu um erro: " + e.getMessage(), "ERRO",
+						JOptionPane.ERROR_MESSAGE);
 			}
-			timer2.stop();
 
 		}
 	};
