@@ -11,6 +11,9 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
 
+import control.Cliente;
+import control.Conta;
+import control.Control;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 
@@ -42,12 +45,15 @@ import java.awt.event.InputMethodEvent;
 
 public class CriarConta extends JFrame {
 
+	// Instancias
+	Control control = new Control();
+
 	// Para armazenar a resolucao da maquina
 	public static Toolkit toolkit = Toolkit.getDefaultToolkit();
 	public static Dimension dimension = toolkit.getScreenSize();
 
 	// Para armazenar o tipo de conta que será criada
-	private static String TIPO_CONTA = "";
+	private static String TIPO_CONTA = "CORRENTE";
 
 	// Para limitar o tamanho do campo Senha
 	static int count = 1;
@@ -119,6 +125,7 @@ public class CriarConta extends JFrame {
 		txtCPF.setHorizontalAlignment(SwingConstants.CENTER);
 		contentPane.add(txtCPF);
 		txtCPF.setColumns(10);
+		txtCPF.grabFocus();
 
 		JLabel lblNome = new JLabel("Certo, agora seu nome completo");
 		lblNome.setHorizontalAlignment(SwingConstants.CENTER);
@@ -227,8 +234,7 @@ public class CriarConta extends JFrame {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				if (txtSenha.getText().length() > 3) {
-					System.out.println("Passou");
-					txtSenha.setText(txtSenha.getText().substring(0,3));
+					txtSenha.setText(txtSenha.getText().substring(0, 3));
 				}
 			}
 		});
@@ -247,6 +253,45 @@ public class CriarConta extends JFrame {
 				if (!txtSenha.getText().equals("") && txtSenha.getText().length() == 4) {
 					txtSenha.setEnabled(false);
 					btnPronto4.setVisible(false);
+
+					Cliente c = new Cliente();
+
+					int numeroConta = control.numeroContaDisponivel() + 1;
+
+					if (numeroConta <= 9)
+						c.CONTA = "000" + numeroConta;
+					else if (numeroConta <= 99)
+						c.CONTA = "00" + numeroConta;
+					else if (numeroConta <= 999)
+						c.CONTA = "0" + numeroConta;
+					else
+						c.CONTA = String.valueOf(numeroConta);
+
+					if (TIPO_CONTA.equals("CORRENTE")) {
+						c.CONTA += "-1";
+					} else if (TIPO_CONTA.equals("POUPANCA")) {
+						c.CONTA += "-2";
+					} else if (TIPO_CONTA.equals("ESPECIAL")) {
+						c.CONTA += "-3";
+					}
+
+					c.CPF = txtCPF.getText();
+					c.setNOME(txtNome.getText());
+					c.setEMAIL(txtEmail.getText());
+					c.setSENHA(txtSenha.getText());
+
+					c.SALDO = "R$ 00,00";
+
+					control.adicionarConta(c);
+
+					String conta = c.getCONTA();
+					c = null;
+					
+					JOptionPane.showMessageDialog(null, "A conta \""+ conta +"\" foi criada com sucesso\nvoce ja pode acessar sua conta ;)","Conta Criada com SUCESSO !!!" , JOptionPane.OK_OPTION);
+					
+					Acesso.main(null);
+					dispose();
+
 				} else {
 					JOptionPane.showMessageDialog(null, "Erro na senha", "Ops", JOptionPane.WARNING_MESSAGE);
 				}
@@ -276,6 +321,10 @@ public class CriarConta extends JFrame {
 					lblSenha.setVisible(true);
 					txtSenha.setVisible(true);
 					btnPronto4.setVisible(true);
+
+					// Definindo o foco para o proximo campo
+					txtSenha.grabFocus();
+
 				}
 			}
 
@@ -322,22 +371,38 @@ public class CriarConta extends JFrame {
 						|| txtCPF.getText().equals("666.666.666-66") || txtCPF.getText().equals("777.777.777-77")
 						|| txtCPF.getText().equals("888.888.888-88") || txtCPF.getText().equals("999.999.999-99")) {
 
+					txtCPF.setForeground(Color.RED);
 					JOptionPane.showMessageDialog(null, "O CPF informado está incorreto !", "Ops",
 							JOptionPane.ERROR_MESSAGE);
+					txtCPF.grabFocus();
 
 				} else {
 					if (ValidacaoCPF(txtCPF.getText().toString().replace(".", "").replace("-", ""))) {
-						// Desabiltando os campos atuais
-						txtCPF.setEnabled(false);
-						txtCPF.setForeground(Color.BLACK);
-						btnPronto1.setVisible(false);
 
-						// Habilitando os proximos campos
-						lblNome.setVisible(true);
-						txtNome.setVisible(true);
-						lblEmail.setVisible(true);
-						txtEmail.setVisible(true);
-						btnPronto2.setVisible(true);
+						if (control.BuscarCPF(txtCPF.getText())) {
+							txtCPF.setForeground(Color.RED);
+							JOptionPane.showMessageDialog(null, "O CPF informado já está em uso !", "Ops",
+									JOptionPane.ERROR_MESSAGE);
+							txtCPF.grabFocus();
+						} else {
+
+							// Desabiltando os campos atuais
+							txtCPF.setEnabled(false);
+							txtCPF.setForeground(Color.BLACK);
+							btnPronto1.setVisible(false);
+
+							// Habilitando os proximos campos
+							lblNome.setVisible(true);
+							txtNome.setVisible(true);
+							lblEmail.setVisible(true);
+							txtEmail.setVisible(true);
+							btnPronto2.setVisible(true);
+
+							// Definindo foco para o campo "nome"
+							txtNome.grabFocus();
+
+						}
+
 					} else {
 						txtCPF.setForeground(Color.RED);
 						JOptionPane.showMessageDialog(null, "O CPF informado é inválido !", "Ops",

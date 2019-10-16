@@ -3,6 +3,9 @@ package model;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.JOptionPane;
+
+import com.google.gson.Gson;
 import com.mongodb.BasicDBObject;
 import com.mongodb.Cursor;
 import com.mongodb.DB;
@@ -10,31 +13,79 @@ import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 
+import control.Cliente;
+import control.Conta;
 import view.Acesso;
 
 public class DataAccess {
 
-	public static MongoClientURI uri; // irá conter a URL do banco de dados, e das tabelas
-	public static MongoClient mongo; // servirá para podermos acessar o banco de dados, e as tabelas
-	public static DB database; // irá guardar o banco de dados
-	public static DBCollection collection; // irá guardar a tabela
+	private static MongoClientURI uri; // irá conter a URL do banco de dados, e das tabelas
+	private static MongoClient mongo; // servirá para podermos acessar o banco de dados, e as tabelas
+	private static DB database; // irá guardar o banco de dados
+	private static DBCollection collection; // irá guardar a tabela
 
-	public void CriarConta(String conta, String nome, String cpf, String saldo, String gerenteResponsavel,
-			String tipoConta) {
+	// Este metodo retorna o proximo numero de conta disponivel
+	public int NumeroParaContaNova() {
 		try {
 			connect();
-			BasicDBObject document = new BasicDBObject("conta", conta).append("nome", nome).append("cpf", saldo)
-					.append("saldo", saldo).append("gerenteResponsavel", gerenteResponsavel)
-					.append("tipoConta", tipoConta);
+			int nConta = (int) collection.count();
+			disconnect();
+
+			return nConta;
+		} catch (Exception e) {
+			disconnect();
+			JOptionPane.showMessageDialog(null, e, "Ocorreu um erro", JOptionPane.ERROR_MESSAGE);
+			return 1;
+		}
+	}
+
+	// Metodo utilizado para verificar se um CPF ja esta cadastrado no sistema
+	public boolean ValidarCPF(String CPF) {
+		try {
+
+			Logger mongoLogger = Logger.getLogger("org.mongodb.driver");
+			mongoLogger.setLevel(Level.SEVERE);
+
+			connect();
+			BasicDBObject document = new BasicDBObject("CPF", CPF);
+			String content = "";
+			Cursor cursor = collection.find(document);
+			while (cursor.hasNext()) {
+				content += cursor.next();
+			}
+
+			disconnect();
+
+			if (!content.equals("")) {
+				return true;
+			}
+
+			return false;
+
+		} catch (Exception e) {
+			disconnect();
+			JOptionPane.showMessageDialog(null, e, "Ocorreu um erro", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+	}
+
+	// Metodo para adicionar/criar conta
+	public void CriarConta(Conta c) {
+		try {
+			connect();
+			BasicDBObject document = new BasicDBObject("CONTA", c.getCONTA()).append("CPF", c.getCPF())
+					.append("NOME", c.getNOME()).append("E-MAIL", c.getEMAIL()).append("SENHA", c.getSENHA())
+					.append("SALDO", c.getSALDO());
 			collection.insert(document);
 			disconnect();
 
 		} catch (Exception e) {
-			System.out.println(e);
+			disconnect();
+			JOptionPane.showMessageDialog(null, e, "Ocorreu um erro", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
-	
+	// Metodo de Login - para o usuario acessar sua conta
 	public boolean Acessar(String numeroConta, String[] senhaConta) {
 		try {
 
@@ -53,9 +104,6 @@ public class DataAccess {
 
 			for (int i = 0; i < senhaConta.length; i++) {
 
-				
-				
-				
 				if (!content.equals("")) {
 					if (content.contains(numeroConta) && content.contains(senhaConta[i])) {
 						content = null;
@@ -69,11 +117,13 @@ public class DataAccess {
 
 		} catch (Exception e) {
 			disconnect();
+			JOptionPane.showMessageDialog(null, e, "Ocorreu um erro", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 	}
 
-	public String Buscar(String numeroConta) {
+	// Metodo utilizado para buscar os dados da conta do cliente logado
+	public Cliente Buscar(String numeroConta) {
 		try {
 
 			Logger mongoLogger = Logger.getLogger("org.mongodb.driver");
@@ -90,32 +140,32 @@ public class DataAccess {
 			disconnect();
 
 			// ---- RETIRANDO A SENHA E ID DO RETORNO ----
-			/*String array[] = new String[7];
-			array = content.split(",");
-			content = "";
-			array[0] = "{";
-			array[2] = "";
+
+			// Jason to Object
+			Cliente c = new Cliente();
+			Gson gson = new Gson();
+			c = gson.fromJson(content, Cliente.class);
 			
-			for (int i = 0; i < array.length; i++) {
-				content += array[i];
-			}
-			*/
+			c.setSENHA(null);
+
+			// Object to Jason
+			String jason = gson.toJson(c);
+
 			// --------------------------------------------
-			
-			return content;
+
+			return c;
 
 		} catch (Exception e) {
 			disconnect();
+			JOptionPane.showMessageDialog(null, e, "Ocorreu um erro", JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
 	}
-	
-	// DB / DataBase / Banco de Dados = mesma coisa
-	// Collection / Tabela = mesma coisa
-	// document / documento = coisas que estão dentro das tabelas
 
+	// Metodos para conectar e desconectar do Banco de Dados
+	// ----------------------------
 	@SuppressWarnings("deprecation")
-	public void connect() {
+	private void connect() {
 		try {
 
 			// Aqui se atribui os valores para as variaveis que se conectam ao banco
@@ -128,11 +178,12 @@ public class DataAccess {
 			collection = database.getCollection("Otaner Bank");
 
 		} catch (Exception e) {
-			System.out.println(e);
+			disconnect();
+			JOptionPane.showMessageDialog(null, e, "Ocorreu um erro", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
-	public void disconnect() {
+	private void disconnect() {
 		try {
 
 			// Desconecta do banco
@@ -142,15 +193,11 @@ public class DataAccess {
 			collection = null;
 
 		} catch (Exception e) {
-			System.out.println(e);
+
 		}
 	}
+	// ----------------------------------------------------------------------------------
 
-	
-    
- 
-	
-	
 	// Insere um documento
 	public void Insert_Document(String strDocument) {
 		try {

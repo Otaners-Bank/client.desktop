@@ -9,6 +9,7 @@ import control.Conta;
 import control.Control;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import java.awt.Font;
 
 @SuppressWarnings("serial")
 public class Principal extends JFrame {
@@ -51,14 +52,15 @@ public class Principal extends JFrame {
 		
 		
 		JLabel lblBemVindo = new JLabel();
-		lblBemVindo.setHorizontalAlignment(SwingConstants.LEFT);
-		lblBemVindo.setBounds(10, 11, 414, 24);
+		lblBemVindo.setFont(new Font("Tahoma", Font.PLAIN, 25));
+		lblBemVindo.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblBemVindo.setBounds(10, 11, 1346, 24);
 		contentPane.add(lblBemVindo);
 		setLocationRelativeTo(null);
 		setVisible(true);
 		
 		Conta conta = control.buscarConta(NUMERO_CONTA);
-		lblBemVindo.setText("Bem Vindo, "+ conta.NOME + " !" );
+		lblBemVindo.setText("Bem Vindo, " + conta.NOME + " !");
 		
 	}
 

@@ -7,9 +7,9 @@ public abstract class Conta {
 		setNOME(nome);
 		setCPF(cpf);
 	}
-	
+
 	public Conta() {
-		
+
 	}
 
 	// Atributos
@@ -20,11 +20,10 @@ public abstract class Conta {
 	public String EMAIL = "";
 	public String CPF = "";
 	public String SALDO = "";
-	public String TIPOCONTA = "";
 
 	// Getters e Setters
 
-	private String getCONTA() {
+	public String getCONTA() {
 		return CONTA;
 	}
 
@@ -32,31 +31,31 @@ public abstract class Conta {
 		CONTA = cONTA;
 	}
 
-	private String getSENHA() {
+	public String getSENHA() {
 		return SENHA;
 	}
 
-	private void setSENHA(String sENHA) {
+	public void setSENHA(String sENHA) {
 		SENHA = sENHA;
 	}
 
-	private String getNOME() {
+	public String getNOME() {
 		return NOME;
 	}
 
-	private void setNOME(String nOME) {
+	public void setNOME(String nOME) {
 		NOME = nOME;
 	}
 
-	private String getEMAIL() {
+	public String getEMAIL() {
 		return EMAIL;
 	}
 
-	private void setEMAIL(String eMAIL) {
+	public void setEMAIL(String eMAIL) {
 		EMAIL = eMAIL;
 	}
 
-	private String getCPF() {
+	public String getCPF() {
 		return CPF;
 	}
 
@@ -64,20 +63,12 @@ public abstract class Conta {
 		CPF = cPF;
 	}
 
-	private String getSALDO() {
+	public String getSALDO() {
 		return SALDO;
 	}
 
 	private void setSALDO(String sALDO) {
 		SALDO = sALDO;
-	}
-
-	private String getTIPOCONTA() {
-		return TIPOCONTA;
-	}
-
-	private void setTIPOCONTA(String tIPOCONTA) {
-		TIPOCONTA = tIPOCONTA;
 	}
 
 }

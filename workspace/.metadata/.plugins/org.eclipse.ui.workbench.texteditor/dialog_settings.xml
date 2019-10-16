@@ -5,13 +5,14 @@
 		<item key="DIALOG_Y_ORIGIN" value="245"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="ProgressBar"/>
+		<item key="selection" value="c"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="true"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="cli"/>
 			<item value="ProgBar"/>
 			<item value="progressBarAcesso"/>
 			<item value="System"/>
@@ -23,6 +24,7 @@
 			<item value=""/>
 		</list>
 		<list key="replacehistory">
+			<item value="c"/>
 			<item value="ProgressBar"/>
 			<item value="ProgBar"/>
 			<item value="senhasPossiveis"/>
