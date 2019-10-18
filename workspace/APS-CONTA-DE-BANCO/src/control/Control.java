@@ -1,68 +1,83 @@
 package control;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import model.DataAccess;
 
 public class Control {
 
 	private DataAccess model = new DataAccess();
 
+	// Serve para criar uma nova conta
 	public void adicionarConta(Cliente c) {
-
-		model.CriarConta(c);
-
+		model.criarConta(c);
 	}
 
+	// NÃO SERÁ FEITO -
 	public boolean removerConta(int numeroConta) {
 		return true;
 	}
 
-	public Cliente buscarConta(String numeroConta) {
-
-		return model.Buscar(numeroConta);
-	}
-
-	public boolean transferirValor(int numeroContaFonte, int numeroContaDestino, double valor) {
-		return true;
-	}
-
-	public boolean sacarValor(int numeroConta, double valorSacado) {
-		return true;
-	}
-
-	public boolean depositarValor(int numeroConta, double valorDepositado) {
-		return true;
-	}
-
-	// Metodos que não serão implementados:
-	public String listarContas() {
-		return "";
-	}
-
+	// NÃO SERÁ FEITO -
 	public String buscarContasEspeciais() {
 		return "";
 	}
 
+	// NÃO SERÁ FEITO -
 	public String buscarClientesUsandoLimite() {
 		return "";
 	}
 
-	// Metodos adicionados ao scopo
-	public boolean acessarConta(String numeroConta, String[] senhaConta) {
-		return model.Acessar(numeroConta, senhaConta);
+	// Serve para busca todas as informacoes do Cliente que acessar
+	public Cliente buscarConta(String numeroConta) {
+		return model.pesquisarCliente(numeroConta);
 	}
 
+	// Serve para efetuar transferencias de um Cliente para outro
+	public boolean transferir(int numeroContaFonte, int numeroContaDestino, double valor) {
+		return true;
+	}
+
+	// Serve para para um Cliente sacar dinheiro de sua conta
+	public boolean sacar(double valorSacado) {
+		return true;
+	}
+
+	// Serve para para um Cliente depositar dinheiro em sua conta
+	public boolean depositar(double valorDepositado) {
+		return true;
+	}
+
+	// NÃO SERÁ FEITO -
+	public String listarContas() {
+		return "";
+	}
+
+	// METODO ADICIONADO +
+	// Serve para um Cliente consultar seu saldo na conta
+	public String consultar() {
+		return "";
+	}
+
+	// METODO ADICIONADO +
+	// Serve para um Cliente acessar sua conta
+	public boolean acessarConta(String numeroConta, String[] senhaConta) {
+		return model.acessarConta(numeroConta, senhaConta);
+	}
+
+	// METODO ADICIONADO +
+	// Serve para gerar um historico de saque, tranferencias, deposito e etc
 	public String visualizarHistoricoConta(int numeroConta, int senhaConta) {
 		return "";
 	}
 
+	// METODO ADICIONADO +
+	// Serve para para determinar o numero de uma nova conta
 	public int numeroContaDisponivel() {
-		return model.NumeroParaContaNova();
+		return model.gerarNumeroParaContaNova();
 	}
 
+	// METODO ADICIONADO +
+	// Serve para verificar se o CPF de um cliente já está cadastrado
 	public boolean BuscarCPF(String CPF) {
-		return model.ValidarCPF(CPF);
+		return model.validarCPFNoBanco(CPF);
 	}
 }

@@ -108,15 +108,15 @@ public class ConnectionTeste {
 
 				case 6:
 
-					//System.out.println( Read_Document_And_Return("aaaaaaaaaa") );
-					
+					// System.out.println( Read_Document_And_Return("aaaaaaaaaa") );
+
 					// Obj to JSON
 					Teste teste1 = new Teste();
 					teste1.nome = "Thales1";
 
 					Gson gson = new Gson();
 					String jsonStr = gson.toJson(teste1);
-					
+
 					// System.out.println( jsonStr );
 					// -----------------------------------------------
 
@@ -124,21 +124,21 @@ public class ConnectionTeste {
 					String json2 = "{\"nome\":\"Thales2\"}";
 					Teste teste2 = new Teste();
 					teste2 = gson.fromJson(json2, Teste.class); // deserializes json into target2
-					
+
 					// System.out.println( teste2.nome );
 					// -----------------------------------------------
-					
+
 					// Teste com Mongo
-					
+
 					String content = Read_Document_And_Return("aaaaaaaaaa");
 					Teste teste = new Teste();
-					
+
 					teste = gson.fromJson(content, Teste.class);
-					
-					System.out.println( teste.nome );
-					
+
+					System.out.println(teste.nome);
+
 					// -----------------------------------------------
-					
+
 					break;
 
 				default:
@@ -270,7 +270,8 @@ public class ConnectionTeste {
 			}
 			return content;
 		} catch (Exception e) {
-			System.out.println(e); return e.getMessage();
+			System.out.println(e);
+			return e.getMessage();
 		}
 	}
 

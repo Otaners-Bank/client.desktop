@@ -1,47 +1,32 @@
 package view;
 
-import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
-
 import control.Cliente;
-import control.Conta;
 import control.Control;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.RadioButton;
-
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.InputMismatchException;
-
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
-
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
-import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JPasswordField;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.InputMethodListener;
-import java.awt.event.InputMethodEvent;
 
 public class CriarConta extends JFrame {
 
@@ -286,9 +271,11 @@ public class CriarConta extends JFrame {
 
 					String conta = c.getCONTA();
 					c = null;
-					
-					JOptionPane.showMessageDialog(null, "A conta \""+ conta +"\" foi criada com sucesso\nvoce ja pode acessar sua conta ;)","Conta Criada com SUCESSO !!!" , JOptionPane.OK_OPTION);
-					
+
+					JOptionPane.showMessageDialog(null,
+							"A conta \"" + conta + "\" foi criada com sucesso\nvoce ja pode acessar sua conta ;)",
+							"Conta Criada com SUCESSO !!!", JOptionPane.OK_OPTION);
+
 					Acesso.main(null);
 					dispose();
 

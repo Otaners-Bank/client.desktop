@@ -5,13 +5,16 @@
 		<item key="DIALOG_Y_ORIGIN" value="245"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="c"/>
+		<item key="selection" value="limite"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="true"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="LIMITE"/>
+			<item value="connect"/>
+			<item value="disconnect"/>
 			<item value="cli"/>
 			<item value="ProgBar"/>
 			<item value="progressBarAcesso"/>
@@ -24,6 +27,9 @@
 			<item value=""/>
 		</list>
 		<list key="replacehistory">
+			<item value="limite"/>
+			<item value="conectar"/>
+			<item value="desconectar"/>
 			<item value="c"/>
 			<item value="ProgressBar"/>
 			<item value="ProgBar"/>
