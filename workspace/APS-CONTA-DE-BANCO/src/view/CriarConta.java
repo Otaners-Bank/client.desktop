@@ -244,32 +244,32 @@ public class CriarConta extends JFrame {
 					int numeroConta = control.numeroContaDisponivel() + 1;
 
 					if (numeroConta <= 9)
-						c.CONTA = "000" + numeroConta;
+						c.conta = "000" + numeroConta;
 					else if (numeroConta <= 99)
-						c.CONTA = "00" + numeroConta;
+						c.conta = "00" + numeroConta;
 					else if (numeroConta <= 999)
-						c.CONTA = "0" + numeroConta;
+						c.conta = "0" + numeroConta;
 					else
-						c.CONTA = String.valueOf(numeroConta);
+						c.conta = String.valueOf(numeroConta);
 
 					if (TIPO_CONTA.equals("CORRENTE")) {
-						c.CONTA += "-1";
+						c.conta += "-1";
 					} else if (TIPO_CONTA.equals("POUPANCA")) {
-						c.CONTA += "-2";
+						c.conta += "-2";
 					} else if (TIPO_CONTA.equals("ESPECIAL")) {
-						c.CONTA += "-3";
+						c.conta += "-3";
 					}
 
 					c.CPF = txtCPF.getText();
-					c.setNOME(txtNome.getText());
-					c.setEMAIL(txtEmail.getText());
-					c.setSENHA(txtSenha.getText());
+					c.setNome(txtNome.getText());
+					c.setEmail(txtEmail.getText());
+					c.setSenha(txtSenha.getText());
 
-					c.SALDO = "R$ 00,00";
+					c.saldo = "R$ 00,00";
 
 					control.adicionarConta(c);
 
-					String conta = c.getCONTA();
+					String conta = c.getConta();
 					c = null;
 
 					JOptionPane.showMessageDialog(null,

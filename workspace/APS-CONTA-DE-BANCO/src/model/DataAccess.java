@@ -74,7 +74,7 @@ public class DataAccess {
 			mongoLogger.setLevel(Level.SEVERE);
 
 			conectar();
-			BasicDBObject document = new BasicDBObject("CONTA", numeroConta);
+			BasicDBObject document = new BasicDBObject("conta", numeroConta);
 			String content = "";
 			Cursor cursor = collection.find(document);
 			while (cursor.hasNext()) {
@@ -90,13 +90,15 @@ public class DataAccess {
 			Gson gson = new Gson();
 			c = gson.fromJson(content, Cliente.class);
 
-			c.setSENHA(null);
-
+			c.setNome(c.nome);
+			c.setEmail(c.email);
+			
 			// Object to Jason
 			// String jason = gson.toJson(c);
 
 			// --------------------------------------------
 
+			
 			return c;
 
 		} catch (Exception e) {
@@ -110,9 +112,9 @@ public class DataAccess {
 	public void criarConta(Conta c) {
 		try {
 			conectar();
-			BasicDBObject document = new BasicDBObject("CONTA", c.getCONTA()).append("CPF", c.getCPF())
-					.append("NOME", c.getNOME()).append("E-MAIL", c.getEMAIL()).append("SENHA", c.getSENHA())
-					.append("SALDO", c.getSALDO());
+			BasicDBObject document = new BasicDBObject("conta", c.getConta()).append("CPF", c.getCPF())
+					.append("nome", c.getNome()).append("email", c.getEmail()).append("senha", c.getSenha())
+					.append("saldo", c.getSaldo());
 			collection.insert(document);
 			desconectar();
 
@@ -130,7 +132,7 @@ public class DataAccess {
 			mongoLogger.setLevel(Level.SEVERE);
 
 			conectar();
-			BasicDBObject document = new BasicDBObject("CONTA", numeroConta);
+			BasicDBObject document = new BasicDBObject("conta", numeroConta);
 			String content = "";
 			Cursor cursor = collection.find(document);
 			while (cursor.hasNext()) {

@@ -3,8 +3,8 @@ package control;
 public abstract class Conta {
 
 	public Conta(String numeroConta, String nome, String cpf) {
-		setCONTA(numeroConta);
-		setNOME(nome);
+		setConta(numeroConta);
+		setNome(nome);
 		setCPF(cpf);
 	}
 
@@ -13,12 +13,12 @@ public abstract class Conta {
 	}
 
 	// Atributos
-	public String CONTA = "";
-	public String SENHA = "";
-	public String NOME = "";
-	public String EMAIL = "";
+	public String conta = "";
+	public String senha = "";
+	public String nome = "";
+	public String email = "";
 	public String CPF = "";
-	public String SALDO = "";
+	public String saldo = "";
 	// --------------------------------------
 
 	// Metodos
@@ -44,52 +44,52 @@ public abstract class Conta {
 	// --------------------------------------
 
 	// Getters e Setters
-	public String getCONTA() {
-		return CONTA;
+	public String getConta() {
+		return conta;
 	}
 
-	private void setCONTA(String cONTA) {
-		CONTA = cONTA;
+	private void setConta(String conta) {
+		this.conta = conta;
 	}
 
-	public String getSENHA() {
-		return SENHA;
+	public String getSenha() {
+		return senha;
 	}
 
-	public void setSENHA(String sENHA) {
-		SENHA = sENHA;
+	public void setSenha(String senha) {
+		this.senha = senha;
 	}
 
-	public String getNOME() {
-		return NOME;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setNOME(String nOME) {
-		NOME = nOME;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
-	public String getEMAIL() {
-		return EMAIL;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setEMAIL(String eMAIL) {
-		EMAIL = eMAIL;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getCPF() {
 		return CPF;
 	}
 
-	private void setCPF(String cPF) {
-		CPF = cPF;
+	private void setCPF(String CPF) {
+		this.CPF = CPF;
 	}
 
-	public String getSALDO() {
-		return SALDO;
+	public String getSaldo() {
+		return saldo;
 	}
 
-	private void setSALDO(String sALDO) {
-		SALDO = sALDO;
+	private void setSaldo(String saldo) {
+		this.saldo = saldo;
 	}
 
 }

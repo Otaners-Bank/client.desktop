@@ -60,7 +60,7 @@ public class Principal extends JFrame {
 		setVisible(true);
 		
 		Conta conta = control.buscarConta(NUMERO_CONTA);
-		lblBemVindo.setText("Bem Vindo, " + conta.NOME + " !");
+		lblBemVindo.setText("Bem Vindo, " + conta.getNome() + " !");
 		
 	}
 

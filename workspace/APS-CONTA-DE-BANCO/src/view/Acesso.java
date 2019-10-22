@@ -47,9 +47,14 @@ public class Acesso extends JFrame {
 	protected static String senhasPossiveis[] = new String[16];
 
 	// Variaveis utilizadas pelos timers (temporizadores)
+	// Timer utilizado para fazer a barra de progresso
 	Timer timer;
+	// Se inicia quando o timer1 for finalizado (serve para efetuar o acesso)
 	Timer timer2;
-	int progresso = 0;
+	// Timer puramente para o design, para dar mais fluidez ao programa
+	Timer timer3;
+	// variavel que diz o progresso da ProgressBar
+	static int progresso = 0;
 
 	// Componentes
 	private static JPanel LoginContentPane;
@@ -272,7 +277,7 @@ public class Acesso extends JFrame {
 
 		// Progress Bar para deixar o layout mais fluido
 		ProgressBar = new JProgressBar();
-		ProgressBar.setBounds(0, 665, 667, 14);
+		ProgressBar.setBounds(0, 675, 677, 14);
 		ProgressBar.setForeground(Color.GREEN);
 		ProgressBar.setValue(0);
 		ProgressBar.setStringPainted(false);
@@ -305,9 +310,6 @@ public class Acesso extends JFrame {
 		btnAcessar.setFont(new Font("Felix Titling", Font.PLAIN, 11));
 		btnAcessar.setBounds(247, 539, 173, 33);
 		LoginContentPane.add(btnAcessar);
-
-		
-		
 
 	}
 
@@ -536,6 +538,7 @@ public class Acesso extends JFrame {
 	// Limpa os dados do cliente para segurança
 	private static void LimparDados() {
 		try {
+			progresso = 0;
 			ProgressBar.setValue(0);
 			ListaDeSenhasPossiveis.clear();
 			txtConta.setText("");
@@ -574,8 +577,7 @@ public class Acesso extends JFrame {
 				ProgressBar.setValue(progresso);
 				if (progresso == 100) {
 					timer.stop();
-					timer2 = new Timer((1), Finalizar);
-					timer2.setRepeats(false);
+					timer2 = new Timer((1), ValidarAcesso);
 					timer2.start();
 				}
 			} catch (Exception e) {
@@ -586,16 +588,24 @@ public class Acesso extends JFrame {
 	};
 
 	// Vem após o movimento da progressBar para validar os dados
-	ActionListener Finalizar = new ActionListener() {
+	ActionListener ValidarAcesso = new ActionListener() {
 		public void actionPerformed(ActionEvent evt) {
 			try {
 				DefinirPossiveisPadroesDeSenha();
 
 				if (control.acessarConta(txtConta.getText(), senhasPossiveis)) {
-					Principal.main(null, txtConta.getText());
-					LimparDados();
+
 					senhasPossiveis = null;
-					dispose();
+					
+					timer3 = new Timer((1000), IniciarMenuPrincipal);
+					timer3.setRepeats(false);
+					timer3.start();
+
+					JOptionPane.showMessageDialog(null, "Acesso permitido", "Bem vindo !",
+							JOptionPane.INFORMATION_MESSAGE);
+
+					LimparDados();
+					
 				} else {
 					LimparDados();
 					btnSenha1.setText(strSenha1);
@@ -606,6 +616,20 @@ public class Acesso extends JFrame {
 					JOptionPane.showMessageDialog(null, "Acesso negado", "AVISO", JOptionPane.WARNING_MESSAGE);
 				}
 				timer2.stop();
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "Ocorreu um erro: " + e.getMessage(), "ERRO",
+						JOptionPane.ERROR_MESSAGE);
+			}
+
+		}
+	};
+
+	ActionListener IniciarMenuPrincipal = new ActionListener() {
+		public void actionPerformed(ActionEvent evt) {
+			try {
+				dispose();
+				Principal.main(null, txtConta.getText());
+				timer3.stop();
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(null, "Ocorreu um erro: " + e.getMessage(), "ERRO",
 						JOptionPane.ERROR_MESSAGE);

@@ -5,13 +5,14 @@
 		<item key="DIALOG_Y_ORIGIN" value="245"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="limite"/>
+		<item key="selection" value="conta"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="true"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="CONTA"/>
 			<item value="LIMITE"/>
 			<item value="connect"/>
 			<item value="disconnect"/>
@@ -22,11 +23,11 @@
 			<item value="possibilidades"/>
 			<item value="cpf"/>
 			<item value="SALDO"/>
-			<item value="CONTA"/>
 			<item value=","/>
 			<item value=""/>
 		</list>
 		<list key="replacehistory">
+			<item value="conta"/>
 			<item value="limite"/>
 			<item value="conectar"/>
 			<item value="desconectar"/>
