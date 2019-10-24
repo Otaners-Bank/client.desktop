@@ -5,13 +5,16 @@
 		<item key="DIALOG_Y_ORIGIN" value="245"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="conta"/>
+		<item key="selection" value="System"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="true"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="System"/>
+			<item value="temporizador"/>
+			<item value="timer"/>
 			<item value="CONTA"/>
 			<item value="LIMITE"/>
 			<item value="connect"/>
@@ -19,7 +22,6 @@
 			<item value="cli"/>
 			<item value="ProgBar"/>
 			<item value="progressBarAcesso"/>
-			<item value="System"/>
 			<item value="possibilidades"/>
 			<item value="cpf"/>
 			<item value="SALDO"/>
@@ -27,6 +29,8 @@
 			<item value=""/>
 		</list>
 		<list key="replacehistory">
+			<item value="timer"/>
+			<item value="temporizador"/>
 			<item value="conta"/>
 			<item value="limite"/>
 			<item value="conectar"/>

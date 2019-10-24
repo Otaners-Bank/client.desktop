@@ -15,8 +15,12 @@ import javax.swing.JOptionPane;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.InputMismatchException;
+import java.util.Random;
+
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.Timer;
+
 import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
@@ -43,6 +47,15 @@ public class CriarConta extends JFrame {
 	// Para limitar o tamanho do campo Senha
 	static int count = 1;
 
+	// Timer utilizado para fazer as letras aparecerem devagar
+	Timer timer;
+	// Como as letras deverão ficar
+	String objetivoFinal = "";
+	// Como as letras estão
+	String conteudoAtual = "";
+	// Letra que deve ser inserida
+	String letra = "";
+
 	// Componentes
 	private JPanel contentPane;
 	private JTextField txtNome;
@@ -52,6 +65,11 @@ public class CriarConta extends JFrame {
 	public JRadioButton rdbtnPoupanca;
 	public JRadioButton rdbtnEspecial;
 	private JPasswordField txtSenha;
+	private JLabel lblCPF;
+	private JButton btnPronto1;
+	private JButton btnPronto2;
+	private JButton btnPronto3;
+	private JButton btnPronto4;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -98,8 +116,13 @@ public class CriarConta extends JFrame {
 		lblVoltar.setBounds(10, 11, 36, 14);
 		contentPane.add(lblVoltar);
 
-		JLabel lblCPF = new JLabel(
-				"Eai ! Para come\u00E7armos a cria\u00E7\u00E3o de sua conta, porfavor me informe seu CPF");
+		// Animacao das Letras -------------------------------------------
+		timer = new Timer((50), MostrarCPF);
+		timer.setRepeats(true);
+		timer.start();
+		// ---------------------------------------------------------------
+
+		lblCPF = new JLabel("");
 		lblCPF.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblCPF.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCPF.setBounds(10, 47, 647, 20);
@@ -110,7 +133,7 @@ public class CriarConta extends JFrame {
 		txtCPF.setHorizontalAlignment(SwingConstants.CENTER);
 		contentPane.add(txtCPF);
 		txtCPF.setColumns(10);
-		txtCPF.grabFocus();
+		txtCPF.setVisible(false);
 
 		JLabel lblNome = new JLabel("Certo, agora seu nome completo");
 		lblNome.setHorizontalAlignment(SwingConstants.CENTER);
@@ -226,11 +249,10 @@ public class CriarConta extends JFrame {
 		txtSenha.setHorizontalAlignment(SwingConstants.CENTER);
 		txtSenha.setFont(new Font("Tahoma", Font.PLAIN, 99));
 		txtSenha.setBounds(170, 520, 360, 75);
-
 		txtSenha.setVisible(false);
 		contentPane.add(txtSenha);
 
-		JButton btnPronto4 = new JButton("PRONTO");
+		btnPronto4 = new JButton("PRONTO");
 		btnPronto4.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -290,7 +312,7 @@ public class CriarConta extends JFrame {
 		btnPronto4.setVisible(false);
 		contentPane.add(btnPronto4);
 
-		JButton btnPronto3 = new JButton("PRONTO");
+		btnPronto3 = new JButton("PRONTO");
 		btnPronto3.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -320,7 +342,7 @@ public class CriarConta extends JFrame {
 		btnPronto3.setVisible(false);
 		contentPane.add(btnPronto3);
 
-		JButton btnPronto2 = new JButton("PRONTO");
+		btnPronto2 = new JButton("PRONTO");
 		btnPronto2.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -347,7 +369,7 @@ public class CriarConta extends JFrame {
 		btnPronto2.setVisible(false);
 		contentPane.add(btnPronto2);
 
-		JButton btnPronto1 = new JButton("PRONTO");
+		btnPronto1 = new JButton("PRONTO");
 		btnPronto1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
@@ -401,6 +423,7 @@ public class CriarConta extends JFrame {
 			}
 		});
 		btnPronto1.setBounds(568, 117, 89, 25);
+		btnPronto1.setVisible(false);
 		contentPane.add(btnPronto1);
 
 	}
@@ -474,4 +497,43 @@ public class CriarConta extends JFrame {
 			return false;
 		}
 	}
+
+	// Faz o movimento da progressBar
+	ActionListener MostrarCPF = new ActionListener() {
+		public void actionPerformed(ActionEvent evt) {
+			try {
+
+				String conteudo = lblCPF.getText();
+				String objetivoFinal = "Eai ser humaninho ! Para começarmos a criação de sua conta, porfavor me informe seu CPF:";
+
+				if (!(conteudo.equals(objetivoFinal))) {
+
+					letra = "" + objetivoFinal.charAt(conteudoAtual.length());
+					conteudoAtual += letra;
+
+					if ((letra.equals("!")) || (letra.equals(","))) {
+						timer.setDelay(500);
+					} else {
+						Random random = new Random();
+						int delay = random.nextInt((70 - 20) + 1) + 20; // Um numero entre 20 e 70
+						timer.setDelay(delay);
+					}
+
+					lblCPF.setText(conteudoAtual);
+
+				} else {
+					txtCPF.setVisible(true);
+					txtCPF.grabFocus();
+					// timer.setDelay(10000);
+					btnPronto1.setVisible(true);
+					timer.stop();
+				}
+
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "Ocorreu um erro: " + e.getMessage(), "ERRO",
+						JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	};
+
 }

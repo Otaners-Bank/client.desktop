@@ -2,14 +2,19 @@ package control;
 
 public class ContaCorrente extends Conta {
 
+	public ContaCorrente() {
+		
+	}
+	
 	public ContaCorrente(String numeroConta, String nome, String cpf) {
 		super(numeroConta, nome, cpf);
-		
+
 	}
 
 	public ContaCorrente(String numeroConta, String nome, String cpf, String limite) {
 		super(numeroConta, nome, cpf);
-		
+		setLimite(super.saldo);
+		limite = getLimite();
 	}
 
 	String limite;
@@ -18,24 +23,33 @@ public class ContaCorrente extends Conta {
 		return limite;
 	}
 
-	private void setLimite(String lIMITE) {
-		limite = lIMITE;
+	private void setLimite(String limite) {
+		this.limite = limite;
 	}
-	
+
 	public boolean usandoLimite() {
-		return true;
+		if (Integer.parseInt(getLimite().replace("R$ ", "")) <= 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
-	
+
 	@Override
 	public boolean sacar(double valorSacado) {
-		// TODO Auto-generated method stub
-		return super.sacar(valorSacado);
+
+		if (usandoLimite()) {
+			return false;
+		} else {
+			return super.sacar(valorSacado);
+		}
+
 	}
-	
+
 	@Override
 	public String consultarSaldo() {
 		// TODO Auto-generated method stub
-		return super.consultarSaldo();
+		return "Saldo >>> " + super.consultarSaldo() + " & Limite >>> " + getLimite();
 	}
-	
+
 }

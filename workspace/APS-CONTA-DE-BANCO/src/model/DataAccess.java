@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -13,6 +14,8 @@ import com.mongodb.MongoClientURI;
 import control.Cliente;
 import control.Conta;
 import control.ContaCorrente;
+import control.ContaEspecial;
+import control.ContaPoupanca;
 
 public class DataAccess {
 
@@ -67,7 +70,7 @@ public class DataAccess {
 	}
 
 	// Retorna todos os dados do cliente no modelo da classe "Cliente"
-	public Cliente pesquisarCliente(String numeroConta) {
+	public Conta pesquisarCliente(String numeroConta) {
 		try {
 
 			Logger mongoLogger = Logger.getLogger("org.mongodb.driver");
@@ -83,24 +86,28 @@ public class DataAccess {
 
 			desconectar();
 
-			// ---- RETIRANDO A SENHA E ID DO RETORNO ----
-
 			// Jason to Object
-			Cliente c = new Cliente();
+
 			Gson gson = new Gson();
-			c = gson.fromJson(content, Cliente.class);
 
-			c.setNome(c.nome);
-			c.setEmail(c.email);
-			
-			// Object to Jason
-			// String jason = gson.toJson(c);
+			if (numeroConta.endsWith("1")) {
+				ContaCorrente c = new ContaCorrente();
+				c = gson.fromJson(content, ContaCorrente.class);
+				c.senha = null;
+				return c;
+			} else if (numeroConta.endsWith("2")) {
+				ContaPoupanca c = new ContaPoupanca();
+				c = gson.fromJson(content, ContaPoupanca.class);
+				c.senha = null;
+				return c;
+			} else if (numeroConta.endsWith("3")) {
+				ContaEspecial c = new ContaEspecial();
+				c = gson.fromJson(content, ContaEspecial.class);
+				c.senha = null;
+				return c;
+			}
 
-			// --------------------------------------------
-
-			
-			return c;
-
+			return null;
 		} catch (Exception e) {
 			desconectar();
 			JOptionPane.showMessageDialog(null, e, "Ocorreu um erro", JOptionPane.ERROR_MESSAGE);

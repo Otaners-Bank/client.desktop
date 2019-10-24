@@ -1,6 +1,6 @@
-import java.io.FileWriter;
-import java.util.Scanner;
+package MongoDB;
 
+import java.util.Scanner;
 import com.google.gson.Gson;
 import com.mongodb.BasicDBObject;
 import com.mongodb.Cursor;
@@ -8,14 +8,10 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
-import com.mongodb.util.JSON;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.text.AbstractDocument.Content;
-
-public class ConnectionTeste {
+public class Conexao {
 
 	private static MongoClientURI uri; // irá conter a URL do banco de dados, e das tabelas
 	private static MongoClient mongo; // servirá para podermos acessar o banco de dados, e as tabelas
@@ -111,7 +107,7 @@ public class ConnectionTeste {
 					// System.out.println( Read_Document_And_Return("aaaaaaaaaa") );
 
 					// Obj to JSON
-					Teste teste1 = new Teste();
+					Modelo teste1 = new Modelo();
 					teste1.nome = "Thales1";
 
 					Gson gson = new Gson();
@@ -122,8 +118,8 @@ public class ConnectionTeste {
 
 					// JSON to Obj
 					String json2 = "{\"nome\":\"Thales2\"}";
-					Teste teste2 = new Teste();
-					teste2 = gson.fromJson(json2, Teste.class); // deserializes json into target2
+					Modelo teste2 = new Modelo();
+					teste2 = gson.fromJson(json2, Modelo.class); // deserializes json into target2
 
 					// System.out.println( teste2.nome );
 					// -----------------------------------------------
@@ -131,9 +127,9 @@ public class ConnectionTeste {
 					// Teste com Mongo
 
 					String content = Read_Document_And_Return("aaaaaaaaaa");
-					Teste teste = new Teste();
+					Modelo teste = new Modelo();
 
-					teste = gson.fromJson(content, Teste.class);
+					teste = gson.fromJson(content, Modelo.class);
 
 					System.out.println(teste.nome);
 

@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="com.mongodb.client.MongoClient"/>
-<fullyQualifiedTypeName name="com.mongodb.MongoClient"/>
-<fullyQualifiedTypeName name="com.mongodb.DB"/>
-<fullyQualifiedTypeName name="com.mongodb.MongoClientURI"/>
-<fullyQualifiedTypeName name="com.mongodb.client.MongoDatabase"/>
 <fullyQualifiedTypeName name="javafx.beans.property.ReadOnlyBooleanProperty"/>
 <fullyQualifiedTypeName name="ConnectionTeste"/>
 <fullyQualifiedTypeName name="com.mongodb.client.MongoCollection"/>
@@ -22,11 +17,9 @@
 <fullyQualifiedTypeName name="javax.swing.JFrame"/>
 <fullyQualifiedTypeName name="java.awt.Toolkit"/>
 <fullyQualifiedTypeName name="java.awt.Dimension"/>
-<fullyQualifiedTypeName name="java.util.Random"/>
 <fullyQualifiedTypeName name="javax.sound.sampled.LineListener"/>
 <fullyQualifiedTypeName name="javax.swing.text.MaskFormatter"/>
 <fullyQualifiedTypeName name="model.DataAccess"/>
-<fullyQualifiedTypeName name="java.lang.Integer"/>
 <fullyQualifiedTypeName name="java.awt.Cursor"/>
 <fullyQualifiedTypeName name="view.CriarConta"/>
 <fullyQualifiedTypeName name="view.RecuperarSenha"/>
@@ -41,7 +34,6 @@
 <fullyQualifiedTypeName name="Teste"/>
 <fullyQualifiedTypeName name="javax.swing.JProgressBar"/>
 <fullyQualifiedTypeName name="java.lang.Exception"/>
-<fullyQualifiedTypeName name="javax.swing.Timer"/>
 <fullyQualifiedTypeName name="com.sun.media.sound.MidiUtils.TempoCache"/>
 <fullyQualifiedTypeName name="java.lang.Thread"/>
 <fullyQualifiedTypeName name="javax.swing.JFormattedTextField"/>
@@ -52,12 +44,20 @@
 <fullyQualifiedTypeName name="java.awt.event.KeyEvent"/>
 <fullyQualifiedTypeName name="control.Control"/>
 <fullyQualifiedTypeName name="com.google.gson.GsonBuilder"/>
-<fullyQualifiedTypeName name="control.Conta"/>
 <fullyQualifiedTypeName name="view.Acesso"/>
 <fullyQualifiedTypeName name="com.google.gson.Gson"/>
 <fullyQualifiedTypeName name="control.Cliente"/>
-<fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
-<fullyQualifiedTypeName name="control.ContaPoupanca"/>
-<fullyQualifiedTypeName name="control.ContaCorrente"/>
+<fullyQualifiedTypeName name="Teste_Temporizador"/>
+<fullyQualifiedTypeName name="Temporizador.Timer1"/>
+<fullyQualifiedTypeName name="javax.swing.Timer"/>
+<fullyQualifiedTypeName name="Jason.ClasseModelo"/>
+<fullyQualifiedTypeName name="java.util.Random"/>
+<fullyQualifiedTypeName name="java.lang.Integer"/>
 <fullyQualifiedTypeName name="java.lang.String"/>
+<fullyQualifiedTypeName name="control.ContaCorrente"/>
+<fullyQualifiedTypeName name="control.ContaPoupanca"/>
+<fullyQualifiedTypeName name="control.ContaEspecial"/>
+<fullyQualifiedTypeName name="control.Conta"/>
+<fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
+<fullyQualifiedTypeName name="java.util.Set"/>
 </qualifiedTypeNameHistroy>

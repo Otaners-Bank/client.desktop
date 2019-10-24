@@ -27,7 +27,7 @@ public class Control {
 	}
 
 	// Serve para busca todas as informacoes do Cliente que acessar
-	public Cliente buscarConta(String numeroConta) {
+	public Conta buscarConta(String numeroConta) {
 		return model.pesquisarCliente(numeroConta);
 	}
 

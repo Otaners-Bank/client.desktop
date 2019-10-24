@@ -19,7 +19,7 @@ public abstract class Conta {
 	public String email = "";
 	public String CPF = "";
 	public String saldo = "";
-	// --------------------------------------
+	// -------------------------------------------------
 
 	// Metodos
 	// Saca da conta do cliente
@@ -41,14 +41,14 @@ public abstract class Conta {
 	public String consultarSaldo() {
 		return "";
 	}
-	// --------------------------------------
+	// ---------------------------------------------------
 
 	// Getters e Setters
 	public String getConta() {
 		return conta;
 	}
 
-	private void setConta(String conta) {
+	protected void setConta(String conta) {
 		this.conta = conta;
 	}
 
@@ -80,7 +80,7 @@ public abstract class Conta {
 		return CPF;
 	}
 
-	private void setCPF(String CPF) {
+	protected void setCPF(String CPF) {
 		this.CPF = CPF;
 	}
 
@@ -88,7 +88,7 @@ public abstract class Conta {
 		return saldo;
 	}
 
-	private void setSaldo(String saldo) {
+	protected void setSaldo(String saldo) {
 		this.saldo = saldo;
 	}
 
