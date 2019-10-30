@@ -39,6 +39,49 @@ public class DataAccess {
 		}
 	}
 
+	public boolean depositar(String valorDeposito, String numeroConta) {
+
+		try {
+
+			Conta c = null;
+
+			BasicDBObject document = new BasicDBObject("conta", numeroConta);
+			String content = "";
+
+			conectar();
+			Cursor cursor = collection.find(document);
+			while (cursor.hasNext()) {
+				content += cursor.next();
+			}
+			
+
+			// Jason to Object
+			Gson gson = new Gson();
+			c = gson.fromJson(content, ContaCorrente.class);
+			
+
+			double valorAntigo = Double.parseDouble(c.getSaldo().replace("R$ ", "").replace(",", "."));
+			double valorNovo = ( Double.parseDouble(valorDeposito.replace("R$ ", "").replace(",", ".")) ) + valorAntigo;
+
+
+			// new value
+			BasicDBObject newDocument = new BasicDBObject("conta", c.getConta()).append("CPF", c.getCPF())
+					.append("nome", c.getNome()).append("email", c.getEmail()).append("senha", c.getSenha())
+					.append("saldo", "R$ " + valorNovo);
+
+
+			collection.update(document, newDocument);
+			desconectar();
+			
+			return true;
+
+		} catch (Exception e) {
+			System.out.println(e);
+			desconectar();
+			return false;
+		}
+	}
+	
 	// Retorna true caso este CPF já esteja cadastrado, e false caso não esteja
 	public boolean validarCPFNoBanco(String CPF) {
 		try {
@@ -164,6 +207,49 @@ public class DataAccess {
 		} catch (Exception e) {
 			desconectar();
 			JOptionPane.showMessageDialog(null, e, "Ocorreu um erro", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+	}
+
+	public boolean sacar(String valorSaque, String numeroConta) {
+
+		try {
+
+			Conta c = null;
+
+			BasicDBObject document = new BasicDBObject("conta", numeroConta);
+			String content = "";
+
+			conectar();
+			Cursor cursor = collection.find(document);
+			while (cursor.hasNext()) {
+				content += cursor.next();
+			}
+			
+
+			// Jason to Object
+			Gson gson = new Gson();
+			c = gson.fromJson(content, ContaCorrente.class);
+			
+
+			double valorAntigo = Double.parseDouble(c.getSaldo().replace("R$ ", "").replace(",", "."));
+			double valorNovo =  valorAntigo -(Double.parseDouble(valorSaque.replace("R$ ", "").replace(",", ".")));
+
+
+			// new value
+			BasicDBObject newDocument = new BasicDBObject("conta", c.getConta()).append("CPF", c.getCPF())
+					.append("nome", c.getNome()).append("email", c.getEmail()).append("senha", c.getSenha())
+					.append("saldo", "R$ " + valorNovo);
+
+
+			collection.update(document, newDocument);
+			desconectar();
+			
+			return true;
+
+		} catch (Exception e) {
+			System.out.println(e);
+			desconectar();
 			return false;
 		}
 	}

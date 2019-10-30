@@ -8,5 +8,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/aps.poo/workspace/APS-CONTA-DE-BANCO/libs/mongo-java-driver-3.6.0.jar"/>
 	<classpathentry kind="lib" path="C:/aps.poo/workspace/APS-CONTA-DE-BANCO/libs/gson-2.8.6.jar"/>
+	<classpathentry kind="lib" path="C:/aps.poo/workspace/APS-CONTA-DE-BANCO/libs/mail.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

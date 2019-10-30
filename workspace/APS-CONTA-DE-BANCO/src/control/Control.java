@@ -37,13 +37,14 @@ public class Control {
 	}
 
 	// Serve para para um Cliente sacar dinheiro de sua conta
-	public boolean sacar(double valorSacado) {
-		return true;
+	public boolean sacar(String valorSaque, String numeroConta ) {
+		return model.sacar(valorSaque, numeroConta);
+
 	}
 
 	// Serve para para um Cliente depositar dinheiro em sua conta
-	public boolean depositar(double valorDepositado) {
-		return true;
+	public boolean depositar(String valorDeposito, String numeroConta) {
+		return model.depositar(valorDeposito, numeroConta);
 	}
 
 	// NÃO SERÁ FEITO -
