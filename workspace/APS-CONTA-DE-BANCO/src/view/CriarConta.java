@@ -527,7 +527,7 @@ public class CriarConta extends JFrame {
 
 				c.saldo = "R$ 00,00";
 
-				control.adicionarConta(c);
+				
 
 				String conta = "";
 
@@ -543,6 +543,8 @@ public class CriarConta extends JFrame {
 						"OLÁ " + c.getNome() + ", e Bem Vindo ao Otaner's Bank !!! \nPara acessar sua nova conta "
 								+ conta + " utilize o numero \"" + c.getConta() + "\" e a senha cadastrada xD");
 
+				control.adicionarConta(c);
+				
 				c = null;
 				conta = null;
 

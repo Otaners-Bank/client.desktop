@@ -5,13 +5,17 @@
 		<item key="DIALOG_Y_ORIGIN" value="245"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="Acao"/>
+		<item key="selection" value=""/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="true"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="// LimparDados"/>
+			<item value="LimparDados"/>
+			<item value="Acesso "/>
+			<item value="Acesso Per"/>
 			<item value="Esconder"/>
 			<item value="canEn"/>
 			<item value="canEnter = "/>
@@ -23,12 +27,9 @@
 			<item value="temporizador"/>
 			<item value="timer"/>
 			<item value="CONTA"/>
-			<item value="LIMITE"/>
-			<item value="connect"/>
-			<item value="disconnect"/>
-			<item value="cli"/>
 		</list>
 		<list key="replacehistory">
+			<item value="// LimparDados"/>
 			<item value="Acao"/>
 			<item value="Mostrar_CPF"/>
 			<item value="timer"/>
@@ -43,7 +44,6 @@
 			<item value="senhasPossiveis"/>
 			<item value="cpf"/>
 			<item value="saldoConta"/>
-			<item value="numeroConta"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">

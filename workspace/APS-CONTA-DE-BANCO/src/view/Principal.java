@@ -16,6 +16,8 @@ import model.DataAccess;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
+import javax.swing.Timer;
+
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -32,6 +34,9 @@ public class Principal extends JFrame {
 	Control control = new Control();
 	Conta CONTA = null;
 
+	// Timer
+	Timer timer;
+
 	// Numero da conta do Cliente atual
 	private static String NUMERO_CONTA = "";
 	private static String TIPO_CONTA = "";
@@ -39,21 +44,22 @@ public class Principal extends JFrame {
 	// Para armazenar a resolucao da maquina
 	public static Toolkit toolkit = Toolkit.getDefaultToolkit();
 	public static Dimension dimension = toolkit.getScreenSize();
-	private static int meio_horizontal = 0;
-	private static int meio_vertical = 0;
+	public static int x;
+	public static int y;
 
 	// Componentes
 	private JPanel contentPane;
-	private static JButton btnDeposito;
+	private JPanel numPad;
+	private static JButton btnDeposito; 
+	private static JButton btnTranferencia;
 	private static JButton btnSaque;
-	private static JTextField txtDeposito;
+	private static JLabel lblBemVindo;
+	private static JLabel lblRenda;
 
 	public static void main(String[] args, String numeroConta) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					meio_vertical = ( dimension.height / 2 );
-					meio_horizontal = ( dimension.width / 2 );
 					NUMERO_CONTA = numeroConta;
 					Principal frame = new Principal();
 					frame.setVisible(true);
@@ -68,65 +74,101 @@ public class Principal extends JFrame {
 	 * Create the frame.
 	 */
 	public Principal() {
+		setBackground(Color.WHITE);
 
-		// getConta();
-
+		x = dimension.width;
+		y = dimension.height;
 		
+		timer = new Timer((1000), carregarConta);
+		timer.setRepeats(true);
+		timer.start();
+
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		setBounds(100, 100, (dimension.width), (dimension.height)); // Altera o tamanho e a posicao da janela
+		setBounds(100, 100, 700, 700); // Altera o tamanho e a posicao da janela
 		setLocationRelativeTo(null);
 		setVisible(true);
 		setExtendedState(6); // Deixa a janela em tela cheia
-		
+
 		contentPane = new JPanel();
-		contentPane.setBounds(100, 100, (dimension.width), (dimension.height));
+		contentPane.setBackground(Color.WHITE);
+		contentPane.setBounds(100, 100, MAXIMIZED_BOTH, MAXIMIZED_BOTH);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(null);
-		setContentPane(contentPane);
 
-		JLabel lblBemVindo = new JLabel();
+		lblBemVindo = new JLabel("Carregando");
 		lblBemVindo.setFont(new Font("Tahoma", Font.PLAIN, 25));
-		lblBemVindo.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblBemVindo.setBounds( (meio_horizontal/2) , meio_vertical, meio_horizontal, 300);
-		contentPane.add(lblBemVindo);
+		lblBemVindo.setHorizontalAlignment(SwingConstants.CENTER);
+		lblBemVindo.setBounds(0, 0, dimension.width, 50);
+		
+		lblRenda = new JLabel();
+		lblRenda.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblRenda.setHorizontalAlignment(SwingConstants.CENTER);
+		lblRenda.setBounds(0, 40, dimension.width, 30);
+		lblRenda.setVisible(false);
 
 		btnDeposito = new JButton();
-		btnDeposito.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (control.depositar("R$ 100", NUMERO_CONTA)) {
-					getConta();
-					// lblBemVindo.setText("Bem Vindo, " + CONTA.getNome() + " ! Seu saldo é " + CONTA.getSaldo() + " hahaha.");
-				} else {
-					JOptionPane.showMessageDialog(null, "Putz, não deu não");
-				}
-			}
-		});
+		btnDeposito.setBounds(0, (y - y) + 200 , 250, 100);
 		btnDeposito.setFont(new Font("Felix Titling", Font.PLAIN, 11));
-		btnDeposito.setBounds( (meio_horizontal/2) , dimension.height - 400, meio_horizontal, (meio_vertical/2));
 		btnDeposito.setText("DEPOSITAR");
-		contentPane.add(btnDeposito);
 
+		btnTranferencia = new JButton();
+		btnTranferencia.setBounds(0, (y - y) + 350, 250, 100);
+		btnTranferencia.setFont(new Font("Felix Titling", Font.PLAIN, 11));
+		btnTranferencia.setText("TRANSFERIR");
+		
 		btnSaque = new JButton();
+		btnSaque.setBounds(0, (y - y) + 500, 250, 100);
+		btnSaque.setFont(new Font("Felix Titling", Font.PLAIN, 11));
+		btnSaque.setText("SACAR");
+
+		numPad = new JPanel();
+		numPad.setBounds(x-500, (y - y) + 200, 500, 400);
+		numPad.setBorder(new EmptyBorder(5, 5, 5, 5));
+		numPad.setLayout(null);
+		
 		btnSaque.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (control.sacar("R$ 1", NUMERO_CONTA)) {
 					getConta();
-					// lblBemVindo.setText("Bem Vindo, " + CONTA.getNome() + " ! Seu saldo é " + CONTA.getSaldo() + " hahaha.");
+					// lblBemVindo.setText("Bem Vindo, " + CONTA.getNome() + " ! Seu saldo é " +
+					// CONTA.getSaldo() + " hahaha.");
 				} else {
 					JOptionPane.showMessageDialog(null, "Putz, não deu não");
 				}
 			}
 		});
-		btnSaque.setFont(new Font("Felix Titling", Font.PLAIN, 11));
-		btnSaque.setBounds( (meio_horizontal/2) , dimension.height - 200, meio_horizontal, (meio_vertical/2));
-		btnSaque.setText("SACAR");
-		contentPane.add(btnSaque);
-		
-		JButton btnTranferencia = new JButton("TRANFERENCIA");
-		btnTranferencia.setBounds( (meio_horizontal/2) , meio_vertical, meio_horizontal, (meio_vertical/2));
-		contentPane.add(btnTranferencia);
 
-		// lblBemVindo.setText("Bem Vindo, " + CONTA.getNome() + " ! Seu saldo é " + CONTA.getSaldo() + " hahaha.");
+		btnTranferencia.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (control.depositar("R$ 100", NUMERO_CONTA)) {
+					getConta();
+					// lblBemVindo.setText("Bem Vindo, " + CONTA.getNome() + " ! Seu saldo é " +
+					// CONTA.getSaldo() + " hahaha.");
+				} else {
+					JOptionPane.showMessageDialog(null, "Putz, não deu não");
+				}
+			}
+		});
+
+		btnDeposito.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (control.depositar("R$ 100", NUMERO_CONTA)) {
+					getConta();
+					// lblBemVindo.setText("Bem Vindo, " + CONTA.getNome() + " ! Seu saldo é " +
+					// CONTA.getSaldo() + " hahaha.");
+				} else {
+					JOptionPane.showMessageDialog(null, "Putz, não deu não");
+				}
+			}
+		});
+
+		setContentPane(contentPane);
+		contentPane.add(lblBemVindo);
+		contentPane.add(lblRenda);
+		contentPane.add(btnSaque);
+		contentPane.add(btnTranferencia);
+		contentPane.add(btnDeposito);
+		contentPane.add(numPad);
 
 	}
 
@@ -135,10 +177,40 @@ public class Principal extends JFrame {
 		try {
 			TIPO_CONTA = String.valueOf(NUMERO_CONTA.charAt(NUMERO_CONTA.length() - 1));
 			CONTA = control.buscarConta(NUMERO_CONTA);
+			if(TIPO_CONTA.equals("2")) {
+				lblRenda.setVisible(true);
+				lblRenda.setText("redimentos na poupança: + " + "R$ 0,04" + " ao dia / Valor recebido até o momento: + " + "R$ 1,23");
+			}
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Ocorreu um erro: " + e.getMessage(), "ERRO",
 					JOptionPane.ERROR_MESSAGE);
 		}
 
 	}
+
+	ActionListener carregarConta = new ActionListener() {
+		public void actionPerformed(ActionEvent evt) {
+			try {
+
+				if (lblBemVindo.getText().equals("Carregando")) {
+					lblBemVindo.setText("Carregando .");
+				} else if (lblBemVindo.getText().equals("Carregando .")) {
+					lblBemVindo.setText("Carregando . .");
+				} else if (lblBemVindo.getText().equals("Carregando . .")) {
+					lblBemVindo.setText("Carregando . . .");
+				} else if (lblBemVindo.getText().equals("Carregando . . .")) {
+					getConta();
+					lblBemVindo.setText(
+							"Bem Vindo, " + CONTA.getNome() + " ! Seu saldo é " + CONTA.getSaldo() + " hahaha.");
+					timer.stop();
+				}
+
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "Ocorreu um erro: " + e.getMessage(), "ERRO",
+						JOptionPane.ERROR_MESSAGE);
+			}
+
+		}
+	};
+
 }

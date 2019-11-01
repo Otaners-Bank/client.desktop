@@ -298,11 +298,15 @@ public class Acesso extends JFrame {
 					JOptionPane.showMessageDialog(null, "Preencha todos os campos para continuar, valeu !", "AVISO",
 							JOptionPane.WARNING_MESSAGE);
 				} else {
-
+					
+					btnAcessar.setEnabled(false);
+					lblCriarConta.setEnabled(false);
+					lblRecuperarSenha.setEnabled(false);
+					
+					txtConta.setEnabled(false);
+					txtSenha.setEnabled(false);
+					
 					IniciarProgressBar();
-
-					// FinalizarProgressBar();
-
 				}
 			}
 
@@ -539,10 +543,10 @@ public class Acesso extends JFrame {
 	private static void LimparDados() {
 		try {
 			progresso = 0;
-			ProgressBar.setValue(0);
+			// ProgressBar.setValue(0);
 			ListaDeSenhasPossiveis.clear();
-			txtConta.setText("");
-			txtSenha.setText("");
+			// txtConta.setText("");
+			txtSenha.setText("0000");
 			strSenha1 = "";
 			strSenha2 = "";
 			strSenha3 = "";
@@ -601,8 +605,7 @@ public class Acesso extends JFrame {
 					timer3.setRepeats(false);
 					timer3.start();
 
-					JOptionPane.showMessageDialog(null, "Acesso permitido", "Bem vindo !",
-							JOptionPane.INFORMATION_MESSAGE);
+					
 
 					LimparDados();
 					
