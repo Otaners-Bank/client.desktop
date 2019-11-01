@@ -1,5 +1,8 @@
 package view;
 
+import control.Cliente;
+import control.Control;
+import control.Email;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -8,10 +11,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
-import control.Cliente;
-import control.Control;
-import control.Email;
-
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import java.awt.event.MouseAdapter;
@@ -20,11 +19,9 @@ import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
-
 import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
@@ -32,10 +29,10 @@ import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
-import javax.swing.JPasswordField;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+@SuppressWarnings("serial")
 public class CriarConta extends JFrame {
 
 	// Instancias
@@ -48,17 +45,11 @@ public class CriarConta extends JFrame {
 	// Para armazenar o tipo de conta que será criada
 	private static String TIPO_CONTA = "CORRENTE";
 
-	// Para limitar o tamanho do campo Senha
-	static int count = 1;
-
 	// Timer utilizado para fazer as letras aparecerem devagar
 	Timer timer;
-	// Como as letras deverão ficar
-	String objetivoFinal = "";
-	// Como as letras estão
-	String conteudoAtual = "";
-	// Letra que deve ser inserida
-	String letra = "";
+
+	// Diz se existe uma MessageDialog aberta ou não
+	boolean canEnter = true;
 
 	// Componentes
 	private JPanel contentPane;
@@ -68,7 +59,7 @@ public class CriarConta extends JFrame {
 	public JRadioButton rdbtnCorrente;
 	public JRadioButton rdbtnPoupanca;
 	public JRadioButton rdbtnEspecial;
-	private JPasswordField txtSenha;
+	private JFormattedTextField txtSenha;
 	private JLabel lblCPF;
 	private JButton btnPronto1;
 	private JButton btnPronto2;
@@ -93,6 +84,7 @@ public class CriarConta extends JFrame {
 		});
 	}
 
+	// Construtor
 	public CriarConta() {
 
 		setSize((dimension.width / 2), (dimension.height - 50)); // Muda o tamanho da janela
@@ -125,7 +117,7 @@ public class CriarConta extends JFrame {
 		contentPane.add(lblVoltar);
 
 		// Animacao das Letras -------------------------------------------
-		timer = new Timer((50), MostrarCPF);
+		timer = new Timer((50), Mostrar_CPF);
 		timer.setRepeats(true);
 		timer.start();
 		// ---------------------------------------------------------------
@@ -138,10 +130,16 @@ public class CriarConta extends JFrame {
 
 		txtCPF = new JFormattedTextField(Mascara("###.###.###-##"));
 		txtCPF.addKeyListener(new KeyAdapter() {
+			@SuppressWarnings("static-access")
 			@Override
 			public void keyReleased(KeyEvent e) {
 				if (e.getKeyCode() == e.VK_ENTER) {
-					Acao1();
+					if (canEnter) {
+						Acao1();
+						canEnter = false;
+					} else {
+						canEnter = true;
+					}
 				}
 			}
 		});
@@ -149,9 +147,8 @@ public class CriarConta extends JFrame {
 		txtCPF.setHorizontalAlignment(SwingConstants.CENTER);
 		contentPane.add(txtCPF);
 		txtCPF.setColumns(10);
-		txtCPF.setVisible(false);
 
-		lblNome = new JLabel("Certo, agora seu nome completo");
+		lblNome = new JLabel();
 		lblNome.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNome.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblNome.setBounds(10, 153, 647, 20);
@@ -160,9 +157,11 @@ public class CriarConta extends JFrame {
 
 		txtNome = new JTextField();
 		txtNome.addKeyListener(new KeyAdapter() {
+			@SuppressWarnings("static-access")
 			@Override
 			public void keyReleased(KeyEvent e) {
 				if (e.getKeyCode() == e.VK_ENTER) {
+					canEnter = true;
 					txtEmail.grabFocus();
 				}
 			}
@@ -173,8 +172,7 @@ public class CriarConta extends JFrame {
 		txtNome.setColumns(10);
 		txtNome.setVisible(false);
 
-		lblEmail = new JLabel(
-				"Seu e-mail tamb\u00E9m porfavor ... \r\nele ser\u00E1 utilizado para podermos nos comunicar :p");
+		lblEmail = new JLabel();
 		lblEmail.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblEmail.setHorizontalAlignment(SwingConstants.CENTER);
 		lblEmail.setBounds(10, 225, 647, 20);
@@ -183,10 +181,17 @@ public class CriarConta extends JFrame {
 
 		txtEmail = new JTextField();
 		txtEmail.addKeyListener(new KeyAdapter() {
+			@SuppressWarnings("static-access")
 			@Override
 			public void keyReleased(KeyEvent e) {
 				if (e.getKeyCode() == e.VK_ENTER) {
-					Acao2();
+
+					if (canEnter) {
+						Acao2();
+						canEnter = false;
+					} else {
+						canEnter = true;
+					}
 				}
 			}
 		});
@@ -196,7 +201,7 @@ public class CriarConta extends JFrame {
 		txtEmail.setColumns(10);
 		txtEmail.setVisible(false);
 
-		lblTipoConta = new JLabel("BELEZA, Agora me diz qual o tipo de conta voc\u00EA deseja criar");
+		lblTipoConta = new JLabel();
 		lblTipoConta.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblTipoConta.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTipoConta.setBounds(10, 335, 647, 20);
@@ -261,24 +266,16 @@ public class CriarConta extends JFrame {
 		rdbtnEspecial.setVisible(false);
 		contentPane.add(rdbtnEspecial);
 
-		lblSenha = new JLabel("POR FIM, precisamos definir uma senha de acesso \"de quatro\" digitos para sua conta:");
+		lblSenha = new JLabel();
 		lblSenha.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSenha.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblSenha.setBounds(10, 484, 647, 20);
 		lblSenha.setVisible(false);
 		contentPane.add(lblSenha);
 
-		txtSenha = new JPasswordField();
-		txtSenha.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-				if (txtSenha.getText().length() > 3) {
-					txtSenha.setText(txtSenha.getText().substring(0, 3));
-				}
-			}
-		});
+		txtSenha = new JFormattedTextField(Mascara("####"));
 		txtSenha.setHorizontalAlignment(SwingConstants.CENTER);
-		txtSenha.setFont(new Font("Tahoma", Font.PLAIN, 99));
+		txtSenha.setFont(new Font("Tahoma", Font.PLAIN, 70));
 		txtSenha.setBounds(170, 520, 360, 75);
 		txtSenha.setVisible(false);
 		contentPane.add(txtSenha);
@@ -311,7 +308,13 @@ public class CriarConta extends JFrame {
 		btnPronto2.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				Acao2();
+				if (canEnter) {
+					Acao2();
+					canEnter = false;
+				} else {
+					Acao2();
+					canEnter = true;
+				}
 			}
 
 		});
@@ -322,18 +325,50 @@ public class CriarConta extends JFrame {
 		btnPronto1 = new JButton("PRONTO");
 		btnPronto1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Acao1();
+				if (canEnter) {
+					Acao1();
+					canEnter = false;
+				} else {
+					Acao1();
+					canEnter = true;
+				}
 			}
 		});
 		btnPronto1.setBounds(568, 117, 89, 25);
 		btnPronto1.setVisible(false);
 		contentPane.add(btnPronto1);
 
+		EsconderCampos();
+
+	}
+
+	// Esconde todos os campos no inicio desta tela
+	private void EsconderCampos() {
+		// Modulo 1
+		txtCPF.setVisible(false);
+		btnPronto1.setVisible(false);
+		// Modulo 2
+		lblNome.setVisible(false);
+		txtNome.setVisible(false);
+		lblEmail.setVisible(false);
+		txtEmail.setVisible(false);
+		btnPronto2.setVisible(false);
+		// Modulo 3
+		lblTipoConta.setVisible(false);
+		rdbtnCorrente.setVisible(false);
+		rdbtnPoupanca.setVisible(false);
+		rdbtnEspecial.setVisible(false);
+		btnPronto3.setVisible(false);
+		// Modulo 4
+		lblSenha.setVisible(false);
+		txtSenha.setVisible(false);
+		btnPronto4.setVisible(false);
 	}
 
 	// Metodo que define a ação do botao1
 	private void Acao1() {
 		try {
+
 			if (txtCPF.getText().toString().replace(".", "").replace("-", "").equals("")
 					|| txtCPF.getText().equals("000.000.000 00") || txtCPF.getText().equals("111.111.111-11")
 					|| txtCPF.getText().equals("222.222.222-22") || txtCPF.getText().equals("333.333.333-33")
@@ -342,41 +377,41 @@ public class CriarConta extends JFrame {
 					|| txtCPF.getText().equals("888.888.888-88") || txtCPF.getText().equals("999.999.999-99")) {
 
 				txtCPF.setForeground(Color.RED);
+				txtCPF.grabFocus();
+
 				JOptionPane.showMessageDialog(null, "O CPF informado está incorreto !", "Ops",
 						JOptionPane.ERROR_MESSAGE);
-				txtCPF.grabFocus();
 
 			} else {
 				if (ValidacaoCPF(txtCPF.getText().toString().replace(".", "").replace("-", ""))) {
 
 					if (control.BuscarCPF(txtCPF.getText())) {
+
 						txtCPF.setForeground(Color.RED);
+						txtCPF.grabFocus();
+
 						JOptionPane.showMessageDialog(null, "O CPF informado já está em uso !", "Ops",
 								JOptionPane.ERROR_MESSAGE);
-						txtCPF.grabFocus();
+
 					} else {
 
-						// Desabiltando os campos atuais
-						txtCPF.setEnabled(false);
-						txtCPF.setForeground(Color.BLACK);
-						btnPronto1.setVisible(false);
-
-						// Habilitando os proximos campos
-						lblNome.setVisible(true);
-						txtNome.setVisible(true);
-						lblEmail.setVisible(true);
-						txtEmail.setVisible(true);
-						btnPronto2.setVisible(true);
-
-						// Definindo foco para o campo "nome"
-						txtNome.grabFocus();
+						AcaoCampos1();
+						// Animacao das Letras -------------------------------------------
+						timer = new Timer((50), Mostrar_Nome_Email);
+						timer.setRepeats(true);
+						timer.start();
+						// ---------------------------------------------------------------
 
 					}
 
 				} else {
+
 					txtCPF.setForeground(Color.RED);
+					txtCPF.grabFocus();
+
 					JOptionPane.showMessageDialog(null, "O CPF informado é inválido !", "Ops",
 							JOptionPane.ERROR_MESSAGE);
+
 				}
 
 			}
@@ -386,31 +421,46 @@ public class CriarConta extends JFrame {
 		}
 	}
 
+	// Esconde/Mostra os campos necessario após a primeira Acao
+	private void AcaoCampos1() {
+		btnPronto1.setEnabled(false);
+		txtCPF.setForeground(Color.BLACK);
+		txtCPF.setEnabled(false);
+	}
+
 	// Metodo que define a ação do botao2
 	private void Acao2() {
 		try {
+
 			if (txtNome.getText().equals("") || txtEmail.getText().equals("")) {
 				JOptionPane.showMessageDialog(null, "Prencha todos os campos porfavor xD", "Ops",
 						JOptionPane.ERROR_MESSAGE);
+
 			} else if (!(ValidacaoEmail(txtEmail.getText()))) {
 				JOptionPane.showMessageDialog(null, "Este email não é válido", "Ops", JOptionPane.ERROR_MESSAGE);
-			} else {
-				// Desabiltando os campos atuais
-				txtNome.setEnabled(false);
-				txtEmail.setEnabled(false);
-				btnPronto2.setVisible(false);
 
-				// Habilitando os proximos campos
-				btnPronto3.setVisible(true);
-				lblTipoConta.setVisible(true);
-				rdbtnCorrente.setVisible(true);
-				rdbtnPoupanca.setVisible(true);
-				rdbtnEspecial.setVisible(true);
+			} else {
+
+				AcaoCampos2();
+				// Animacao das Letras -------------------------------------------
+				Timer timer = new Timer((50), Mostrar_TipoConta);
+				timer.setRepeats(true);
+				timer.start();
+				// ---------------------------------------------------------------
+
 			}
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Ocorreu um erro: " + e.getMessage(), "ERRO",
 					JOptionPane.ERROR_MESSAGE);
 		}
+	}
+
+	// Esconde/Mostra os campos necessario após a segunda Acao
+	private void AcaoCampos2() {
+		txtNome.setEnabled(false);
+		txtEmail.setEnabled(false);
+		btnPronto2.setEnabled(false);
+		lblTipoConta.setVisible(true);
 	}
 
 	// Metodo que define a ação do botao3
@@ -420,20 +470,12 @@ public class CriarConta extends JFrame {
 				JOptionPane.showMessageDialog(null, "Ative pelo menos uma das opções porfavor xD", "Ops",
 						JOptionPane.WARNING_MESSAGE);
 			} else {
-				// Desabiltando os campos atuais
-				rdbtnCorrente.setEnabled(false);
-				rdbtnPoupanca.setEnabled(false);
-				rdbtnEspecial.setEnabled(false);
-				btnPronto3.setVisible(false);
-
-				// Habilitando os proximos campos
-				lblSenha.setVisible(true);
-				txtSenha.setVisible(true);
-				btnPronto4.setVisible(true);
-
-				// Definindo o foco para o proximo campo
-				txtSenha.grabFocus();
-
+				AcaoCampos3();
+				// Animacao das Letras -------------------------------------------
+				Timer timer = new Timer((50), Mostrar_Senha);
+				timer.setRepeats(true);
+				timer.start();
+				// ---------------------------------------------------------------
 			}
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Ocorreu um erro: " + e.getMessage(), "ERRO",
@@ -441,12 +483,21 @@ public class CriarConta extends JFrame {
 		}
 	}
 
+	// Esconde/Mostra os campos necessario após a terceira Acao
+	private void AcaoCampos3() {
+		rdbtnCorrente.setEnabled(false);
+		rdbtnPoupanca.setEnabled(false);
+		rdbtnEspecial.setEnabled(false);
+		btnPronto3.setEnabled(false);
+		lblSenha.setVisible(true);
+	}
+
 	// Metodo que define a ação do botao4
 	private void Acao4() {
 		try {
 			if (!txtSenha.getText().equals("") && txtSenha.getText().length() == 4) {
-				txtSenha.setEnabled(false);
-				btnPronto4.setVisible(false);
+
+				AcaoCampos4();
 
 				Cliente c = new Cliente();
 
@@ -490,11 +541,11 @@ public class CriarConta extends JFrame {
 				Email email = new Email();
 				email.EnviarMensagem(c.getEmail(), "Sua nova conta - Otaner's Bank",
 						"OLÁ " + c.getNome() + ", e Bem Vindo ao Otaner's Bank !!! \nPara acessar sua nova conta "
-								+ conta +" utilize o numero \"" + c.getConta() + "\" e a senha cadastrada xD");
+								+ conta + " utilize o numero \"" + c.getConta() + "\" e a senha cadastrada xD");
 
 				c = null;
 				conta = null;
-				
+
 				JOptionPane.showMessageDialog(null,
 						"Sua conta foi criada e para acessa-la, \nverifique seu e-mail para ver o número de sua conta xD",
 						"Conta Criada com SUCESSO !!!", JOptionPane.INFORMATION_MESSAGE);
@@ -510,6 +561,12 @@ public class CriarConta extends JFrame {
 			JOptionPane.showMessageDialog(null, "Ocorreu um erro: " + e.getMessage(), "ERRO",
 					JOptionPane.ERROR_MESSAGE);
 		}
+	}
+
+	// Esconde/Mostra os campos necessario após a quarta Acao
+	private void AcaoCampos4() {
+		txtSenha.setEnabled(false);
+		btnPronto4.setVisible(false);
 	}
 
 	// Metodo para criar mascaras nos campos
@@ -597,15 +654,16 @@ public class CriarConta extends JFrame {
 		}
 	}
 
-	// Faz o movimento da progressBar
-	ActionListener MostrarCPF = new ActionListener() {
+	// Faz a animação das palavras antes de aparecer o CPF
+	ActionListener Mostrar_CPF = new ActionListener() {
 		public void actionPerformed(ActionEvent evt) {
 			try {
 
-				String conteudo = lblCPF.getText();
+				String conteudoAtual = lblCPF.getText();
 				String objetivoFinal = "Eai ser humaninho ! Para começarmos a criação de sua conta, porfavor me informe seu CPF:";
+				String letra = "";
 
-				if (!(conteudo.equals(objetivoFinal))) {
+				if (!(conteudoAtual.equals(objetivoFinal))) {
 
 					letra = "" + objetivoFinal.charAt(conteudoAtual.length());
 					conteudoAtual += letra;
@@ -614,16 +672,29 @@ public class CriarConta extends JFrame {
 						timer.setDelay(500);
 					} else {
 						Random random = new Random();
-						int delay = random.nextInt((70 - 20) + 1) + 20; // Um numero entre 20 e 70
+						int delay = random.nextInt((70 - 20) + 1) + 20; // Entre
+																		// 70
+																		// e
+																		// 20
 						timer.setDelay(delay);
 					}
 
 					lblCPF.setText(conteudoAtual);
 
-				} else {
+				} else if (!txtCPF.isVisible()) {
+
 					txtCPF.setVisible(true);
 					txtCPF.grabFocus();
-					// timer.setDelay(10000);
+					timer.stop();
+
+					// Animacao das Letras -------------------------------------------
+					timer = new Timer((500), Mostrar_CPF);
+					timer.setRepeats(false);
+					timer.start();
+					// ---------------------------------------------------------------
+
+				} else {
+					btnPronto1.setEnabled(true);
 					btnPronto1.setVisible(true);
 					timer.stop();
 				}
@@ -635,4 +706,164 @@ public class CriarConta extends JFrame {
 		}
 	};
 
+	// Faz a animação das palavras antes de aparecer o Nome e Email
+
+	// Faz a animação das palavras antes de aparecer o Nome e o Email
+	ActionListener Mostrar_Nome_Email = new ActionListener() {
+		public void actionPerformed(ActionEvent evt) {
+			try {
+
+				// Habilitando os proximos campos
+				lblNome.setVisible(true);
+
+				String conteudoNome = lblNome.getText();
+				String objetivoNome = "Certo, agora seu nome completo";
+
+				String conteudoEmail = lblEmail.getText();
+				String objetivoEmail = "Seu e-mail também porfavor ... \r\n"
+						+ "ele será utilizado para podermos nos comunicar :p";
+
+				String letra = "";
+
+				if (!(conteudoNome.equals(objetivoNome))) {
+
+					letra = "" + objetivoNome.charAt(conteudoNome.length());
+					conteudoNome += letra;
+
+					if ((letra.equals("!")) || (letra.equals(","))) {
+						timer.setDelay(500);
+					} else {
+						Random random = new Random();
+						int delay = random.nextInt((70 - 20) + 1) + 20; // Entre 70 e 20
+						timer.setDelay(delay);
+					}
+
+					lblNome.setText(conteudoNome);
+
+				} else if (!(conteudoEmail.equals(objetivoEmail))) {
+
+					txtNome.setVisible(true);
+					lblEmail.setVisible(true);
+
+					if (!(conteudoEmail.equals(objetivoEmail))) {
+
+						letra = "" + objetivoEmail.charAt(conteudoEmail.length());
+						conteudoEmail += letra;
+
+						if ((letra.equals("!")) || (letra.equals(","))) {
+							timer.setDelay(500);
+						} else {
+							Random random = new Random();
+							int delay = random.nextInt((70 - 20) + 1) + 20; // Entre 70 e 20
+							timer.setDelay(delay);
+						}
+					}
+
+					lblEmail.setText(conteudoEmail);
+
+				} else if (!txtEmail.isVisible()) {
+
+					txtEmail.setVisible(true);
+					canEnter = true;
+					txtNome.grabFocus();
+
+					// Animacao das Letras -------------------------------------------
+					timer = new Timer((500), Mostrar_Nome_Email);
+					timer.setRepeats(false);
+					timer.start();
+					// ---------------------------------------------------------------
+
+				} else {
+					btnPronto2.setVisible(true);
+					timer.stop();
+				}
+
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "Ocorreu um erro: " + e.getMessage(), "ERRO",
+						JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	};
+
+	// Faz a animação das palavras antes de aparecer o Tipo de conta
+	ActionListener Mostrar_TipoConta = new ActionListener() {
+		public void actionPerformed(ActionEvent evt) {
+			try {
+
+				String conteudoAtual = lblTipoConta.getText();
+				String objetivoFinal = "Beleza !!! agora escolha o tipo de conta que deseja criar:";
+				String letra = "";
+
+				if (!(conteudoAtual.equals(objetivoFinal))) {
+
+					letra = "" + objetivoFinal.charAt(conteudoAtual.length());
+					conteudoAtual += letra;
+
+					Random random = new Random();
+					int delay = random.nextInt((100 - 10) + 1) + 20; // Entre 100 e 20
+					timer.setDelay(delay);
+
+					lblTipoConta.setText(conteudoAtual);
+
+				} else {
+					// Habilitando os proximos campos
+					btnPronto3.setVisible(true);
+					rdbtnCorrente.setVisible(true);
+					rdbtnPoupanca.setVisible(true);
+					rdbtnEspecial.setVisible(true);
+					timer.stop();
+				}
+
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "Ocorreu um erro: " + e.getMessage(), "ERRO",
+						JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	};
+
+	// Faz a animação das palavras antes de aparecer o CPF
+	ActionListener Mostrar_Senha = new ActionListener() {
+		public void actionPerformed(ActionEvent evt) {
+			try {
+
+				String conteudoAtual = lblSenha.getText();
+				String objetivoFinal = "POR FIM, precisamos definir uma senha de acesso \"de quatro\" digitos para sua conta:";
+				String letra = "";
+
+				if (!(conteudoAtual.equals(objetivoFinal))) {
+
+					letra = "" + objetivoFinal.charAt(conteudoAtual.length());
+					conteudoAtual += letra;
+
+					Random random = new Random();
+					int delay = random.nextInt((70 - 20) + 1) + 20; // Entre 70 e 20
+					timer.setDelay(delay);
+
+					lblSenha.setText(conteudoAtual);
+
+				} else if (!txtSenha.isVisible()) {
+
+					txtSenha.setVisible(true);
+					btnPronto4.setVisible(true);
+					txtSenha.grabFocus();
+					timer.stop();
+
+					// Animacao das Letras -------------------------------------------
+					timer = new Timer((500), Mostrar_Senha);
+					timer.setRepeats(false);
+					timer.start();
+					// ---------------------------------------------------------------
+
+				} else {
+					btnPronto4.setEnabled(true);
+					btnPronto4.setVisible(true);
+					timer.stop();
+				}
+
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "Ocorreu um erro: " + e.getMessage(), "ERRO",
+						JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	};
 }

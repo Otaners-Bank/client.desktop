@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="org.bson.Document"/>
-<fullyQualifiedTypeName name="com.mongodb.DBCollection"/>
 <fullyQualifiedTypeName name="com.mongodb.Cursor"/>
 <fullyQualifiedTypeName name="com.sun.java_cup.internal.runtime.Scanner"/>
 <fullyQualifiedTypeName name="java.util.Scanner"/>
@@ -33,7 +31,6 @@
 <fullyQualifiedTypeName name="java.lang.Exception"/>
 <fullyQualifiedTypeName name="com.sun.media.sound.MidiUtils.TempoCache"/>
 <fullyQualifiedTypeName name="java.lang.Thread"/>
-<fullyQualifiedTypeName name="javax.swing.JFormattedTextField"/>
 <fullyQualifiedTypeName name="java.util.InputMismatchException"/>
 <fullyQualifiedTypeName name="java.awt.Color"/>
 <fullyQualifiedTypeName name="javafx.scene.control.RadioButton"/>
@@ -46,7 +43,6 @@
 <fullyQualifiedTypeName name="control.Cliente"/>
 <fullyQualifiedTypeName name="Teste_Temporizador"/>
 <fullyQualifiedTypeName name="Temporizador.Timer1"/>
-<fullyQualifiedTypeName name="javax.swing.Timer"/>
 <fullyQualifiedTypeName name="Jason.ClasseModelo"/>
 <fullyQualifiedTypeName name="java.util.Random"/>
 <fullyQualifiedTypeName name="java.lang.Integer"/>
@@ -56,8 +52,12 @@
 <fullyQualifiedTypeName name="control.Conta"/>
 <fullyQualifiedTypeName name="java.util.Set"/>
 <fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
-<fullyQualifiedTypeName name="java.lang.String"/>
 <fullyQualifiedTypeName name="control.Email"/>
 <fullyQualifiedTypeName name="java.util.regex.Pattern"/>
 <fullyQualifiedTypeName name="java.util.regex.Matcher"/>
+<fullyQualifiedTypeName name="java.lang.String"/>
+<fullyQualifiedTypeName name="javax.swing.Timer"/>
+<fullyQualifiedTypeName name="javax.swing.JFormattedTextField"/>
+<fullyQualifiedTypeName name="com.sun.mail.handlers.text_html"/>
+<fullyQualifiedTypeName name="java.text.NumberFormat"/>
 </qualifiedTypeNameHistroy>
