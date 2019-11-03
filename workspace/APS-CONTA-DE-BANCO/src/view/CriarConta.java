@@ -47,6 +47,9 @@ public class CriarConta extends JFrame {
 
 	// Timer utilizado para fazer as letras aparecerem devagar
 	Timer timer;
+	
+	// Para mostrar o cursor do mouse diferente para clicar nas coisas
+	Cursor cursor = new Cursor(Cursor.HAND_CURSOR);
 
 	// Diz se existe uma MessageDialog aberta ou não
 	boolean canEnter = true;
@@ -281,6 +284,8 @@ public class CriarConta extends JFrame {
 		contentPane.add(txtSenha);
 
 		btnPronto4 = new JButton("PRONTO");
+		btnPronto4.setBackground(Color.WHITE);
+		btnPronto4.setCursor(cursor);
 		btnPronto4.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -293,6 +298,8 @@ public class CriarConta extends JFrame {
 		contentPane.add(btnPronto4);
 
 		btnPronto3 = new JButton("PRONTO");
+		btnPronto3.setBackground(Color.WHITE);
+		btnPronto3.setCursor(cursor);
 		btnPronto3.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -305,6 +312,8 @@ public class CriarConta extends JFrame {
 		contentPane.add(btnPronto3);
 
 		btnPronto2 = new JButton("PRONTO");
+		btnPronto2.setBackground(Color.WHITE);
+		btnPronto2.setCursor(cursor);
 		btnPronto2.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -323,6 +332,8 @@ public class CriarConta extends JFrame {
 		contentPane.add(btnPronto2);
 
 		btnPronto1 = new JButton("PRONTO");
+		btnPronto1.setBackground(Color.WHITE);
+		btnPronto1.setCursor(cursor);
 		btnPronto1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (canEnter) {
@@ -495,7 +506,7 @@ public class CriarConta extends JFrame {
 	// Metodo que define a ação do botao4
 	private void Acao4() {
 		try {
-			if (!txtSenha.getText().equals("") && txtSenha.getText().length() == 4) {
+			if (!txtSenha.getText().equals("    ") && txtSenha.getText().length() == 4) {
 
 				AcaoCampos4();
 
@@ -525,7 +536,7 @@ public class CriarConta extends JFrame {
 				c.setEmail(txtEmail.getText());
 				c.setSenha(txtSenha.getText());
 
-				c.saldo = "R$ 00,00";
+				c.saldo = "R$ 0.00";
 
 				
 

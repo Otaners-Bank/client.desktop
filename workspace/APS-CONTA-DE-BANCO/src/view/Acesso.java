@@ -34,6 +34,12 @@ public class Acesso extends JFrame {
 	// Instancias
 	static Control control = new Control();
 
+	// Diz se o sistema esta autenticando o usuario ou nao
+	private boolean logging = false;
+	
+	// Para mostrar o cursor do mouse diferente para clicar nas coisas
+	Cursor cursor = new Cursor(Cursor.HAND_CURSOR);
+
 	// Para armazenar a resolucao da maquina
 	public static Toolkit toolkit = Toolkit.getDefaultToolkit();
 	public static Dimension dimension = toolkit.getScreenSize();
@@ -69,6 +75,9 @@ public class Acesso extends JFrame {
 	private static JButton btnSenha5;
 	private static JButton btnApagar;
 	private static JProgressBar ProgressBar;
+	private static JLabel lblCriarConta;
+	private static JLabel lblRecuperarSenha;
+	private static JButton btnAcessar;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -145,43 +154,61 @@ public class Acesso extends JFrame {
 		// Botoes para o usuario poder "digitar" a senha
 		// numero 1
 		btnSenha1 = new JButton(strSenha1);
+		btnSenha1.setBackground(Color.WHITE);
+		btnSenha1.setCursor(cursor);
 		btnSenha1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Registra os dois possiveis numero do botao clicado para a senha
-				if (txtSenha.getText().length() < 4) {
-					txtSenha.setText(txtSenha.getText() + "X");
-					ListaDeSenhasPossiveis.add(btnSenha1.getText().replace(" ou ", "|"));
+				if (!logging) {
+					if (txtSenha.getText().length() < 4) {
+						txtSenha.setText(txtSenha.getText() + "X");
+						ListaDeSenhasPossiveis.add(btnSenha1.getText().replace(" ou ", "|"));
+					}
+
 				}
+
 			}
 		});
 		btnSenha1.setFont(new Font("Felix Titling", Font.PLAIN, 11));
 		btnSenha1.setBounds(155, 328, 94, 74);
+		
 		LoginContentPane.add(btnSenha1);
 
 		// numero 2
 		btnSenha2 = new JButton(strSenha2);
+		btnSenha2.setBackground(Color.WHITE);
+		btnSenha2.setCursor(cursor);
 		btnSenha2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Registra os dois possiveis numero do botao clicado para a senha
-				if (txtSenha.getText().length() < 4) {
-					txtSenha.setText(txtSenha.getText() + "X");
-					ListaDeSenhasPossiveis.add(btnSenha2.getText().replace(" ou ", "|"));
+				if (!logging) {
+					if (txtSenha.getText().length() < 4) {
+						txtSenha.setText(txtSenha.getText() + "X");
+						ListaDeSenhasPossiveis.add(btnSenha2.getText().replace(" ou ", "|"));
+					}
 				}
+
 			}
 		});
 		btnSenha2.setFont(new Font("Felix Titling", Font.PLAIN, 11));
 		btnSenha2.setBounds(285, 328, 94, 74);
+		
 		LoginContentPane.add(btnSenha2);
 
 		// numero 3
 		btnSenha3 = new JButton(strSenha3);
+		btnSenha3.setBackground(Color.WHITE);
+		btnSenha3.setCursor(cursor);
 		btnSenha3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Registra os dois possiveis numero do botao clicado para a senha
-				if (txtSenha.getText().length() < 4) {
-					txtSenha.setText(txtSenha.getText() + "X");
-					ListaDeSenhasPossiveis.add(btnSenha3.getText().replace(" ou ", "|"));
+				if (!logging) {
+					if (txtSenha.getText().length() < 4) {
+						txtSenha.setText(txtSenha.getText() + "X");
+						ListaDeSenhasPossiveis.add(btnSenha3.getText().replace(" ou ", "|"));
+					}
 				}
+
 			}
 		});
 		btnSenha3.setFont(new Font("Felix Titling", Font.PLAIN, 11));
@@ -190,13 +217,18 @@ public class Acesso extends JFrame {
 
 		// numero 4
 		btnSenha4 = new JButton(strSenha4);
+		btnSenha4.setBackground(Color.WHITE);
+		btnSenha4.setCursor(cursor);
 		btnSenha4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Registra os dois possiveis numero do botao clicado para a senha
-				if (txtSenha.getText().length() < 4) {
-					txtSenha.setText(txtSenha.getText() + "X");
-					ListaDeSenhasPossiveis.add(btnSenha4.getText().replace(" ou ", "|"));
+				if (!logging) {
+					if (txtSenha.getText().length() < 4) {
+						txtSenha.setText(txtSenha.getText() + "X");
+						ListaDeSenhasPossiveis.add(btnSenha4.getText().replace(" ou ", "|"));
+					}
 				}
+
 			}
 		});
 		btnSenha4.setFont(new Font("Felix Titling", Font.PLAIN, 11));
@@ -205,13 +237,18 @@ public class Acesso extends JFrame {
 
 		// numero 5
 		btnSenha5 = new JButton(strSenha5);
+		btnSenha5.setBackground(Color.WHITE);
+		btnSenha5.setCursor(cursor);
 		btnSenha5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Registra os dois possiveis numero do botao clicado para a senha
-				if (txtSenha.getText().length() < 4) {
-					txtSenha.setText(txtSenha.getText() + "X");
-					ListaDeSenhasPossiveis.add(btnSenha5.getText().replace(" ou ", "|"));
+				if (!logging) {
+					if (txtSenha.getText().length() < 4) {
+						txtSenha.setText(txtSenha.getText() + "X");
+						ListaDeSenhasPossiveis.add(btnSenha5.getText().replace(" ou ", "|"));
+					}
 				}
+
 			}
 		});
 		btnSenha5.setFont(new Font("Felix Titling", Font.PLAIN, 11));
@@ -220,11 +257,16 @@ public class Acesso extends JFrame {
 
 		// Botao para apagar um numero da senha
 		btnApagar = new JButton("APAGAR");
+		btnApagar.setBackground(Color.WHITE);
+		btnApagar.setCursor(cursor);
 		btnApagar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Utilizado para apagar o ultimo digito da senha digitada
-				String strSenhaDigitada = txtSenha.getText();
-				txtSenha.setText(DeletarUltimoDigitoDaSenha(strSenhaDigitada));
+				if (!logging) {
+					String strSenhaDigitada = txtSenha.getText();
+					txtSenha.setText(DeletarUltimoDigitoDaSenha(strSenhaDigitada));
+				}
+
 			}
 		});
 		btnApagar.setFont(new Font("Felix Titling", Font.PLAIN, 11));
@@ -237,9 +279,11 @@ public class Acesso extends JFrame {
 		lblCriarConta.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
-				LimparDados();
-				CriarConta.main(null);
-				dispose();
+				if (!logging) {
+					LimparDados();
+					CriarConta.main(null);
+					dispose();
+				}
 			}
 
 			@Override
@@ -259,9 +303,11 @@ public class Acesso extends JFrame {
 		lblRecuperarSenha.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
-				LimparDados();
-				RecuperarSenha.main(null);
-				dispose();
+				if (!logging) {
+					LimparDados();
+					RecuperarSenha.main(null);
+					dispose();
+				}
 			}
 
 			@Override
@@ -287,26 +333,21 @@ public class Acesso extends JFrame {
 
 		// Botao para verificar as credencias e acessar a conta
 		JButton btnAcessar = new JButton("ACESSAR CONTA");
+		btnAcessar.setBackground(Color.WHITE);
+		btnAcessar.setCursor(cursor);
 		btnAcessar.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
-
 				// Esse botao verifica a senha e a conta para efetuar login
-
-				if (txtSenha.getText().length() < 4 || txtConta.getText().length() < 6
-						|| txtConta.getText().contains(" ")) {
-					JOptionPane.showMessageDialog(null, "Preencha todos os campos para continuar, valeu !", "AVISO",
-							JOptionPane.WARNING_MESSAGE);
-				} else {
-					
-					btnAcessar.setEnabled(false);
-					lblCriarConta.setEnabled(false);
-					lblRecuperarSenha.setEnabled(false);
-					
-					txtConta.setEnabled(false);
-					txtSenha.setEnabled(false);
-					
-					IniciarProgressBar();
+				if (!logging) {
+					if (txtSenha.getText().length() < 4 || txtConta.getText().length() < 6
+							|| txtConta.getText().contains(" ")) {
+						JOptionPane.showMessageDialog(null, "Preencha todos os campos para continuar, valeu !", "AVISO",
+								JOptionPane.WARNING_MESSAGE);
+					} else {
+						logging = true;
+						IniciarProgressBar();
+					}
 				}
 			}
 
@@ -542,17 +583,17 @@ public class Acesso extends JFrame {
 	// Limpa os dados do cliente para segurança
 	private static void LimparDados() {
 		try {
-			progresso = 0;
-			// ProgressBar.setValue(0);
+			txtSenha.setText("");
 			ListaDeSenhasPossiveis.clear();
-			// txtConta.setText("");
-			txtSenha.setText("0000");
-			strSenha1 = "";
-			strSenha2 = "";
-			strSenha3 = "";
-			strSenha4 = "";
-			strSenha5 = "";
 			DefinirTextoDosBotoesDeSenha(); // Adiciona os textos dos botoes de senha aleatoriamente para seguranca
+			btnSenha1.setText(strSenha1);
+			btnSenha2.setText(strSenha2);
+			btnSenha3.setText(strSenha3);
+			btnSenha4.setText(strSenha4);
+			btnSenha5.setText(strSenha5);
+			txtConta.setText("");
+			progresso = 0;
+			ProgressBar.setValue(0);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Ocorreu um erro: " + e.getMessage(), "ERRO",
 					JOptionPane.ERROR_MESSAGE);
@@ -596,26 +637,16 @@ public class Acesso extends JFrame {
 		public void actionPerformed(ActionEvent evt) {
 			try {
 				DefinirPossiveisPadroesDeSenha();
-
 				if (control.acessarConta(txtConta.getText(), senhasPossiveis)) {
 
-					senhasPossiveis = null;
-					
 					timer3 = new Timer((1000), IniciarMenuPrincipal);
 					timer3.setRepeats(false);
 					timer3.start();
 
-					
-
-					LimparDados();
-					
 				} else {
 					LimparDados();
-					btnSenha1.setText(strSenha1);
-					btnSenha2.setText(strSenha2);
-					btnSenha3.setText(strSenha3);
-					btnSenha4.setText(strSenha4);
-					btnSenha5.setText(strSenha5);
+					logging = false;
+					
 					JOptionPane.showMessageDialog(null, "Acesso negado", "AVISO", JOptionPane.WARNING_MESSAGE);
 				}
 				timer2.stop();
@@ -632,6 +663,10 @@ public class Acesso extends JFrame {
 			try {
 				dispose();
 				Principal.main(null, txtConta.getText());
+
+				senhasPossiveis = null;
+				LimparDados();
+
 				timer3.stop();
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(null, "Ocorreu um erro: " + e.getMessage(), "ERRO",
