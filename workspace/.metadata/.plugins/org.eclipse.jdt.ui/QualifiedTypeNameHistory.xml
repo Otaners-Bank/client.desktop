@@ -6,7 +6,6 @@
 <fullyQualifiedTypeName name="java.awt.Dimension"/>
 <fullyQualifiedTypeName name="javax.sound.sampled.LineListener"/>
 <fullyQualifiedTypeName name="javax.swing.text.MaskFormatter"/>
-<fullyQualifiedTypeName name="model.DataAccess"/>
 <fullyQualifiedTypeName name="view.CriarConta"/>
 <fullyQualifiedTypeName name="view.RecuperarSenha"/>
 <fullyQualifiedTypeName name="view.Principal"/>
@@ -26,7 +25,6 @@
 <fullyQualifiedTypeName name="javafx.scene.control.RadioButton"/>
 <fullyQualifiedTypeName name="javafx.scene.control.PasswordField"/>
 <fullyQualifiedTypeName name="java.awt.event.KeyEvent"/>
-<fullyQualifiedTypeName name="control.Control"/>
 <fullyQualifiedTypeName name="com.google.gson.GsonBuilder"/>
 <fullyQualifiedTypeName name="view.Acesso"/>
 <fullyQualifiedTypeName name="com.google.gson.Gson"/>
@@ -52,12 +50,14 @@
 <fullyQualifiedTypeName name="org.bson.json.Converter"/>
 <fullyQualifiedTypeName name="java.text.DecimalFormatSymbols"/>
 <fullyQualifiedTypeName name="java.text.DecimalFormat"/>
-<fullyQualifiedTypeName name="java.lang.Double"/>
 <fullyQualifiedTypeName name="java.lang.Integer"/>
-<fullyQualifiedTypeName name="java.lang.String"/>
-<fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
 <fullyQualifiedTypeName name="javax.swing.JLabel"/>
 <fullyQualifiedTypeName name="javax.swing.JButton"/>
 <fullyQualifiedTypeName name="java.awt.Cursor"/>
 <fullyQualifiedTypeName name="java.awt.Color"/>
+<fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
+<fullyQualifiedTypeName name="model.DataAccess"/>
+<fullyQualifiedTypeName name="java.lang.Double"/>
+<fullyQualifiedTypeName name="control.Control"/>
+<fullyQualifiedTypeName name="java.lang.String"/>
 </qualifiedTypeNameHistroy>

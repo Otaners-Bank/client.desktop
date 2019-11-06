@@ -35,16 +35,6 @@ public class ContaCorrente extends Conta {
 		}
 	}
 
-	@Override
-	public boolean sacar(double valorSacado) {
-
-		if (usandoLimite()) {
-			return false;
-		} else {
-			return super.sacar(valorSacado);
-		}
-
-	}
 
 	@Override
 	public String consultarSaldo() {

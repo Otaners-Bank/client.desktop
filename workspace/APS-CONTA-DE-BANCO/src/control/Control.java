@@ -31,22 +31,6 @@ public class Control {
 		return model.pesquisarCliente(numeroConta);
 	}
 
-	// Serve para efetuar transferencias de um Cliente para outro
-	public boolean transferir(int numeroContaFonte, int numeroContaDestino, double valor) {
-		return true;
-	}
-
-	// Serve para para um Cliente sacar dinheiro de sua conta
-	public boolean sacar(String valorSaque, String numeroConta ) {
-		return model.sacar(valorSaque, numeroConta);
-
-	}
-
-	// Serve para para um Cliente depositar dinheiro em sua conta
-	public boolean depositar(String valorDeposito, String numeroConta) {
-		return model.depositar(valorDeposito, numeroConta);
-	}
-
 	// NÃO SERÁ FEITO -
 	public String listarContas() {
 		return "";
@@ -81,4 +65,11 @@ public class Control {
 	public boolean BuscarCPF(String CPF) {
 		return model.validarCPFNoBanco(CPF);
 	}
+	
+	// METODO ADICIONADO +
+	public void EnviarNotificacao(String emailCliente, String titulo, String mensagem) {
+		Email email = new Email();
+		email.EnviarMensagem(emailCliente, titulo, mensagem);
+	}
+	
 }

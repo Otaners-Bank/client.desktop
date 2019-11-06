@@ -1,6 +1,10 @@
 package control;
 
+import model.DataAccess;
+
 public abstract class Conta {
+	
+	DataAccess model = new DataAccess();
 
 	public Conta(String numeroConta, String nome, String cpf) {
 		setConta(numeroConta);
@@ -22,19 +26,20 @@ public abstract class Conta {
 	// -------------------------------------------------
 
 	// Metodos
-	// Saca da conta do cliente
-	public boolean sacar(double valorSacado) {
-		return true;
+	// Serve para efetuar transferencias de um Cliente para outro
+	public boolean transferir(String valorTransferencia, String numeroContaQueEnvia, String numeroContaQueRecebe) {
+		return model.transferir(valorTransferencia, numeroContaQueEnvia, numeroContaQueRecebe);
 	}
 
-	// Deposita na conta do cliente
-	public boolean depositar(double valorDepositado) {
-		return true;
+	// Serve para para um Cliente sacar dinheiro de sua conta
+	public boolean sacar(String valorSaque, String numeroConta) {
+		return model.sacar(valorSaque, numeroConta);
+
 	}
 
-	// Transfere de uma conta para outra
-	public boolean transferir(int numeroContaFonte, int numeroContaDestino, double valor) {
-		return true;
+	// Serve para para um Cliente depositar dinheiro em sua conta
+	public boolean depositar(String valorDeposito, String numeroConta) {
+		return model.depositar(valorDeposito, numeroConta);
 	}
 
 	// Mostra o saldo que o cliente possui na conta

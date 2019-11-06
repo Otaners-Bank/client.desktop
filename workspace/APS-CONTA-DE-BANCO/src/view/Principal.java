@@ -186,7 +186,7 @@ public class Principal extends JFrame {
 
 		btnTranferencia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				boolean emDesenvolvimento = true;
+				boolean emDesenvolvimento = false;
 
 				if (!emDesenvolvimento) {
 					if (!animacaoEmCurso && !numPadVisivel) {
@@ -338,7 +338,7 @@ public class Principal extends JFrame {
 					if (visorInt > 99999) {
 
 						JOptionPane.showMessageDialog(null,
-								"heey, não é possível efetuar operações maiores que R$ 99999,00 deuma só vez :/");
+								"heey, não é possível efetuar operações maiores que R$ 99999,00 de uma só vez :/");
 					} else {
 
 						try {
@@ -347,7 +347,9 @@ public class Principal extends JFrame {
 								Depositar();
 								break;
 							case "T":
-								Transferir();
+								String contaQueVaiReceberTranferencia = JOptionPane
+										.showInputDialog("Digite o numero da conta que receberá a transferencia:");
+								Transferir(contaQueVaiReceberTranferencia);
 								break;
 							case "S":
 								Sacar();
@@ -358,6 +360,7 @@ public class Principal extends JFrame {
 							}
 
 							AnimarNumPad();
+
 							btnDeposito.setText("DEPOSITO");
 							btnSaque.setText("SAQUE");
 							btnTranferencia.setText("TRANFERÊNCIA");
@@ -484,7 +487,9 @@ public class Principal extends JFrame {
 
 	// Faz a ação de depositar na conta do usuario
 	private void Depositar() {
-		if (control.depositar(txtVisor.getText(), NUMERO_CONTA)) {
+		btnDeposito.setEnabled(false);
+		if (CONTA.depositar(txtVisor.getText(), NUMERO_CONTA)) {
+			btnDeposito.setEnabled(true);
 			AtualizarPagina();
 			operacaoEscolhida = "";
 			txtVisor.setText("0");
@@ -497,12 +502,25 @@ public class Principal extends JFrame {
 			numPadVisivel = true;
 		} else {
 			JOptionPane.showMessageDialog(null, "Erro ao depositar");
+			btnDeposito.setEnabled(true);
+			AtualizarPagina();
+			operacaoEscolhida = "";
+			txtVisor.setText("0");
+			btnSaque.setEnabled(true);
+			btnTranferencia.setEnabled(true);
+			btnDeposito.setText("DEPÓSITO");
+			operacaoEscolhida = "";
+			btnConfirmar.setText("CONFIRMAR");
+			animacaoEmCurso = false;
+			numPadVisivel = true;
 		}
 	}
 
 	// Faz a ação de tranferir da conta do usuario para outra
-	private void Transferir() {
-		if (true) {
+	private void Transferir(String NUMERO_CONTA2) {
+		btnTranferencia.setEnabled(false);
+		if (CONTA.transferir(txtVisor.getText(), NUMERO_CONTA, NUMERO_CONTA2)) {
+			btnTranferencia.setEnabled(true);
 			AtualizarPagina();
 			txtVisor.setText("0");
 			btnSaque.setEnabled(true);
@@ -513,13 +531,25 @@ public class Principal extends JFrame {
 			animacaoEmCurso = false;
 			numPadVisivel = true;
 		} else {
-			JOptionPane.showMessageDialog(null, "Erro ao depositar");
+			JOptionPane.showMessageDialog(null, "Erro ao efetuar a transferencia");
+			btnTranferencia.setEnabled(true);
+			AtualizarPagina();
+			txtVisor.setText("0");
+			btnSaque.setEnabled(true);
+			btnDeposito.setEnabled(true);
+			btnTranferencia.setText("TRANFERÊNCIA");
+			operacaoEscolhida = "";
+			btnConfirmar.setText("CONFIRMAR");
+			animacaoEmCurso = false;
+			numPadVisivel = true;
 		}
 	}
 
 	// Faz a ação de sacar da conta do usuario
 	private void Sacar() {
-		if (control.sacar(txtVisor.getText(), NUMERO_CONTA)) {
+		btnSaque.setEnabled(false);
+		if (CONTA.sacar(txtVisor.getText(), NUMERO_CONTA)) {
+			btnSaque.setEnabled(true);
 			AtualizarPagina();
 			operacaoEscolhida = "";
 			txtVisor.setText("0");
@@ -532,6 +562,17 @@ public class Principal extends JFrame {
 			numPadVisivel = true;
 		} else {
 			JOptionPane.showMessageDialog(null, "Erro ao sacar");
+			btnSaque.setEnabled(true);
+			AtualizarPagina();
+			operacaoEscolhida = "";
+			txtVisor.setText("0");
+			btnDeposito.setEnabled(true);
+			btnTranferencia.setEnabled(true);
+			btnSaque.setText("SAQUE");
+			operacaoEscolhida = "";
+			btnConfirmar.setText("CONFIRMAR");
+			animacaoEmCurso = false;
+			numPadVisivel = true;
 		}
 	}
 

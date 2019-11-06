@@ -5,13 +5,14 @@
 		<item key="DIALOG_Y_ORIGIN" value="245"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value=""/>
+		<item key="selection" value="Erro:"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="true"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="Erro:"/>
 			<item value="hahaha"/>
 			<item value="senhasPossiveis"/>
 			<item value="ListaDeSenhasPossiveis"/>
@@ -26,7 +27,6 @@
 			<item value="// LimparDados"/>
 			<item value="LimparDados"/>
 			<item value="Acesso "/>
-			<item value="Acesso Per"/>
 		</list>
 		<list key="replacehistory">
 			<item value="TRANFERÊNCIA"/>
