@@ -28,6 +28,8 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Random;
@@ -39,9 +41,14 @@ import javax.swing.JFormattedTextField;
 @SuppressWarnings("serial")
 public class Principal extends JFrame {
 
+	// DETERMINA O QUANTO A CONTA POUPANCA RENDE
+	final String RENDIMENTO_DIARIO_POUPANCA = "0,015%";
+	final String RENDIMENTO_MENSAL_POUPANCA = "0,4%";
+	final String RENDIMENTO_ANUAL_POUPANCA = "5%";
+
 	// Instancias
-	Control control = new Control();
-	Conta CONTA = null;
+	static Control control = new Control();
+	static Conta CONTA = null;
 
 	// Timer
 	Timer timer;
@@ -92,6 +99,33 @@ public class Principal extends JFrame {
 					NUMERO_CONTA = numeroConta;
 					Principal frame = new Principal();
 					frame.setVisible(true);
+					frame.addWindowListener(new WindowListener() {
+						public void windowClosing(WindowEvent e) {
+							if (TIPO_CONTA.equals("2")) {
+								frame.dispose();
+								control.AtualizarContaPoupanca(CONTA.getConta());
+							}
+						}
+
+						public void windowClosed(WindowEvent e) {
+							
+						}
+
+						public void windowOpened(WindowEvent e) {
+						}
+
+						public void windowIconified(WindowEvent e) {
+						}
+
+						public void windowDeiconified(WindowEvent e) {
+						}
+
+						public void windowActivated(WindowEvent e) {
+						}
+
+						public void windowDeactivated(WindowEvent e) {
+						}
+					});
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -111,7 +145,7 @@ public class Principal extends JFrame {
 		timer.setRepeats(true);
 		timer.start();
 
-		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 700); // Altera o tamanho e a posicao da janela
 		setExtendedState(6); // Deixa a janela em tela cheia
 		setVisible(true);
@@ -400,9 +434,12 @@ public class Principal extends JFrame {
 			TIPO_CONTA = String.valueOf(NUMERO_CONTA.charAt(NUMERO_CONTA.length() - 1));
 			CONTA = control.buscarConta(NUMERO_CONTA);
 			if (TIPO_CONTA.equals("2")) {
+
+				ContaPoupanca contaPoupanca = (ContaPoupanca) CONTA;
+
 				lblRenda.setVisible(true);
-				lblRenda.setText("redimentos na poupança: + " + "R$ 0.00" + " ao dia / Valor recebido até o momento: + "
-						+ "R$ 0.00");
+				lblRenda.setText("redimentos na poupança: " + RENDIMENTO_DIARIO_POUPANCA
+						+ " ao dia / Valor recebido até o momento: + " + contaPoupanca.getRendaGerada());
 			}
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Ocorreu um erro: " + e.getMessage(), "ERRO",

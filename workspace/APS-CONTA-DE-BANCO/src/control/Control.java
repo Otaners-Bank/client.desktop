@@ -7,8 +7,8 @@ public class Control {
 	private DataAccess model = new DataAccess();
 
 	// Serve para criar uma nova conta
-	public void adicionarConta(Cliente c) {
-		model.criarConta(c);
+	public boolean adicionarConta(Cliente c) {
+		return model.criarConta(c);
 	}
 
 	// NÃO SERÁ FEITO -
@@ -70,6 +70,10 @@ public class Control {
 	public void EnviarNotificacao(String emailCliente, String titulo, String mensagem) {
 		Email email = new Email();
 		email.EnviarMensagem(emailCliente, titulo, mensagem);
+	}
+	
+	public void AtualizarContaPoupanca(String conta) {
+		model.AtualizarContaPoupanca(conta);
 	}
 	
 }

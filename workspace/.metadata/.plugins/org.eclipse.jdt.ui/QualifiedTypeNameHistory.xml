@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="java.util.logging.Level"/>
-<fullyQualifiedTypeName name="javax.swing.JFrame"/>
-<fullyQualifiedTypeName name="java.awt.Toolkit"/>
-<fullyQualifiedTypeName name="java.awt.Dimension"/>
 <fullyQualifiedTypeName name="javax.sound.sampled.LineListener"/>
 <fullyQualifiedTypeName name="javax.swing.text.MaskFormatter"/>
 <fullyQualifiedTypeName name="view.CriarConta"/>
@@ -34,7 +30,6 @@
 <fullyQualifiedTypeName name="Jason.ClasseModelo"/>
 <fullyQualifiedTypeName name="java.util.Random"/>
 <fullyQualifiedTypeName name="control.ContaCorrente"/>
-<fullyQualifiedTypeName name="control.ContaPoupanca"/>
 <fullyQualifiedTypeName name="control.ContaEspecial"/>
 <fullyQualifiedTypeName name="control.Conta"/>
 <fullyQualifiedTypeName name="java.util.Set"/>
@@ -59,5 +54,10 @@
 <fullyQualifiedTypeName name="model.DataAccess"/>
 <fullyQualifiedTypeName name="java.lang.Double"/>
 <fullyQualifiedTypeName name="control.Control"/>
+<fullyQualifiedTypeName name="java.awt.event.WindowListener"/>
+<fullyQualifiedTypeName name="java.awt.event.WindowEvent"/>
+<fullyQualifiedTypeName name="java.text.SimpleDateFormat"/>
+<fullyQualifiedTypeName name="java.util.Calendar"/>
+<fullyQualifiedTypeName name="control.ContaPoupanca"/>
 <fullyQualifiedTypeName name="java.lang.String"/>
 </qualifiedTypeNameHistroy>

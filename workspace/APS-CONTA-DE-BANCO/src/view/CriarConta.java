@@ -47,7 +47,7 @@ public class CriarConta extends JFrame {
 
 	// Timer utilizado para fazer as letras aparecerem devagar
 	Timer timer;
-	
+
 	// Para mostrar o cursor do mouse diferente para clicar nas coisas
 	Cursor cursor = new Cursor(Cursor.HAND_CURSOR);
 
@@ -538,8 +538,6 @@ public class CriarConta extends JFrame {
 
 				c.saldo = "R$ 0.00";
 
-				
-
 				String conta = "";
 
 				if (c.getConta().endsWith("1"))
@@ -549,19 +547,23 @@ public class CriarConta extends JFrame {
 				else if (c.getConta().endsWith("3"))
 					conta = "especial";
 
-				Email email = new Email();
-				email.EnviarMensagem(c.getEmail(), "Sua nova conta - Otaner's Bank",
-						"OLÁ " + c.getNome() + ", e Bem Vindo ao Otaner's Bank !!! \nPara acessar sua nova conta "
-								+ conta + " utilize o numero \"" + c.getConta() + "\" e a senha cadastrada xD");
+				if (control.adicionarConta(c)) {
 
-				control.adicionarConta(c);
-				
+					Email email = new Email();
+					email.EnviarMensagem(c.getEmail(), "Sua nova conta - Otaner's Bank",
+							"OLÁ " + c.getNome() + ", e Bem Vindo ao Otaner's Bank !!! \nPara acessar sua nova conta "
+									+ conta + " utilize o numero \"" + c.getConta() + "\" e a senha cadastrada xD");
+
+					JOptionPane.showMessageDialog(null,
+							"Sua conta foi criada e para acessa-la, \nverifique seu e-mail para ver o número de sua conta xD",
+							"Conta Criada com SUCESSO !!!", JOptionPane.INFORMATION_MESSAGE);
+				} else {
+					JOptionPane.showMessageDialog(null, "Ocorreu um erro ao criar a conta !", "ERRO",
+							JOptionPane.ERROR_MESSAGE);
+				}
+
 				c = null;
 				conta = null;
-
-				JOptionPane.showMessageDialog(null,
-						"Sua conta foi criada e para acessa-la, \nverifique seu e-mail para ver o número de sua conta xD",
-						"Conta Criada com SUCESSO !!!", JOptionPane.INFORMATION_MESSAGE);
 
 				Acesso.main(null);
 				dispose();

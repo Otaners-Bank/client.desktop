@@ -1,5 +1,7 @@
 package model;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -117,18 +119,40 @@ public class DataAccess {
 	}
 
 	// Metodo para adicionar/criar conta
-	public void criarConta(Conta c) {
+	public boolean criarConta(Conta c) {
 		try {
 			conectar();
 			BasicDBObject document = new BasicDBObject("conta", c.getConta()).append("CPF", c.getCPF())
 					.append("nome", c.getNome()).append("email", c.getEmail()).append("senha", c.getSenha())
 					.append("saldo", c.getSaldo());
+
+			switch (c.getConta().charAt((c.getConta().length() - 1))) {
+			case '1':
+				// Não faz nada
+				break;
+
+			case '2':
+				// Adiciona o campo "gerenteResponsavel", e "ultimoAcesso"
+				document.append("gerenteResponsavel", "null").append("ultimoAcesso", "null").append("rendaGerada",
+						"R$ 0,00");
+				break;
+
+			case '3':
+				// Não faz nada
+				break;
+
+			default:
+				break;
+			}
+
 			collection.insert(document);
 			desconectar();
+			return true;
 
 		} catch (Exception e) {
 			desconectar();
 			JOptionPane.showMessageDialog(null, e, "Ocorreu um erro", JOptionPane.ERROR_MESSAGE);
+			return false;
 		}
 	}
 
@@ -353,6 +377,33 @@ public class DataAccess {
 		}
 	}
 
+	public void AtualizarContaPoupanca(String conta) {
+
+		try {
+			ContaPoupanca c = (ContaPoupanca) _pesquisarDadosCliente(conta);
+
+			// dados atuais
+			BasicDBObject conteudoAtual = new BasicDBObject("conta", c.getConta()).append("CPF", c.getCPF())
+					.append("nome", c.getNome()).append("email", c.getEmail()).append("senha", c.getSenha())
+					.append("saldo", c.getSaldo()).append("gerenteResponsavel", c.getGerenteResponsavel())
+					.append("ultimoAcesso", c.getUltimoAcesso()).append("rendaGerada", c.getRendaGerada());
+
+			// dados novos
+			BasicDBObject conteudoNovo = new BasicDBObject("conta", c.getConta()).append("CPF", c.getCPF())
+					.append("nome", c.getNome()).append("email", c.getEmail()).append("senha", c.getSenha())
+					.append("saldo", c.getSaldo()).append("gerenteResponsavel", c.getGerenteResponsavel())
+					.append("ultimoAcesso", RetornarData()).append("rendaGerada", c.getRendaGerada());
+
+			conectar();
+			collection.update(conteudoAtual, conteudoNovo);
+			desconectar();
+
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e, "Ocorreu um erro", JOptionPane.ERROR_MESSAGE);
+			desconectar();
+		}
+	}
+
 	// Metodos para conectar e desconectar do Banco de Dados
 	// -----------------------------------------------------
 	@SuppressWarnings("deprecation")
@@ -386,6 +437,22 @@ public class DataAccess {
 		} catch (Exception e) {
 
 		}
+	}
+	// -----------------------------------------------------
+
+	// Este metodo retorna a hora atual
+	public String RetornarData() {
+
+		try {
+			// Retona a data atual para os Logs
+			String data = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss").format(Calendar.getInstance().getTime());
+			return data;
+
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e, "Ocorreu um erro", JOptionPane.ERROR_MESSAGE);
+			return "null";
+		}
+
 	}
 
 }
