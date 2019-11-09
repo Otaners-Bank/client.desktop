@@ -2,7 +2,6 @@ package model;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -13,7 +12,8 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
-import control.Cliente;
+import com.mongodb.MongoException;
+
 import control.Conta;
 import control.ContaCorrente;
 import control.ContaEspecial;
@@ -22,12 +22,14 @@ import control.Control;
 
 public class DataAccess {
 
+	final private static String MENSAGEM_DE_ERRO = "Ocorreu um erro:\n"; // Para padronizar a mensagem de erro
+	final private static String TITULO_DE_ERRO = "Erro durante execução"; // Para padronizar a mensagem de erro
 	private static MongoClientURI uri; // irá conter a URL do banco de dados, e das tabelas
 	private static MongoClient mongo; // servirá para podermos acessar o banco de dados, e as tabelas
 	private static DB database; // irá guardar o banco de dados
 	private static DBCollection collection; // irá guardar a tabela
 
-	// Retorna o numero da proxima conta a ser criada
+	// Determina qual deverá ser o numero para a proxima conta criada
 	public int gerarNumeroParaContaNova() {
 		try {
 			conectar();
@@ -35,14 +37,35 @@ public class DataAccess {
 			desconectar();
 
 			return nConta;
-		} catch (Exception e) {
+		} catch (MongoException e) {
 			desconectar();
-			JOptionPane.showMessageDialog(null, e, "Ocorreu um erro", JOptionPane.ERROR_MESSAGE);
-			return 1;
+			JOptionPane.showMessageDialog(null, MENSAGEM_DE_ERRO + e, TITULO_DE_ERRO, JOptionPane.ERROR_MESSAGE);
+			return 9999;
 		}
 	}
 
-	// Retorna true caso este CPF já esteja cadastrado, e false caso não esteja
+	// Verifica se o cliente excedeu o limite da sua conta
+	public boolean validarLimite(String numeroConta, String valorTransicao) {
+		try {
+			Conta c = _pesquisarDadosCliente(numeroConta);
+
+			double Saldo = Double.parseDouble((c.getSaldo()).replace("R$ ", ""));
+			double Valor = Double.parseDouble(valorTransicao);
+
+			if (Saldo >= Valor) {
+				// Acao permitida, pois ainda há mais limite
+				return false;
+			} else {
+				// Acao bloqueada, pois ja esta usando o limite
+				return true;
+			}
+		} catch (MongoException e) {
+			JOptionPane.showMessageDialog(null, MENSAGEM_DE_ERRO + e, TITULO_DE_ERRO, JOptionPane.ERROR_MESSAGE);
+			return true;
+		}
+	}
+
+	// Verifica se um CPF já está cadastrado no Banco de Dados ou não
 	public boolean validarCPFNoBanco(String CPF) {
 		try {
 
@@ -65,14 +88,44 @@ public class DataAccess {
 
 			return false;
 
-		} catch (Exception e) {
+		} catch (MongoException e) {
 			desconectar();
-			JOptionPane.showMessageDialog(null, e, "Ocorreu um erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, MENSAGEM_DE_ERRO + e, TITULO_DE_ERRO, JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 	}
 
-	// Retorna todos os dados do cliente para quando ele acessar o sistema
+	// Verifica se uma conta existe no Banco de Dados ou não
+	public boolean validarConta(String numeroConta) {
+		try {
+
+			Logger mongoLogger = Logger.getLogger("org.mongodb.driver");
+			mongoLogger.setLevel(Level.SEVERE);
+
+			conectar();
+			BasicDBObject document = new BasicDBObject("conta", numeroConta);
+			String content = "";
+			Cursor cursor = collection.find(document);
+			while (cursor.hasNext()) {
+				content += cursor.next();
+			}
+
+			desconectar();
+
+			if (!content.equals("") && content.contains("conta") && content.contains("senha")) {
+				return true;
+			} else {
+				return false;
+			}
+
+		} catch (MongoException e) {
+			desconectar();
+			JOptionPane.showMessageDialog(null, MENSAGEM_DE_ERRO + e, TITULO_DE_ERRO, JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+	}
+
+	// Retorna todos os dados do cliente menos a senha
 	public Conta pesquisarCliente(String numeroConta) {
 		try {
 
@@ -96,29 +149,29 @@ public class DataAccess {
 			if (numeroConta.endsWith("1")) {
 				ContaCorrente c = new ContaCorrente();
 				c = gson.fromJson(content, ContaCorrente.class);
-				c.senha = null;
+				c.setSenha(null);
 				return c;
 			} else if (numeroConta.endsWith("2")) {
 				ContaPoupanca c = new ContaPoupanca();
 				c = gson.fromJson(content, ContaPoupanca.class);
-				c.senha = null;
+				c.setSenha(null);
 				return c;
 			} else if (numeroConta.endsWith("3")) {
 				ContaEspecial c = new ContaEspecial();
 				c = gson.fromJson(content, ContaEspecial.class);
-				c.senha = null;
+				c.setSenha(null);
 				return c;
 			}
 
 			return null;
-		} catch (Exception e) {
+		} catch (MongoException e) {
 			desconectar();
-			JOptionPane.showMessageDialog(null, e, "Ocorreu um erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, MENSAGEM_DE_ERRO + e, TITULO_DE_ERRO, JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
 	}
 
-	// Metodo para adicionar/criar conta
+	// Criar uma nova conta no Banco de Dados
 	public boolean criarConta(Conta c) {
 		try {
 			conectar();
@@ -132,13 +185,15 @@ public class DataAccess {
 				break;
 
 			case '2':
-				// Adiciona o campo "gerenteResponsavel", e "ultimoAcesso"
-				document.append("gerenteResponsavel", "null").append("ultimoAcesso", "null").append("rendaGerada",
-						"R$ 0,00");
+				// Adiciona os campos "ultimoAcesso" e "rendaGerada"
+				document.append("ultimoAcesso", "null").append("rendaGerada", "R$ 0,00");
 				break;
 
 			case '3':
-				// Não faz nada
+				// Adiciona os campos "nomeGerenteResponsavel", "emailGerenteResponsavel"
+				ContaEspecial contaEspecial = (ContaEspecial) c;
+				document.append("nomeGerenteResponsavel", contaEspecial.getNomeGerenteResponsavel())
+						.append("emailGerenteResponsavel", contaEspecial.getEmailGerenteResponsavel());
 				break;
 
 			default:
@@ -149,14 +204,14 @@ public class DataAccess {
 			desconectar();
 			return true;
 
-		} catch (Exception e) {
+		} catch (MongoException e) {
 			desconectar();
-			JOptionPane.showMessageDialog(null, e, "Ocorreu um erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, MENSAGEM_DE_ERRO + e, TITULO_DE_ERRO, JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 	}
 
-	// Metodo de login/acesso
+	// Valida as credencias da conta do cliente para liberar ou não o acesso
 	public boolean acessarConta(String numeroConta, String[] senhaConta) {
 		try {
 
@@ -186,15 +241,15 @@ public class DataAccess {
 
 			return false;
 
-		} catch (Exception e) {
+		} catch (MongoException e) {
 			desconectar();
-			JOptionPane.showMessageDialog(null, e, "Ocorreu um erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, MENSAGEM_DE_ERRO + e, TITULO_DE_ERRO, JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 	}
 
-	public boolean sacar(String valorSaque, String numeroConta) {
-		Conta c = null;
+	// Efetua a operação de saque na conta do cliente
+	public boolean sacar(String valorSaque, String numeroConta, boolean transferindo) {
 		try {
 
 			BasicDBObject document = new BasicDBObject("conta", numeroConta);
@@ -208,37 +263,88 @@ public class DataAccess {
 
 			// Jason to Object
 			Gson gson = new Gson();
-			c = gson.fromJson(content, ContaCorrente.class);
 
-			double valorAntigo = Double.parseDouble(c.getSaldo().replace("R$ ", "").replace(",", "."));
-			double valorNovo = valorAntigo - (Double.parseDouble(valorSaque.replace("R$ ", "").replace(",", ".")));
+			if (numeroConta.endsWith("1")) {
+				Conta c = null;
+				c = gson.fromJson(content, ContaCorrente.class);
 
-			// new value
-			BasicDBObject newDocument = new BasicDBObject("conta", c.getConta()).append("CPF", c.getCPF())
-					.append("nome", c.getNome()).append("email", c.getEmail()).append("senha", c.getSenha())
-					.append("saldo", "R$ " + valorNovo);
+				double valorAntigo = Double.parseDouble(c.getSaldo().replace("R$ ", "").replace(",", "."));
+				double valorNovo = valorAntigo - (Double.parseDouble(valorSaque.replace("R$ ", "").replace(",", ".")));
 
-			collection.update(document, newDocument);
-			desconectar();
+				// new value
+				BasicDBObject newDocument = new BasicDBObject("conta", c.getConta()).append("CPF", c.getCPF())
+						.append("nome", c.getNome()).append("email", c.getEmail()).append("senha", c.getSenha())
+						.append("saldo", "R$ " + valorNovo);
 
-			Control control = new Control();
-			control.EnviarNotificacao(c.getEmail(), "Novo saque na conta " + c.getConta(), "Olá " + c.getNome() + ",\n"
-					+ "O saque de R$ " + valorSaque + " foi concluido com sucesso em sua conta !!! ");
+				collection.update(document, newDocument);
+				desconectar();
+
+				if (!transferindo) {
+					Control control = new Control();
+					control.EnviarNotificacao(c.getEmail(), "Novo saque na conta " + c.getConta(), "Olá " + c.getNome()
+							+ ",\n" + "O saque de R$ " + valorSaque + " foi concluido com sucesso em sua conta !!! ");
+				}
+
+			} else if (numeroConta.endsWith("2")) {
+				ContaPoupanca c = null;
+				c = gson.fromJson(content, ContaPoupanca.class);
+
+				double valorAntigo = Double.parseDouble(c.getSaldo().replace("R$ ", "").replace(",", "."));
+				double valorNovo = valorAntigo - (Double.parseDouble(valorSaque.replace("R$ ", "").replace(",", ".")));
+
+				// new value
+				BasicDBObject newDocument = new BasicDBObject("conta", c.getConta()).append("CPF", c.getCPF())
+						.append("nome", c.getNome()).append("email", c.getEmail()).append("senha", c.getSenha())
+						.append("saldo", "R$ " + valorNovo).append("ultimoAcesso", c.getUltimoAcesso())
+						.append("rendaGerada", c.getRendaGerada());
+
+				collection.update(document, newDocument);
+				desconectar();
+
+				if (!transferindo) {
+					Control control = new Control();
+					control.EnviarNotificacao(c.getEmail(), "Novo saque na conta " + c.getConta(), "Olá " + c.getNome()
+							+ ",\n" + "O saque de R$ " + valorSaque + " foi concluido com sucesso em sua conta !!! ");
+				}
+
+			} else if (numeroConta.endsWith("3")) {
+
+				ContaEspecial c = null;
+				c = gson.fromJson(content, ContaEspecial.class);
+
+				double valorAntigo = Double.parseDouble(c.getSaldo().replace("R$ ", "").replace(",", "."));
+				double valorNovo = valorAntigo - (Double.parseDouble(valorSaque.replace("R$ ", "").replace(",", ".")));
+
+				// new value
+				BasicDBObject newDocument = new BasicDBObject("conta", c.getConta()).append("CPF", c.getCPF())
+						.append("nome", c.getNome()).append("email", c.getEmail()).append("senha", c.getSenha())
+						.append("saldo", "R$ " + valorNovo)
+						.append("nomeGerenteResponsavel", c.getNomeGerenteResponsavel())
+						.append("emailGerenteResponsavel", c.getEmailGerenteResponsavel());
+
+				collection.update(document, newDocument);
+				desconectar();
+
+				if (!transferindo) {
+					Control control = new Control();
+					control.EnviarNotificacao(c.getEmail(), "Novo saque na conta " + c.getConta(), "Olá " + c.getNome()
+							+ ",\n" + "O saque de R$ " + valorSaque + " foi concluido com sucesso em sua conta !!! ");
+				}
+			}
 
 			return true;
 
-		} catch (Exception e) {
-			System.out.println(e);
+		} catch (MongoException e) {
+			JOptionPane.showMessageDialog(null, MENSAGEM_DE_ERRO + e, TITULO_DE_ERRO, JOptionPane.ERROR_MESSAGE);
 			desconectar();
 			return false;
 		}
 	}
 
-	public boolean depositar(String valorDeposito, String numeroConta) {
+	// Efetua a operação de depósito na conta do cliente
+	public boolean depositar(String valorDeposito, String numeroConta, boolean transferindo) {
 
 		try {
-
-			Conta c = null;
 
 			BasicDBObject document = new BasicDBObject("conta", numeroConta);
 			String content = "";
@@ -249,34 +355,96 @@ public class DataAccess {
 				content += cursor.next();
 			}
 
-			// Jason to Object
-			Gson gson = new Gson();
-			c = gson.fromJson(content, ContaCorrente.class);
+			if (numeroConta.endsWith("1")) {
+				Conta c = null;
+				// Jason to Object
+				Gson gson = new Gson();
+				c = gson.fromJson(content, ContaCorrente.class);
 
-			double valorAntigo = Double.parseDouble(c.getSaldo().replace("R$ ", "").replace(",", "."));
-			double valorNovo = (Double.parseDouble(valorDeposito.replace("R$ ", "").replace(",", "."))) + valorAntigo;
+				double valorAntigo = Double.parseDouble(c.getSaldo().replace("R$ ", "").replace(",", "."));
+				double valorNovo = (Double.parseDouble(valorDeposito.replace("R$ ", "").replace(",", ".")))
+						+ valorAntigo;
 
-			// new value
-			BasicDBObject newDocument = new BasicDBObject("conta", c.getConta()).append("CPF", c.getCPF())
-					.append("nome", c.getNome()).append("email", c.getEmail()).append("senha", c.getSenha())
-					.append("saldo", "R$ " + valorNovo);
+				// new value
+				BasicDBObject newDocument = new BasicDBObject("conta", c.getConta()).append("CPF", c.getCPF())
+						.append("nome", c.getNome()).append("email", c.getEmail()).append("senha", c.getSenha())
+						.append("saldo", "R$ " + valorNovo);
 
-			collection.update(document, newDocument);
-			desconectar();
+				collection.update(document, newDocument);
+				desconectar();
 
-			Control control = new Control();
-			control.EnviarNotificacao(c.getEmail(), "Novo depósito na conta " + c.getConta(), "Olá " + c.getNome()
-					+ ",\n" + "O depósito de R$ " + valorDeposito + " foi concluido com sucesso em sua conta !!! ");
+				if (!transferindo) {
+					Control control = new Control();
+					control.EnviarNotificacao(c.getEmail(), "Novo depósito na conta " + c.getConta(),
+							"Olá " + c.getNome() + ",\n" + "O depósito de R$ " + valorDeposito
+									+ " foi concluido com sucesso em sua conta !!! ");
+				}
+
+			} else if (numeroConta.endsWith("2")) {
+
+				ContaPoupanca c = null;
+				// Jason to Object
+				Gson gson = new Gson();
+				c = gson.fromJson(content, ContaPoupanca.class);
+
+				double valorAntigo = Double.parseDouble(c.getSaldo().replace("R$ ", "").replace(",", "."));
+				double valorNovo = (Double.parseDouble(valorDeposito.replace("R$ ", "").replace(",", ".")))
+						+ valorAntigo;
+
+				// new value
+				BasicDBObject newDocument = new BasicDBObject("conta", c.getConta()).append("CPF", c.getCPF())
+						.append("nome", c.getNome()).append("email", c.getEmail()).append("senha", c.getSenha())
+						.append("saldo", "R$ " + valorNovo).append("ultimoAcesso", c.getUltimoAcesso())
+						.append("rendaGerada", c.getRendaGerada());
+
+				collection.update(document, newDocument);
+				desconectar();
+
+				if (!transferindo) {
+					Control control = new Control();
+					control.EnviarNotificacao(c.getEmail(), "Novo depósito na conta " + c.getConta(),
+							"Olá " + c.getNome() + ",\n" + "O depósito de R$ " + valorDeposito
+									+ " foi concluido com sucesso em sua conta !!! ");
+				}
+
+			} else if (numeroConta.endsWith("3")) {
+				ContaEspecial c = null;
+				// Jason to Object
+				Gson gson = new Gson();
+				c = gson.fromJson(content, ContaEspecial.class);
+
+				double valorAntigo = Double.parseDouble(c.getSaldo().replace("R$ ", "").replace(",", "."));
+				double valorNovo = (Double.parseDouble(valorDeposito.replace("R$ ", "").replace(",", ".")))
+						+ valorAntigo;
+
+				// new value
+				BasicDBObject newDocument = new BasicDBObject("conta", c.getConta()).append("CPF", c.getCPF())
+						.append("nome", c.getNome()).append("email", c.getEmail()).append("senha", c.getSenha())
+						.append("saldo", "R$ " + valorNovo)
+						.append("nomeGerenteResponsavel", c.getNomeGerenteResponsavel())
+						.append("emailGerenteResponsavel", c.getEmailGerenteResponsavel());
+
+				collection.update(document, newDocument);
+				desconectar();
+
+				if (!transferindo) {
+					Control control = new Control();
+					control.EnviarNotificacao(c.getEmail(), "Novo depósito na conta " + c.getConta(),
+							"Olá " + c.getNome() + ",\n" + "O depósito de R$ " + valorDeposito
+									+ " foi concluido com sucesso em sua conta !!! ");
+				}
+			}
 
 			return true;
 
-		} catch (Exception e) {
-			System.out.println(e);
+		} catch (MongoException e) {
+			JOptionPane.showMessageDialog(null, MENSAGEM_DE_ERRO + e, TITULO_DE_ERRO, JOptionPane.ERROR_MESSAGE);
 			desconectar();
 			return false;
 		}
 	}
 
+	// Efetua a operação de tranferencia para outra conta
 	public boolean transferir(String valorTransferencia, String numeroContaQueEnvia, String numeroContaQueRecebe) {
 
 		try {
@@ -295,9 +463,9 @@ public class DataAccess {
 			if (c1 == null || c2 == null) {
 				return false;
 			} else {
-				if (sacar(valorSaque, numeroContaQueEnvia)) {
+				if (sacar(valorSaque, numeroContaQueEnvia, true)) {
 					// Retira o dinheiro da conta1
-					if (depositar(valorDeposito, numeroContaQueRecebe)) {
+					if (depositar(valorDeposito, numeroContaQueRecebe, true)) {
 						// Tenta depositar o dinheiro na conta2
 
 						// Se conseguir, ele notifica ambos os clientes
@@ -314,7 +482,7 @@ public class DataAccess {
 						return true;
 					} else {
 						// Se ele não conseguir depositar na conta2:
-						if (depositar(valorDeposito, numeroContaQueRecebe)) {
+						if (depositar(valorDeposito, numeroContaQueRecebe, true)) {
 							// Caso ele não consiga depoistar na conta2, o dinheiro retorna a conta1
 						}
 						return false; // e retorna false
@@ -326,15 +494,43 @@ public class DataAccess {
 				}
 			}
 
-		} catch (Exception e) {
-			System.out.println(e);
+		} catch (MongoException e) {
+			JOptionPane.showMessageDialog(null, MENSAGEM_DE_ERRO + e, TITULO_DE_ERRO, JOptionPane.ERROR_MESSAGE);
 			desconectar();
 			return false;
 		}
 	}
 
-	// Retorna todos os dados do cliente para o sistema poder editar suas
-	// informacoes
+	// Atualiza o campo "ultimoAcesso" em Contas Poupanças
+	public void AtualizarContaPoupanca(String conta) {
+
+		try {
+			ContaPoupanca c = (ContaPoupanca) _pesquisarDadosCliente(conta);
+
+			// dados atuais
+			BasicDBObject conteudoAtual = new BasicDBObject("conta", c.getConta()).append("CPF", c.getCPF())
+					.append("nome", c.getNome()).append("email", c.getEmail()).append("senha", c.getSenha())
+					.append("saldo", c.getSaldo()).append("ultimoAcesso", c.getUltimoAcesso())
+					.append("rendaGerada", c.getRendaGerada());
+
+			// dados novos
+			BasicDBObject conteudoNovo = new BasicDBObject("conta", c.getConta()).append("CPF", c.getCPF())
+					.append("nome", c.getNome()).append("email", c.getEmail()).append("senha", c.getSenha())
+					.append("saldo", c.getSaldo()).append("ultimoAcesso", c.getUltimoAcesso())
+					.append("rendaGerada", RetornarData());
+
+			conectar();
+			collection.update(conteudoAtual, conteudoNovo);
+			desconectar();
+
+		} catch (MongoException e) {
+			JOptionPane.showMessageDialog(null, MENSAGEM_DE_ERRO + e, TITULO_DE_ERRO, JOptionPane.ERROR_MESSAGE);
+			desconectar();
+		}
+	}
+
+	// Metodo auxiliar do sistema
+	// Retorna todos os dados do cliente para poder edita-los em outras funcoes
 	public Conta _pesquisarDadosCliente(String numeroConta) {
 		try {
 
@@ -370,38 +566,27 @@ public class DataAccess {
 			}
 
 			return null;
-		} catch (Exception e) {
+		} catch (MongoException e) {
 			desconectar();
-			JOptionPane.showMessageDialog(null, e, "Ocorreu um erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, MENSAGEM_DE_ERRO + e, TITULO_DE_ERRO, JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
 	}
 
-	public void AtualizarContaPoupanca(String conta) {
+	// Metodo auxiliar do sistema
+	// Este metodo retorna a hora atual
+	public String RetornarData() {
 
 		try {
-			ContaPoupanca c = (ContaPoupanca) _pesquisarDadosCliente(conta);
+			// Retona a data atual para os Logs
+			String data = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss").format(Calendar.getInstance().getTime());
+			return data;
 
-			// dados atuais
-			BasicDBObject conteudoAtual = new BasicDBObject("conta", c.getConta()).append("CPF", c.getCPF())
-					.append("nome", c.getNome()).append("email", c.getEmail()).append("senha", c.getSenha())
-					.append("saldo", c.getSaldo()).append("gerenteResponsavel", c.getGerenteResponsavel())
-					.append("ultimoAcesso", c.getUltimoAcesso()).append("rendaGerada", c.getRendaGerada());
-
-			// dados novos
-			BasicDBObject conteudoNovo = new BasicDBObject("conta", c.getConta()).append("CPF", c.getCPF())
-					.append("nome", c.getNome()).append("email", c.getEmail()).append("senha", c.getSenha())
-					.append("saldo", c.getSaldo()).append("gerenteResponsavel", c.getGerenteResponsavel())
-					.append("ultimoAcesso", RetornarData()).append("rendaGerada", c.getRendaGerada());
-
-			conectar();
-			collection.update(conteudoAtual, conteudoNovo);
-			desconectar();
-
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, e, "Ocorreu um erro", JOptionPane.ERROR_MESSAGE);
-			desconectar();
+		} catch (MongoException e) {
+			JOptionPane.showMessageDialog(null, MENSAGEM_DE_ERRO + e, TITULO_DE_ERRO, JOptionPane.ERROR_MESSAGE);
+			return "null";
 		}
+
 	}
 
 	// Metodos para conectar e desconectar do Banco de Dados
@@ -419,9 +604,9 @@ public class DataAccess {
 			database = mongo.getDB("APS");
 			collection = database.getCollection("Otaner Bank");
 
-		} catch (Exception e) {
+		} catch (MongoException e) {
 			desconectar();
-			JOptionPane.showMessageDialog(null, e, "Ocorreu um erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, MENSAGEM_DE_ERRO + e, TITULO_DE_ERRO, JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -434,25 +619,9 @@ public class DataAccess {
 			database = null;
 			collection = null;
 
-		} catch (Exception e) {
-
+		} catch (MongoException e) {
+			JOptionPane.showMessageDialog(null, MENSAGEM_DE_ERRO + e, TITULO_DE_ERRO, JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	// -----------------------------------------------------
-
-	// Este metodo retorna a hora atual
-	public String RetornarData() {
-
-		try {
-			// Retona a data atual para os Logs
-			String data = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss").format(Calendar.getInstance().getTime());
-			return data;
-
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, e, "Ocorreu um erro", JOptionPane.ERROR_MESSAGE);
-			return "null";
-		}
-
-	}
-
 }

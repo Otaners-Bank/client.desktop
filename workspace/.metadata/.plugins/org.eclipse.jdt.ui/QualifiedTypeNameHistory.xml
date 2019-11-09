@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="javax.sound.sampled.LineListener"/>
-<fullyQualifiedTypeName name="javax.swing.text.MaskFormatter"/>
-<fullyQualifiedTypeName name="view.CriarConta"/>
-<fullyQualifiedTypeName name="view.RecuperarSenha"/>
-<fullyQualifiedTypeName name="view.Principal"/>
-<fullyQualifiedTypeName name="java.util.List"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
-<fullyQualifiedTypeName name="javax.swing.text.AbstractDocument.Content"/>
 <fullyQualifiedTypeName name="com.mongodb.util.JSON"/>
 <fullyQualifiedTypeName name="java.io.FileWriter"/>
 <fullyQualifiedTypeName name="javax.xml.ws.Response"/>
@@ -22,16 +14,11 @@
 <fullyQualifiedTypeName name="javafx.scene.control.PasswordField"/>
 <fullyQualifiedTypeName name="java.awt.event.KeyEvent"/>
 <fullyQualifiedTypeName name="com.google.gson.GsonBuilder"/>
-<fullyQualifiedTypeName name="view.Acesso"/>
 <fullyQualifiedTypeName name="com.google.gson.Gson"/>
 <fullyQualifiedTypeName name="control.Cliente"/>
 <fullyQualifiedTypeName name="Teste_Temporizador"/>
 <fullyQualifiedTypeName name="Temporizador.Timer1"/>
 <fullyQualifiedTypeName name="Jason.ClasseModelo"/>
-<fullyQualifiedTypeName name="java.util.Random"/>
-<fullyQualifiedTypeName name="control.ContaCorrente"/>
-<fullyQualifiedTypeName name="control.ContaEspecial"/>
-<fullyQualifiedTypeName name="control.Conta"/>
 <fullyQualifiedTypeName name="java.util.Set"/>
 <fullyQualifiedTypeName name="control.Email"/>
 <fullyQualifiedTypeName name="java.util.regex.Pattern"/>
@@ -45,19 +32,32 @@
 <fullyQualifiedTypeName name="org.bson.json.Converter"/>
 <fullyQualifiedTypeName name="java.text.DecimalFormatSymbols"/>
 <fullyQualifiedTypeName name="java.text.DecimalFormat"/>
-<fullyQualifiedTypeName name="java.lang.Integer"/>
 <fullyQualifiedTypeName name="javax.swing.JLabel"/>
 <fullyQualifiedTypeName name="javax.swing.JButton"/>
 <fullyQualifiedTypeName name="java.awt.Cursor"/>
 <fullyQualifiedTypeName name="java.awt.Color"/>
-<fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
 <fullyQualifiedTypeName name="model.DataAccess"/>
-<fullyQualifiedTypeName name="java.lang.Double"/>
 <fullyQualifiedTypeName name="control.Control"/>
 <fullyQualifiedTypeName name="java.awt.event.WindowListener"/>
 <fullyQualifiedTypeName name="java.awt.event.WindowEvent"/>
 <fullyQualifiedTypeName name="java.text.SimpleDateFormat"/>
 <fullyQualifiedTypeName name="java.util.Calendar"/>
-<fullyQualifiedTypeName name="control.ContaPoupanca"/>
+<fullyQualifiedTypeName name="java.security.PublicKey"/>
+<fullyQualifiedTypeName name="java.util.Scanner"/>
+<fullyQualifiedTypeName name="java.lang.System"/>
+<fullyQualifiedTypeName name="control.Conta"/>
+<fullyQualifiedTypeName name="javax.sound.sampled.LineListener"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="java.awt.List"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="java.util.Random"/>
+<fullyQualifiedTypeName name="control.ContaEspecial"/>
+<fullyQualifiedTypeName name="view.Acesso"/>
 <fullyQualifiedTypeName name="java.lang.String"/>
+<fullyQualifiedTypeName name="com.mongodb.MongoException"/>
+<fullyQualifiedTypeName name="java.lang.Integer"/>
+<fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
+<fullyQualifiedTypeName name="control.ContaCorrente"/>
+<fullyQualifiedTypeName name="control.ContaPoupanca"/>
+<fullyQualifiedTypeName name="java.lang.Double"/>
 </qualifiedTypeNameHistroy>

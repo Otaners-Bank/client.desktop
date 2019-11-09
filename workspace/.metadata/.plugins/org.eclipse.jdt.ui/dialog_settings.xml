@@ -18,6 +18,8 @@
 		<item key="create_unimplemented" value="false"/>
 	</section>
 	<section name="completion_proposal_size">
+		<item key="size.x" value="692"/>
+		<item key="size.y" value="246"/>
 	</section>
 	<section name="quick_assist_proposal_size">
 	</section>
@@ -68,7 +70,7 @@
 		</section>
 	</section>
 	<section name="SourceActionDialog.methods">
-		<item key="VisibilityModifier" value="2"/>
+		<item key="VisibilityModifier" value="1"/>
 		<item key="FinalModifier" value="false"/>
 		<item key="SynchronizedModifier" value="false"/>
 		<item key="Comments" value="false"/>

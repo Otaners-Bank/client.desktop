@@ -323,7 +323,7 @@ public class Acesso extends JFrame {
 
 		// Progress Bar para deixar o layout mais fluido
 		ProgressBar = new JProgressBar();
-		ProgressBar.setBounds(0, 675, 677, 14);
+		ProgressBar.setBounds(-5, 675, dimension.width+5, 15);
 		ProgressBar.setForeground(Color.GREEN);
 		ProgressBar.setValue(0);
 		ProgressBar.setStringPainted(false);

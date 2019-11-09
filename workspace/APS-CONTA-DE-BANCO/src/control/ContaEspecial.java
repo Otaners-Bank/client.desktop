@@ -2,35 +2,59 @@ package control;
 
 public class ContaEspecial extends ContaCorrente {
 
+	// Construtores
 	public ContaEspecial() {
-		
+
 	}
-	
-	public ContaEspecial(String numeroConta, String nome, String cpf, String gerenteResponsavel) {
+
+	public ContaEspecial(String numeroConta, String nome, String cpf, String nomeGerenteResponsavel,
+			String emailGerenteResponsavel) {
 		super(numeroConta, nome, cpf);
 	}
 
-	public ContaEspecial(String numeroConta, String nome, String cpf, String limite,String gerenteResponsavel) {
+	public ContaEspecial(String numeroConta, String nome, String cpf, String nomeGerenteResponsavel,
+			String emailGerenteResponsavel, String limite) {
 		super(numeroConta, nome, cpf);
-		setNomeGerenteResponsavel(gerenteResponsavel);
+		setNomeGerenteResponsavel(nomeGerenteResponsavel);
+		setEmailGerenteResponsavel(emailGerenteResponsavel);
 	}
 
+	// Atributos
 	String nomeGerenteResponsavel;
+	String emailGerenteResponsavel;
 
-	private String getNomeGerenteResponsavel() {
+	// Getters e Setters
+	public String getNomeGerenteResponsavel() {
 		return nomeGerenteResponsavel;
 	}
 
-	private void setNomeGerenteResponsavel(String nomeGerenteResponsavel) {
+	public void setNomeGerenteResponsavel(String nomeGerenteResponsavel) {
 		this.nomeGerenteResponsavel = nomeGerenteResponsavel;
 	}
-	
-	@Override
-	public String consultarSaldo() {
-		// TODO Auto-generated method stub
-		return "Saldo >>> " + super.consultarSaldo() + " & Gerente Responsável >>> " + getNomeGerenteResponsavel();
-	}
-	
 
-	
+	public String getEmailGerenteResponsavel() {
+		return emailGerenteResponsavel;
+	}
+
+	public void setEmailGerenteResponsavel(String emailGerenteResponsavel) {
+		this.emailGerenteResponsavel = emailGerenteResponsavel;
+	}
+
+	// Metodos reimplementados
+	@Override
+	public boolean sacar(String valorSaque, String numeroConta) {
+		return super.sacar(valorSaque, numeroConta);
+	}
+
+	@Override
+	public void setSaldo(String saldo) {
+		super.setSaldo(saldo);
+	}
+
+	// NÃO SERÁ FEITO -
+	@Override
+	public String imprimir() {
+		return super.imprimir();
+	}
+
 }

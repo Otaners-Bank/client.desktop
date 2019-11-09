@@ -5,30 +5,35 @@
 		<item key="DIALOG_Y_ORIGIN" value="245"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="pesq"/>
+		<item key="selection" value="usandoLimite"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="true"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
-			<item value="pesq"/>
-			<item value="Erro:"/>
-			<item value="hahaha"/>
-			<item value="senhasPossiveis"/>
-			<item value="ListaDeSenhasPossiveis"/>
-			<item value="Travar"/>
-			<item value="btnApagar.setEnabled(false);"/>
-			<item value=".0"/>
-			<item value="animacaoEmCurso = "/>
-			<item value="TRANFERENCIA"/>
-			<item value="TRANFERÊNCIA"/>
-			<item value="btnFinalizar"/>
-			<item value="lblVisor"/>
-			<item value="// LimparDados"/>
-			<item value="LimparDados"/>
+			<item value="usandoLimite"/>
+			<item value="At"/>
+			<item value="deposito"/>
+			<item value="&quot;Erro durante execução&quot;"/>
+			<item value="JOptionPane.showMessageDialog(null, MENSAGEM_DE_ERRO + e, &quot;Erro durante execução&quot;,"/>
+			<item value="JOptionPane.showMessageDialog(null, e, &quot;Ocorreu um erro&quot;, JOptionPane.ERROR_MESSAGE);"/>
+			<item value="Exception"/>
+			<item value="000"/>
+			<item value="Acesso"/>
+			<item value="control"/>
+			<item value="maiores"/>
+			<item value="_pes"/>
+			<item value="["/>
+			<item value="nomeGerenteResponsavel"/>
+			<item value="= new Conta"/>
 		</list>
 		<list key="replacehistory">
+			<item value="tranfe"/>
+			<item value="TITULO_DE_ERRO"/>
+			<item value="JOptionPane.showMessageDialog(null, MENSAGEM_DE_ERRO + e, TITULO_DE_ERRO,"/>
+			<item value="JOptionPane.showMessageDialog(null, MENSAGEM_DE_ERRO + e, &quot;Erro durante execução&quot;, JOptionPane.ERROR_MESSAGE);"/>
+			<item value="MongoException"/>
 			<item value="TRANFERÊNCIA"/>
 			<item value=""/>
 			<item value="btnConfirmar"/>
@@ -39,16 +44,11 @@
 			<item value="timer"/>
 			<item value="temporizador"/>
 			<item value="conta"/>
-			<item value="limite"/>
-			<item value="conectar"/>
-			<item value="desconectar"/>
-			<item value="c"/>
-			<item value="ProgressBar"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item key="DIALOG_X_ORIGIN" value="651"/>
-		<item key="DIALOG_Y_ORIGIN" value="286"/>
+		<item key="DIALOG_X_ORIGIN" value="947"/>
+		<item key="DIALOG_Y_ORIGIN" value="334"/>
 		<item key="DIALOG_WIDTH" value="284"/>
 		<item key="DIALOG_HEIGHT" value="391"/>
 		<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>

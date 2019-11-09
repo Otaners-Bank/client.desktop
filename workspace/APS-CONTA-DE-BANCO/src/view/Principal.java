@@ -1,6 +1,5 @@
 package view;
 
-import java.awt.Button;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -8,33 +7,21 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.text.MaskFormatter;
-
-import org.bson.json.Converter;
-
-import control.Conta;
+import javax.swing.text.MaskFormatter;import control.Conta;
 import control.ContaCorrente;
 import control.ContaEspecial;
 import control.ContaPoupanca;
 import control.Control;
-import model.DataAccess;
-
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
-
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.Random;
-
-import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 
@@ -108,7 +95,7 @@ public class Principal extends JFrame {
 						}
 
 						public void windowClosed(WindowEvent e) {
-							
+
 						}
 
 						public void windowOpened(WindowEvent e) {
@@ -170,21 +157,21 @@ public class Principal extends JFrame {
 		btnDeposito = new JButton();
 		btnDeposito.setBackground(Color.WHITE);
 		btnDeposito.setCursor(cursor);
-		btnDeposito.setBounds(0, (y - y) + 200, 400, 90);
+		btnDeposito.setBounds(0, (y - y) + 200, 450, 90);
 		btnDeposito.setFont(new Font("Felix Titling", Font.PLAIN, 25));
 		btnDeposito.setText("DEPÓSITO");
 
 		btnTranferencia = new JButton();
 		btnTranferencia.setBackground(Color.WHITE);
 		btnTranferencia.setCursor(cursor);
-		btnTranferencia.setBounds(0, (y - y) + 350, 400, 90);
+		btnTranferencia.setBounds(0, (y - y) + 350, 450, 90);
 		btnTranferencia.setFont(new Font("Felix Titling", Font.PLAIN, 25));
 		btnTranferencia.setText("TRANFERÊNCIA");
 
 		btnSaque = new JButton();
 		btnSaque.setBackground(Color.WHITE);
 		btnSaque.setCursor(cursor);
-		btnSaque.setBounds(0, (y - y) + 500, 400, 90);
+		btnSaque.setBounds(0, (y - y) + 500, 450, 90);
 		btnSaque.setFont(new Font("Felix Titling", Font.PLAIN, 25));
 		btnSaque.setText("SAQUE");
 
@@ -197,12 +184,14 @@ public class Principal extends JFrame {
 		btnSaque.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (!animacaoEmCurso && !numPadVisivel) {
+					txtVisor.setText("0");
 					btnDeposito.setEnabled(false);
 					btnTranferencia.setEnabled(false);
 					btnSaque.setText("CANCELAR SAQUE");
 					operacaoEscolhida = "S";
 					btnConfirmar.setText("CONFIRMAR SAQUE");
 					AnimarNumPad();
+					txtVisor.grabFocus();
 				} else {
 					if (operacaoEscolhida.equals("S")) {
 						txtVisor.setText("0");
@@ -220,31 +209,27 @@ public class Principal extends JFrame {
 
 		btnTranferencia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				boolean emDesenvolvimento = false;
-
-				if (!emDesenvolvimento) {
-					if (!animacaoEmCurso && !numPadVisivel) {
-						btnDeposito.setEnabled(false);
-						btnSaque.setEnabled(false);
-						btnTranferencia.setText("CANCELAR TRANSFERENCIA");
-						operacaoEscolhida = "T";
-						btnTranferencia.setText("CONFIRMAR TRANSFERENCIA");
-						AnimarNumPad();
-					} else {
-						if (operacaoEscolhida.equals("T")) {
-							txtVisor.setText("0");
-							btnSaque.setEnabled(true);
-							btnDeposito.setEnabled(true);
-							btnTranferencia.setText("TRANSFERENCIA");
-							operacaoEscolhida = "";
-							AnimarNumPad();
-							animacaoEmCurso = false;
-							btnConfirmar.setText("CONFIRMAR");
-						}
-					}
+				if (!animacaoEmCurso && !numPadVisivel) {
+					txtVisor.setText("0");
+					btnDeposito.setEnabled(false);
+					btnSaque.setEnabled(false);
+					btnTranferencia.setText("CANCELAR TRANSFERENCIA");
+					operacaoEscolhida = "T";
+					btnTranferencia.setText("CONFIRMAR TRANSFERENCIA");
+					AnimarNumPad();
+					txtVisor.grabFocus();
 				} else {
-					JOptionPane.showMessageDialog(null,
-							"OPA, ainda não temos essa função cara, mas jaja o Thales termina heuheuhueuehu");
+					if (operacaoEscolhida.equals("T")) {
+						txtVisor.setText("0");
+						btnSaque.setEnabled(true);
+						btnDeposito.setEnabled(true);
+						btnTranferencia.setText("TRANSFERENCIA");
+						operacaoEscolhida = "";
+						AnimarNumPad();
+						animacaoEmCurso = false;
+						btnConfirmar.setText("CONFIRMAR");
+					}
+
 				}
 
 			}
@@ -253,12 +238,14 @@ public class Principal extends JFrame {
 		btnDeposito.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (!animacaoEmCurso && !numPadVisivel) {
+					txtVisor.setText("0");
 					btnSaque.setEnabled(false);
 					btnTranferencia.setEnabled(false);
 					btnDeposito.setText("CANCELAR DEPÓSITO");
 					operacaoEscolhida = "D";
 					btnConfirmar.setText("CONFIRMAR DEPÓSITO");
 					AnimarNumPad();
+					txtVisor.grabFocus();
 				} else {
 					if (operacaoEscolhida.equals("D")) {
 						txtVisor.setText("0");
@@ -367,46 +354,82 @@ public class Principal extends JFrame {
 				try {
 					String visorString = txtVisor.getText();
 
-					int visorInt = Integer.parseInt(visorString);
-
-					if (visorInt > 99999) {
-
+					// Primeiro ele verifica se o tamanho do valor pode ser convertido para int
+					if (txtVisor.getText().length() > 5) {
 						JOptionPane.showMessageDialog(null,
-								"heey, não é possível efetuar operações maiores que R$ 99999,00 de uma só vez :/");
-					} else {
+								"heey, não é possível efetuar operações maiores que R$ 99.999,00 de uma só vez :/");
+					}
+					// Se for possivel converter para int
+					else {
 
-						try {
-							switch (operacaoEscolhida) {
-							case "D":
-								Depositar();
-								break;
-							case "T":
-								String contaQueVaiReceberTranferencia = JOptionPane
-										.showInputDialog("Digite o numero da conta que receberá a transferencia:");
-								Transferir(contaQueVaiReceberTranferencia);
-								break;
-							case "S":
-								Sacar();
-								break;
+						// maximo int 999999999
+						int visorInt = Integer.parseInt(visorString);
 
-							default:
-								break;
+						if (visorInt > 0) {
+
+							try {
+								switch (operacaoEscolhida) {
+								case "D":
+									Depositar();
+									break;
+								case "T":
+									String contaQueVaiReceberTranferencia = "";
+
+									boolean podeProseeguir = false;
+
+									while (!podeProseeguir) {
+										contaQueVaiReceberTranferencia = JOptionPane.showInputDialog(
+												"Digite o numero da conta que receberá a transferencia:");
+
+										if (contaQueVaiReceberTranferencia == null) {
+											// Significa que o usuario apertou o botao "cancelar"
+											podeProseeguir = true;
+										} else if (!contaQueVaiReceberTranferencia.equals("")) {
+											// Significa que o usuario apertou o botao "Ok" e preencheu
+											if (control.validarConta(contaQueVaiReceberTranferencia)) {
+												Transferir(contaQueVaiReceberTranferencia);
+												podeProseeguir = true;
+											} else {
+												JOptionPane.showMessageDialog(null, "Conta não encontrada");
+											}
+										} else {
+											JOptionPane.showMessageDialog(null, "Preencha os dados corretamente");
+										}
+
+									}
+
+									break;
+								case "S":
+									Sacar();
+									break;
+
+								default:
+									break;
+								}
+
+								AnimarNumPad();
+
+								btnDeposito.setText("DEPOSITO");
+								btnDeposito.setEnabled(true);
+
+								btnSaque.setText("SAQUE");
+								btnSaque.setEnabled(true);
+
+								btnTranferencia.setText("TRANFERÊNCIA");
+								btnTranferencia.setEnabled(true);
+
+							} catch (Exception e) {
+								JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage());
 							}
 
-							AnimarNumPad();
-
-							btnDeposito.setText("DEPOSITO");
-							btnSaque.setText("SAQUE");
-							btnTranferencia.setText("TRANFERÊNCIA");
-
-						} catch (Exception e) {
-							JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage());
+						} else {
+							JOptionPane.showMessageDialog(null,
+									"Por favor insira um valor maior que zero no visor !!!\n");
 						}
-					}
 
+					}
 				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null,
-							"Por favor coloque apenas números no visor !!!\n" + e.getMessage());
+					JOptionPane.showMessageDialog(null, "Por favor insira apenas números no visor !!!\n");
 				}
 			}
 		});
@@ -440,6 +463,13 @@ public class Principal extends JFrame {
 				lblRenda.setVisible(true);
 				lblRenda.setText("redimentos na poupança: " + RENDIMENTO_DIARIO_POUPANCA
 						+ " ao dia / Valor recebido até o momento: + " + contaPoupanca.getRendaGerada());
+			} else if (TIPO_CONTA.equals("3")) {
+
+				ContaEspecial contaEspecial = (ContaEspecial) CONTA;
+
+				lblRenda.setVisible(true);
+				lblRenda.setText("Nome do Gerente Responsável: " + contaEspecial.getNomeGerenteResponsavel()
+						+ " / E-mail para contato: " + contaEspecial.getEmailGerenteResponsavel());
 			}
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Ocorreu um erro: " + e.getMessage(), "ERRO",
@@ -538,7 +568,7 @@ public class Principal extends JFrame {
 			animacaoEmCurso = false;
 			numPadVisivel = true;
 		} else {
-			JOptionPane.showMessageDialog(null, "Erro ao depositar");
+			JOptionPane.showMessageDialog(null, "Não foi possível efetuar o depósito");
 			btnDeposito.setEnabled(true);
 			AtualizarPagina();
 			operacaoEscolhida = "";
@@ -555,61 +585,111 @@ public class Principal extends JFrame {
 
 	// Faz a ação de tranferir da conta do usuario para outra
 	private void Transferir(String NUMERO_CONTA2) {
-		btnTranferencia.setEnabled(false);
-		if (CONTA.transferir(txtVisor.getText(), NUMERO_CONTA, NUMERO_CONTA2)) {
-			btnTranferencia.setEnabled(true);
-			AtualizarPagina();
-			txtVisor.setText("0");
-			btnSaque.setEnabled(true);
-			btnDeposito.setEnabled(true);
-			btnTranferencia.setText("TRANFERÊNCIA");
-			operacaoEscolhida = "";
-			btnConfirmar.setText("CONFIRMAR");
-			animacaoEmCurso = false;
-			numPadVisivel = true;
-		} else {
-			JOptionPane.showMessageDialog(null, "Erro ao efetuar a transferencia");
-			btnTranferencia.setEnabled(true);
-			AtualizarPagina();
-			txtVisor.setText("0");
-			btnSaque.setEnabled(true);
-			btnDeposito.setEnabled(true);
-			btnTranferencia.setText("TRANFERÊNCIA");
-			operacaoEscolhida = "";
-			btnConfirmar.setText("CONFIRMAR");
-			animacaoEmCurso = false;
-			numPadVisivel = true;
+		try {
+			btnTranferencia.setEnabled(false);
+			boolean tranferencia = false;
+			
+			if (TIPO_CONTA.equals("1")) {
+				ContaCorrente contaCorrente = (ContaCorrente) CONTA;
+				if(!contaCorrente.usandoLimite(NUMERO_CONTA, txtVisor.getText())) {
+					if (CONTA.transferir(txtVisor.getText(), NUMERO_CONTA, NUMERO_CONTA2)) {
+						tranferencia = true;
+					}
+				}
+				
+			} else if (TIPO_CONTA.equals("2")) {
+				ContaPoupanca contaPoupanca = (ContaPoupanca) CONTA;
+				if(!contaPoupanca.usandoLimite(NUMERO_CONTA, txtVisor.getText())) {
+					if (CONTA.transferir(txtVisor.getText(), NUMERO_CONTA, NUMERO_CONTA2)) {
+						tranferencia = true;
+					}
+				}
+			} else {
+				if (CONTA.transferir(txtVisor.getText(), NUMERO_CONTA, NUMERO_CONTA2)) {
+					tranferencia = true;
+				}
+			}
+
+			if (tranferencia) {
+				btnTranferencia.setEnabled(true);
+				AtualizarPagina();
+				txtVisor.setText("0");
+				btnSaque.setEnabled(true);
+				btnDeposito.setEnabled(true);
+				btnTranferencia.setText("TRANFERÊNCIA");
+				operacaoEscolhida = "";
+				btnConfirmar.setText("CONFIRMAR");
+				animacaoEmCurso = false;
+				numPadVisivel = true;
+			} else {
+				JOptionPane.showMessageDialog(null, "Não foi possível efetuar a transferencia");
+				btnTranferencia.setEnabled(true);
+				AtualizarPagina();
+				txtVisor.setText("0");
+				btnSaque.setEnabled(true);
+				btnDeposito.setEnabled(true);
+				btnTranferencia.setText("TRANFERÊNCIA");
+				operacaoEscolhida = "";
+				btnConfirmar.setText("CONFIRMAR");
+				animacaoEmCurso = false;
+				numPadVisivel = true;
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e);
 		}
 	}
 
 	// Faz a ação de sacar da conta do usuario
 	private void Sacar() {
-		btnSaque.setEnabled(false);
-		if (CONTA.sacar(txtVisor.getText(), NUMERO_CONTA)) {
-			btnSaque.setEnabled(true);
-			AtualizarPagina();
-			operacaoEscolhida = "";
-			txtVisor.setText("0");
-			btnDeposito.setEnabled(true);
-			btnTranferencia.setEnabled(true);
-			btnSaque.setText("SAQUE");
-			operacaoEscolhida = "";
-			btnConfirmar.setText("CONFIRMAR");
-			animacaoEmCurso = false;
-			numPadVisivel = true;
-		} else {
-			JOptionPane.showMessageDialog(null, "Erro ao sacar");
-			btnSaque.setEnabled(true);
-			AtualizarPagina();
-			operacaoEscolhida = "";
-			txtVisor.setText("0");
-			btnDeposito.setEnabled(true);
-			btnTranferencia.setEnabled(true);
-			btnSaque.setText("SAQUE");
-			operacaoEscolhida = "";
-			btnConfirmar.setText("CONFIRMAR");
-			animacaoEmCurso = false;
-			numPadVisivel = true;
+		try {
+			btnSaque.setEnabled(false);
+			boolean saque = false;
+			
+			if (TIPO_CONTA.equals("1")) {
+				ContaCorrente contaCorrente = (ContaCorrente) CONTA;
+				if (contaCorrente.sacar(txtVisor.getText(), NUMERO_CONTA)) {
+					saque = true;
+				}
+			} else if (TIPO_CONTA.equals("2")) {
+				ContaPoupanca contaPoupanca = (ContaPoupanca) CONTA;
+				if (contaPoupanca.sacar(txtVisor.getText(), NUMERO_CONTA)) {
+					saque = true;
+				}
+			} else if (TIPO_CONTA.equals("3")) {
+				if (CONTA.sacar(txtVisor.getText(), NUMERO_CONTA)) {
+					saque = true;
+				}
+			}
+
+			if (saque) {
+				btnSaque.setEnabled(true);
+				AtualizarPagina();
+				operacaoEscolhida = "";
+				txtVisor.setText("0");
+				btnDeposito.setEnabled(true);
+				btnTranferencia.setEnabled(true);
+				btnSaque.setText("SAQUE");
+				operacaoEscolhida = "";
+				btnConfirmar.setText("CONFIRMAR");
+				animacaoEmCurso = false;
+				numPadVisivel = true;
+			} else {
+				JOptionPane.showMessageDialog(null, "Não foi possível efetuar o saque");
+				btnSaque.setEnabled(true);
+				AtualizarPagina();
+				operacaoEscolhida = "";
+				txtVisor.setText("0");
+				btnDeposito.setEnabled(true);
+				btnTranferencia.setEnabled(true);
+				btnSaque.setText("SAQUE");
+				operacaoEscolhida = "";
+				btnConfirmar.setText("CONFIRMAR");
+				animacaoEmCurso = false;
+				numPadVisivel = true;
+			}
+
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e);
 		}
 	}
 

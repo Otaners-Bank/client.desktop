@@ -3,9 +3,11 @@ package control;
 import model.DataAccess;
 
 public abstract class Conta {
-	
+
+	// Instancia da classe que controla as conexoes com o Banco de Dados
 	DataAccess model = new DataAccess();
 
+	// Construtores
 	public Conta(String numeroConta, String nome, String cpf) {
 		setConta(numeroConta);
 		setNome(nome);
@@ -17,33 +19,32 @@ public abstract class Conta {
 	}
 
 	// Atributos
-	public String conta = "";
-	public String senha = "";
+	public String conta = ""; // Armazena o numero da conta
 	public String nome = "";
-	public String email = "";
 	public String CPF = "";
 	public String saldo = "";
+	public String senha = "";
+	public String email = "";
 	// -------------------------------------------------
 
 	// Metodos
+	// Serve para para um Cliente sacar dinheiro de sua conta
+	public boolean sacar(String valorSaque, String numeroConta) {
+		return model.sacar(valorSaque, numeroConta, false);
+	}
+
+	// Serve para para um Cliente depositar dinheiro em sua conta
+	public boolean depositar(String valorDeposito, String numeroConta) {
+		return model.depositar(valorDeposito, numeroConta, false);
+	}
+
 	// Serve para efetuar transferencias de um Cliente para outro
 	public boolean transferir(String valorTransferencia, String numeroContaQueEnvia, String numeroContaQueRecebe) {
 		return model.transferir(valorTransferencia, numeroContaQueEnvia, numeroContaQueRecebe);
 	}
 
-	// Serve para para um Cliente sacar dinheiro de sua conta
-	public boolean sacar(String valorSaque, String numeroConta) {
-		return model.sacar(valorSaque, numeroConta);
-
-	}
-
-	// Serve para para um Cliente depositar dinheiro em sua conta
-	public boolean depositar(String valorDeposito, String numeroConta) {
-		return model.depositar(valorDeposito, numeroConta);
-	}
-
-	// Mostra o saldo que o cliente possui na conta
-	public String consultarSaldo() {
+	// NÃO SERÁ FEITO -
+	public String imprimir() {
 		return "";
 	}
 	// ---------------------------------------------------

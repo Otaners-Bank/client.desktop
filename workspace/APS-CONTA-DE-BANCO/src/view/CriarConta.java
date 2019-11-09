@@ -1,6 +1,9 @@
 package view;
 
-import control.Cliente;
+import control.Conta;
+import control.ContaCorrente;
+import control.ContaEspecial;
+import control.ContaPoupanca;
 import control.Control;
 import control.Email;
 import java.awt.Cursor;
@@ -15,7 +18,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -510,68 +515,97 @@ public class CriarConta extends JFrame {
 
 				AcaoCampos4();
 
-				Cliente c = new Cliente();
-
+				Conta c = null;
 				int numeroConta = control.numeroContaDisponivel() + 1;
 
-				if (numeroConta <= 9)
-					c.conta = "000" + numeroConta;
-				else if (numeroConta <= 99)
-					c.conta = "00" + numeroConta;
-				else if (numeroConta <= 999)
-					c.conta = "0" + numeroConta;
-				else
-					c.conta = String.valueOf(numeroConta);
+				if (numeroConta <= 9999) {
+					if (TIPO_CONTA.equals("CORRENTE")) {
+						ContaCorrente contaCorrente = new ContaCorrente(DefinirNumeroConta(numeroConta) + "-1",
+								txtNome.getText(), txtCPF.getText(), "R$ 0.00");
+						contaCorrente.setSaldo("R$ 0.00");
 
-				if (TIPO_CONTA.equals("CORRENTE")) {
-					c.conta += "-1";
-				} else if (TIPO_CONTA.equals("POUPANCA")) {
-					c.conta += "-2";
-				} else if (TIPO_CONTA.equals("ESPECIAL")) {
-					c.conta += "-3";
-				}
+						c = contaCorrente;
+					} else if (TIPO_CONTA.equals("POUPANCA")) {
+						ContaPoupanca contaPoupanca = new ContaPoupanca(DefinirNumeroConta(numeroConta) + "-2",
+								txtNome.getText(), txtCPF.getText());
+						contaPoupanca.setSaldo("R$ 0.00");
 
-				c.CPF = txtCPF.getText();
-				c.setNome(txtNome.getText());
-				c.setEmail(txtEmail.getText());
-				c.setSenha(txtSenha.getText());
+						c = contaPoupanca;
+					} else if (TIPO_CONTA.equals("ESPECIAL")) {
+						ContaEspecial contaEspecial = new ContaEspecial(DefinirNumeroConta(numeroConta) + "-3",
+								txtNome.getText(), txtCPF.getText(), "R$ 0,00", "null");
+						contaEspecial.setSaldo("R$ 0.00");
 
-				c.saldo = "R$ 0.00";
+						// Sisteminha para determinar um gerente responsavel pela conta aleatoriamente
+						List<String> listaDeGerentes = new ArrayList<String>();
+						listaDeGerentes.add("Mateus Donaire,canalmateusdonaire@gmail.com");
+						listaDeGerentes.add("Natan Tenorio,natan.tenorio@hotmail.com");
+						listaDeGerentes.add("Thales Lima,thaleslimadejesus@gmail.com");
+						listaDeGerentes.add("Thiago Marchi,thiagomarch@hotmail.com");
+						listaDeGerentes.add("William Yuiti,William.yuiti1998@gmail.com");
 
-				String conta = "";
+						Random random = new Random();
+						int gerente = random.nextInt(5);
 
-				if (c.getConta().endsWith("1"))
-					conta = "corrente";
-				else if (c.getConta().endsWith("2"))
-					conta = "poupança";
-				else if (c.getConta().endsWith("3"))
-					conta = "especial";
+						String gerenteSelecionado = listaDeGerentes.get(gerente);
+						String nomeGerenteSelecionado = gerenteSelecionado.substring(0,
+								gerenteSelecionado.indexOf(","));
+						String emailGerenteSelecionado = gerenteSelecionado
+								.substring(gerenteSelecionado.indexOf(",") + 1);
+						// -------------------------------------------------------------------------------------------------
 
-				if (control.adicionarConta(c)) {
+						contaEspecial.setNomeGerenteResponsavel(nomeGerenteSelecionado);
+						contaEspecial.setEmailGerenteResponsavel(emailGerenteSelecionado);
 
-					Email email = new Email();
-					email.EnviarMensagem(c.getEmail(), "Sua nova conta - Otaner's Bank",
-							"OLÁ " + c.getNome() + ", e Bem Vindo ao Otaner's Bank !!! \nPara acessar sua nova conta "
-									+ conta + " utilize o numero \"" + c.getConta() + "\" e a senha cadastrada xD");
+						c = contaEspecial;
+					}
 
-					JOptionPane.showMessageDialog(null,
-							"Sua conta foi criada e para acessa-la, \nverifique seu e-mail para ver o número de sua conta xD",
-							"Conta Criada com SUCESSO !!!", JOptionPane.INFORMATION_MESSAGE);
+					c.setEmail(txtEmail.getText());
+					c.setSenha(txtSenha.getText());
+
+					String conta = "";
+
+					if (c.getConta().endsWith("1"))
+						conta = "corrente";
+					else if (c.getConta().endsWith("2"))
+						conta = "poupança";
+					else if (c.getConta().endsWith("3"))
+						conta = "especial";
+
+					if (control.adicionarConta(c)) {
+
+						Email email = new Email();
+						email.EnviarMensagem(c.getEmail(), "Sua nova conta - Otaner's Bank",
+								"OLÁ " + c.getNome()
+										+ ", e Bem Vindo ao Otaner's Bank !!! \nPara acessar sua nova conta " + conta
+										+ " utilize o numero \"" + c.getConta() + "\" e a senha cadastrada xD");
+
+						JOptionPane.showMessageDialog(null,
+								"Sua conta foi criada e para acessa-la, \nverifique seu e-mail para ver o número de sua conta xD",
+								"Conta Criada com SUCESSO !!!", JOptionPane.INFORMATION_MESSAGE);
+					} else {
+						JOptionPane.showMessageDialog(null, "Ocorreu um erro ao criar a conta !", "ERRO",
+								JOptionPane.ERROR_MESSAGE);
+					}
+
+					c = null;
+					conta = null;
+
+					Acesso.main(null);
+					dispose();
+
 				} else {
-					JOptionPane.showMessageDialog(null, "Ocorreu um erro ao criar a conta !", "ERRO",
-							JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null,
+							numeroConta + " Lamentamos, pois infelizmente não pudemos realizar o seu cadastro devido a erro internos no sistema !",
+							"Ops", JOptionPane.WARNING_MESSAGE);
+					Acesso.main(null);
+					dispose();
 				}
-
-				c = null;
-				conta = null;
-
-				Acesso.main(null);
-				dispose();
-
 			} else {
 				JOptionPane.showMessageDialog(null, "Preencha o campo senha corretamente!", "Ops",
 						JOptionPane.WARNING_MESSAGE);
 			}
+
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Ocorreu um erro: " + e.getMessage(), "ERRO",
 					JOptionPane.ERROR_MESSAGE);
@@ -732,7 +766,7 @@ public class CriarConta extends JFrame {
 				lblNome.setVisible(true);
 
 				String conteudoNome = lblNome.getText();
-				String objetivoNome = "Certo, agora seu nome completo";
+				String objetivoNome = "Certo, agora seu nome";
 
 				String conteudoEmail = lblEmail.getText();
 				String objetivoEmail = "Seu e-mail também porfavor ... \r\n"
@@ -881,4 +915,16 @@ public class CriarConta extends JFrame {
 			}
 		}
 	};
+
+	private String DefinirNumeroConta(int numeroConta) {
+		if (numeroConta <= 9)
+			return "000" + numeroConta;
+		else if (numeroConta <= 99)
+			return "00" + numeroConta;
+		else if (numeroConta <= 999)
+			return "0" + numeroConta;
+		else
+			return String.valueOf(numeroConta);
+	}
+
 }
