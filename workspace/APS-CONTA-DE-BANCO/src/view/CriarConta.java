@@ -294,7 +294,13 @@ public class CriarConta extends JFrame {
 		btnPronto4.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				Acao4();
+				String senha = txtSenha.getText();
+
+				timer = new Timer((500), limparSenha);
+				timer.setRepeats(false);
+				timer.start();
+
+				Acao4(senha);
 			}
 
 		});
@@ -386,8 +392,8 @@ public class CriarConta extends JFrame {
 		try {
 
 			if (txtCPF.getText().toString().replace(".", "").replace("-", "").equals("")
-					|| txtCPF.getText().equals("000.000.000 00") || txtCPF.getText().equals("111.111.111-11")
-					|| txtCPF.getText().equals("222.222.222-22") || txtCPF.getText().equals("333.333.333-33")
+					|| txtCPF.getText().equals("000.000.000 00") || txtCPF.getText().equals("111.111.111 11")
+					|| txtCPF.getText().equals("222.222.222 22") || txtCPF.getText().equals("333.333.333 33")
 					|| txtCPF.getText().equals("444.444.444-44") || txtCPF.getText().equals("555.555.555-55")
 					|| txtCPF.getText().equals("666.666.666-66") || txtCPF.getText().equals("777.777.777-77")
 					|| txtCPF.getText().equals("888.888.888-88") || txtCPF.getText().equals("999.999.999-99")) {
@@ -509,9 +515,9 @@ public class CriarConta extends JFrame {
 	}
 
 	// Metodo que define a ação do botao4
-	private void Acao4() {
+	private void Acao4(String senha) {
 		try {
-			if (!txtSenha.getText().equals("    ") && txtSenha.getText().length() == 4) {
+			if (!senha.equals("    ") && senha.length() == 4) {
 
 				AcaoCampos4();
 
@@ -561,7 +567,7 @@ public class CriarConta extends JFrame {
 					}
 
 					c.setEmail(txtEmail.getText());
-					c.setSenha(txtSenha.getText());
+					c.setSenha(senha);
 
 					String conta = "";
 
@@ -595,8 +601,8 @@ public class CriarConta extends JFrame {
 					dispose();
 
 				} else {
-					JOptionPane.showMessageDialog(null,
-							numeroConta + " Lamentamos, pois infelizmente não pudemos realizar o seu cadastro devido a erro internos no sistema !",
+					JOptionPane.showMessageDialog(null, numeroConta
+							+ " Lamentamos, pois infelizmente não pudemos realizar o seu cadastro devido a erro internos no sistema !",
 							"Ops", JOptionPane.WARNING_MESSAGE);
 					Acesso.main(null);
 					dispose();
@@ -926,5 +932,20 @@ public class CriarConta extends JFrame {
 		else
 			return String.valueOf(numeroConta);
 	}
+
+	// Faz a animação das palavras antes de aparecer o Tipo de conta
+	ActionListener limparSenha = new ActionListener() {
+		public void actionPerformed(ActionEvent evt) {
+			try {
+
+				txtSenha.setText("6969");
+				timer.stop();
+
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "Ocorreu um erro: " + e.getMessage(), "ERRO",
+						JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	};
 
 }

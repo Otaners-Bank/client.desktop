@@ -13,7 +13,6 @@ import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.MongoException;
-
 import control.Conta;
 import control.ContaCorrente;
 import control.ContaEspecial;
@@ -28,6 +27,50 @@ public class DataAccess {
 	private static MongoClient mongo; // servirá para podermos acessar o banco de dados, e as tabelas
 	private static DB database; // irá guardar o banco de dados
 	private static DBCollection collection; // irá guardar a tabela
+
+	public ContaPoupanca pesquisarConta_Rendimentos(String conta) {
+		try {
+
+			ContaPoupanca c = (ContaPoupanca) _pesquisarDadosCliente(conta);
+
+			return c;
+
+		} catch (MongoException e) {
+			desconectar();
+			JOptionPane.showMessageDialog(null, MENSAGEM_DE_ERRO + e, TITULO_DE_ERRO, JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+	}
+
+	public void atualizarConta_Rendimentos(ContaPoupanca c, String saldo, String rendimentos) {
+		try {
+
+			System.out.println("");
+
+			// dados atuais
+			BasicDBObject conteudoAtual = new BasicDBObject("conta", c.getConta()).append("CPF", c.getCPF())
+					.append("nome", c.getNome()).append("email", c.getEmail()).append("senha", c.getSenha())
+					.append("saldo", c.getSaldo()).append("ultimoAcesso", c.getUltimoAcesso())
+					.append("rendaGerada", c.getRendaGerada());
+
+			System.out.println(conteudoAtual);
+
+			// dados novos
+			BasicDBObject conteudoNovo = new BasicDBObject("conta", c.getConta()).append("CPF", c.getCPF())
+					.append("nome", c.getNome()).append("email", c.getEmail()).append("senha", c.getSenha())
+					.append("saldo", saldo).append("ultimoAcesso", RetornarData()).append("rendaGerada", rendimentos);
+
+			System.out.println(conteudoNovo);
+
+			conectar();
+			collection.update(conteudoAtual, conteudoNovo);
+			desconectar();
+
+		} catch (MongoException e) {
+			JOptionPane.showMessageDialog(null, MENSAGEM_DE_ERRO + e, TITULO_DE_ERRO, JOptionPane.ERROR_MESSAGE);
+			desconectar();
+		}
+	}
 
 	// Determina qual deverá ser o numero para a proxima conta criada
 	public int gerarNumeroParaContaNova() {
@@ -186,7 +229,7 @@ public class DataAccess {
 
 			case '2':
 				// Adiciona os campos "ultimoAcesso" e "rendaGerada"
-				document.append("ultimoAcesso", "null").append("rendaGerada", "R$ 0,00");
+				document.append("ultimoAcesso", "null").append("rendaGerada", "R$ 0.00");
 				break;
 
 			case '3':
@@ -516,8 +559,8 @@ public class DataAccess {
 			// dados novos
 			BasicDBObject conteudoNovo = new BasicDBObject("conta", c.getConta()).append("CPF", c.getCPF())
 					.append("nome", c.getNome()).append("email", c.getEmail()).append("senha", c.getSenha())
-					.append("saldo", c.getSaldo()).append("ultimoAcesso", c.getUltimoAcesso())
-					.append("rendaGerada", RetornarData());
+					.append("saldo", c.getSaldo()).append("ultimoAcesso", RetornarData())
+					.append("rendaGerada", c.getRendaGerada());
 
 			conectar();
 			collection.update(conteudoAtual, conteudoNovo);
@@ -579,7 +622,7 @@ public class DataAccess {
 
 		try {
 			// Retona a data atual para os Logs
-			String data = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss").format(Calendar.getInstance().getTime());
+			String data = new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime());
 			return data;
 
 		} catch (MongoException e) {
@@ -595,8 +638,8 @@ public class DataAccess {
 	private void conectar() {
 		try {
 
+			// TODO Auto-generated method stub
 			// Aqui se atribui os valores para as variaveis que se conectam ao banco
-
 			uri = new MongoClientURI(
 					"mongodb+srv://thales:iambatman@teste-tngy3.mongodb.net/test?retryWrites=true&w=majority");
 

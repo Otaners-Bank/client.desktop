@@ -7,7 +7,11 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.text.MaskFormatter;import control.Conta;
+import javax.swing.text.MaskFormatter;
+
+import com.mongodb.MongoException;
+
+import control.Conta;
 import control.ContaCorrente;
 import control.ContaEspecial;
 import control.ContaPoupanca;
@@ -22,6 +26,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 
@@ -29,9 +36,15 @@ import javax.swing.JFormattedTextField;
 public class Principal extends JFrame {
 
 	// DETERMINA O QUANTO A CONTA POUPANCA RENDE
-	final String RENDIMENTO_DIARIO_POUPANCA = "0,015%";
-	final String RENDIMENTO_MENSAL_POUPANCA = "0,4%";
-	final String RENDIMENTO_ANUAL_POUPANCA = "5%";
+	final double RENDIMENTO_ANUAL_POUPANCA = 3.5;
+	final double RENDIMENTO_MENSAL_POUPANCA = 0.35;
+	final double RENDIMENTO_DIARIO_POUPANCA = 0.035;
+
+	// Armazena quanto a conta rendeu desde a ultima vez que o ele entrou
+	static double qteRenda = 0;
+
+	// Armazena quanto a conta ja rendeu ao todo
+	static double qteRendaTotal = 0;
 
 	// Instancias
 	static Control control = new Control();
@@ -457,12 +470,11 @@ public class Principal extends JFrame {
 			TIPO_CONTA = String.valueOf(NUMERO_CONTA.charAt(NUMERO_CONTA.length() - 1));
 			CONTA = control.buscarConta(NUMERO_CONTA);
 			if (TIPO_CONTA.equals("2")) {
-
-				ContaPoupanca contaPoupanca = (ContaPoupanca) CONTA;
+				// ContaPoupanca contaPoupanca = (ContaPoupanca) CONTA;
 
 				lblRenda.setVisible(true);
-				lblRenda.setText("redimentos na poupança: " + RENDIMENTO_DIARIO_POUPANCA
-						+ " ao dia / Valor recebido até o momento: + " + contaPoupanca.getRendaGerada());
+				lblRenda.setText("Heey, você recebeu + " + qteRenda + " desde quando entrou pela ultima vez xD "
+						+ " -- Valor recebido até o momento: + " + qteRendaTotal);
 			} else if (TIPO_CONTA.equals("3")) {
 
 				ContaEspecial contaEspecial = (ContaEspecial) CONTA;
@@ -489,6 +501,18 @@ public class Principal extends JFrame {
 			} else if (lblBemVindo.getText().equals("Carregando . .")) {
 				lblBemVindo.setText("Carregando . . .");
 			} else {
+
+				TIPO_CONTA = String.valueOf(NUMERO_CONTA.charAt(NUMERO_CONTA.length() - 1));
+
+				if (TIPO_CONTA.equals("2")) {
+					CONTA = control.buscarConta(NUMERO_CONTA);
+					ContaPoupanca contaPoupanca = (ContaPoupanca) CONTA;
+					qteRenda = contaPoupanca.calculaRendimento(NUMERO_CONTA, RENDIMENTO_DIARIO_POUPANCA,
+							RENDIMENTO_MENSAL_POUPANCA, RENDIMENTO_ANUAL_POUPANCA, false);
+					qteRendaTotal = contaPoupanca.calculaRendimento(NUMERO_CONTA, RENDIMENTO_DIARIO_POUPANCA,
+							RENDIMENTO_MENSAL_POUPANCA, RENDIMENTO_ANUAL_POUPANCA, true);
+				}
+
 				getConta();
 				lblBemVindo.setText("Bem Vindo, " + CONTA.getNome() + " ! Seu saldo atual é: " + CONTA.getSaldo());
 
@@ -588,18 +612,18 @@ public class Principal extends JFrame {
 		try {
 			btnTranferencia.setEnabled(false);
 			boolean tranferencia = false;
-			
+
 			if (TIPO_CONTA.equals("1")) {
 				ContaCorrente contaCorrente = (ContaCorrente) CONTA;
-				if(!contaCorrente.usandoLimite(NUMERO_CONTA, txtVisor.getText())) {
+				if (!contaCorrente.usandoLimite(NUMERO_CONTA, txtVisor.getText())) {
 					if (CONTA.transferir(txtVisor.getText(), NUMERO_CONTA, NUMERO_CONTA2)) {
 						tranferencia = true;
 					}
 				}
-				
+
 			} else if (TIPO_CONTA.equals("2")) {
 				ContaPoupanca contaPoupanca = (ContaPoupanca) CONTA;
-				if(!contaPoupanca.usandoLimite(NUMERO_CONTA, txtVisor.getText())) {
+				if (!contaPoupanca.usandoLimite(NUMERO_CONTA, txtVisor.getText())) {
 					if (CONTA.transferir(txtVisor.getText(), NUMERO_CONTA, NUMERO_CONTA2)) {
 						tranferencia = true;
 					}
@@ -644,7 +668,7 @@ public class Principal extends JFrame {
 		try {
 			btnSaque.setEnabled(false);
 			boolean saque = false;
-			
+
 			if (TIPO_CONTA.equals("1")) {
 				ContaCorrente contaCorrente = (ContaCorrente) CONTA;
 				if (contaCorrente.sacar(txtVisor.getText(), NUMERO_CONTA)) {
@@ -715,6 +739,21 @@ public class Principal extends JFrame {
 		} else {
 			return 0;
 		}
+	}
+
+	// Este metodo retorna a hora atual
+	public String RetornarData() {
+
+		try {
+			// Retona a data atual para os Logs
+			String data = new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime());
+			return data;
+
+		} catch (MongoException e) {
+			JOptionPane.showMessageDialog(null, "Ocorreu em erro" + e, "ERRO", JOptionPane.ERROR_MESSAGE);
+			return "null";
+		}
+
 	}
 
 }

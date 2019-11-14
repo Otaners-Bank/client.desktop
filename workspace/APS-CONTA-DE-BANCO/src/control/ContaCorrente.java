@@ -38,9 +38,9 @@ public class ContaCorrente extends Conta {
 	// Metodos reimplementados
 	@Override
 	public boolean sacar(String valorSaque, String numeroConta) {
-		if(!usandoLimite(numeroConta, valorSaque)) {
+		if (!usandoLimite(numeroConta, valorSaque)) {
 			return super.sacar(valorSaque, numeroConta);
-		}else {
+		} else {
 			return false;
 		}
 	}

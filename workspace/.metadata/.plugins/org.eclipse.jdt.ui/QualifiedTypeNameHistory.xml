@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="com.mongodb.util.JSON"/>
-<fullyQualifiedTypeName name="java.io.FileWriter"/>
-<fullyQualifiedTypeName name="javax.xml.ws.Response"/>
-<fullyQualifiedTypeName name="com.sun.deploy.nativesandbox.comm.Response"/>
-<fullyQualifiedTypeName name="Teste"/>
-<fullyQualifiedTypeName name="javax.swing.JProgressBar"/>
-<fullyQualifiedTypeName name="java.lang.Exception"/>
 <fullyQualifiedTypeName name="com.sun.media.sound.MidiUtils.TempoCache"/>
 <fullyQualifiedTypeName name="java.lang.Thread"/>
 <fullyQualifiedTypeName name="java.util.InputMismatchException"/>
@@ -31,7 +24,6 @@
 <fullyQualifiedTypeName name="javax.swing.JFormattedTextField"/>
 <fullyQualifiedTypeName name="org.bson.json.Converter"/>
 <fullyQualifiedTypeName name="java.text.DecimalFormatSymbols"/>
-<fullyQualifiedTypeName name="java.text.DecimalFormat"/>
 <fullyQualifiedTypeName name="javax.swing.JLabel"/>
 <fullyQualifiedTypeName name="javax.swing.JButton"/>
 <fullyQualifiedTypeName name="java.awt.Cursor"/>
@@ -44,7 +36,6 @@
 <fullyQualifiedTypeName name="java.util.Calendar"/>
 <fullyQualifiedTypeName name="java.security.PublicKey"/>
 <fullyQualifiedTypeName name="java.util.Scanner"/>
-<fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="control.Conta"/>
 <fullyQualifiedTypeName name="javax.sound.sampled.LineListener"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
@@ -53,11 +44,20 @@
 <fullyQualifiedTypeName name="java.util.Random"/>
 <fullyQualifiedTypeName name="control.ContaEspecial"/>
 <fullyQualifiedTypeName name="view.Acesso"/>
-<fullyQualifiedTypeName name="java.lang.String"/>
 <fullyQualifiedTypeName name="com.mongodb.MongoException"/>
-<fullyQualifiedTypeName name="java.lang.Integer"/>
 <fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
 <fullyQualifiedTypeName name="control.ContaCorrente"/>
-<fullyQualifiedTypeName name="control.ContaPoupanca"/>
+<fullyQualifiedTypeName name="java.util.Date"/>
+<fullyQualifiedTypeName name="java.lang.Integer"/>
 <fullyQualifiedTypeName name="java.lang.Double"/>
+<fullyQualifiedTypeName name="java.net.InetAddress"/>
+<fullyQualifiedTypeName name="java.net.URI"/>
+<fullyQualifiedTypeName name="java.net.URLConnection"/>
+<fullyQualifiedTypeName name="java.net.URL"/>
+<fullyQualifiedTypeName name="java.io.IOException"/>
+<fullyQualifiedTypeName name="java.lang.System"/>
+<fullyQualifiedTypeName name="control.ContaPoupanca"/>
+<fullyQualifiedTypeName name="java.lang.Math"/>
+<fullyQualifiedTypeName name="java.text.DecimalFormat"/>
+<fullyQualifiedTypeName name="java.lang.String"/>
 </qualifiedTypeNameHistroy>

@@ -1,9 +1,7 @@
 package view;
 
-import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -11,6 +9,7 @@ import javax.swing.JLabel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+@SuppressWarnings("serial")
 public class RecuperarSenha extends JFrame {
 
 	// Para mostrar o cursor do mouse diferente para clicar nas coisas

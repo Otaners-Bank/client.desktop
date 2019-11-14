@@ -99,7 +99,7 @@ public class Acesso extends JFrame {
 		setSize((dimension.width / 2), (dimension.height - 50)); // Muda o tamanho da janela
 		setResizable(false); // Bloqueia que o usuario modifique o tamanho da janela
 		setAlwaysOnTop(false); // Obriga a janela ficar em primeiro plano sempre
-		setTitle("Otaner Bank"); // Altera o titulo da janela
+		setTitle("Otaner Bank - Acesse sua Conta"); // Altera o titulo da janela
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Muda o que acontece ao clicar no botao "X" da janela
 		setBounds(100, 100, (dimension.width / 2), (dimension.height - 50)); // Altera o tamanho e a posicao da janela
 
@@ -115,14 +115,14 @@ public class Acesso extends JFrame {
 		JLabel lblBemVindo = new JLabel("Bem Vindo ao Otaner Bank !");
 		lblBemVindo.setFont(new Font("Felix Titling", Font.PLAIN, 30));
 		lblBemVindo.setHorizontalAlignment(SwingConstants.CENTER);
-		lblBemVindo.setBounds(10, 11, 647, 55);
+		lblBemVindo.setBounds(10, 11, 657, 55);
 		LoginContentPane.add(lblBemVindo);
 
 		// Titulo do campo numero da conta
-		lblConta = new JLabel("Conta:");
+		lblConta = new JLabel("Número da Conta:");
 		lblConta.setFont(new Font("Felix Titling", Font.PLAIN, 15));
 		lblConta.setHorizontalAlignment(SwingConstants.CENTER);
-		lblConta.setBounds(276, 94, 120, 25);
+		lblConta.setBounds(155, 94, 359, 25);
 		LoginContentPane.add(lblConta);
 
 		// Campo para digitar o numero da Conta
@@ -136,7 +136,7 @@ public class Acesso extends JFrame {
 		lblSenha = new JLabel("Senha:");
 		lblSenha.setFont(new Font("Felix Titling", Font.PLAIN, 15));
 		lblSenha.setHorizontalAlignment(SwingConstants.CENTER);
-		lblSenha.setBounds(276, 183, 120, 25);
+		lblSenha.setBounds(155, 183, 359, 25);
 		LoginContentPane.add(lblSenha);
 
 		// Campo para inserir a senha
@@ -169,7 +169,7 @@ public class Acesso extends JFrame {
 
 			}
 		});
-		btnSenha1.setFont(new Font("Felix Titling", Font.PLAIN, 11));
+		btnSenha1.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnSenha1.setBounds(155, 328, 94, 74);
 		
 		LoginContentPane.add(btnSenha1);
@@ -190,7 +190,7 @@ public class Acesso extends JFrame {
 
 			}
 		});
-		btnSenha2.setFont(new Font("Felix Titling", Font.PLAIN, 11));
+		btnSenha2.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnSenha2.setBounds(285, 328, 94, 74);
 		
 		LoginContentPane.add(btnSenha2);
@@ -211,7 +211,7 @@ public class Acesso extends JFrame {
 
 			}
 		});
-		btnSenha3.setFont(new Font("Felix Titling", Font.PLAIN, 11));
+		btnSenha3.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnSenha3.setBounds(420, 328, 94, 74);
 		LoginContentPane.add(btnSenha3);
 
@@ -231,7 +231,7 @@ public class Acesso extends JFrame {
 
 			}
 		});
-		btnSenha4.setFont(new Font("Felix Titling", Font.PLAIN, 11));
+		btnSenha4.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnSenha4.setBounds(155, 425, 94, 74);
 		LoginContentPane.add(btnSenha4);
 
@@ -251,7 +251,7 @@ public class Acesso extends JFrame {
 
 			}
 		});
-		btnSenha5.setFont(new Font("Felix Titling", Font.PLAIN, 11));
+		btnSenha5.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnSenha5.setBounds(285, 425, 94, 74);
 		LoginContentPane.add(btnSenha5);
 
@@ -269,13 +269,13 @@ public class Acesso extends JFrame {
 
 			}
 		});
-		btnApagar.setFont(new Font("Felix Titling", Font.PLAIN, 11));
+		btnApagar.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btnApagar.setBounds(420, 425, 94, 74);
 		LoginContentPane.add(btnApagar);
 
 		// Botao que redireciona para a tela de criacao de conta
-		JLabel lblCriarConta = new JLabel("> n\u00E3o possui conta ainda?");
-		lblCriarConta.setFont(new Font("Felix Titling", Font.PLAIN, 12));
+		lblCriarConta = new JLabel("> N\u00C3O POSSUO CONTA");
+		// lblCriarConta.setFont(new Font("Felix Titling", Font.PLAIN, 12));
 		lblCriarConta.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
@@ -294,12 +294,12 @@ public class Acesso extends JFrame {
 		});
 		lblCriarConta.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCriarConta.setForeground(Color.BLUE);
-		lblCriarConta.setBounds(201, 583, 248, 14);
+		lblCriarConta.setBounds(247, 583, 173, 14);
 		LoginContentPane.add(lblCriarConta);
 
 		// Botao que redireciona para a tela de recuperacao de senha
-		JLabel lblRecuperarSenha = new JLabel("> esqueceu sua senha de acesso?");
-		lblRecuperarSenha.setFont(new Font("Felix Titling", Font.PLAIN, 12));
+		lblRecuperarSenha = new JLabel("> ESQUECI MEUS DADOS");
+		// lblRecuperarSenha.setFont(new Font("Felix Titling", Font.PLAIN, 12));
 		lblRecuperarSenha.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
@@ -318,7 +318,9 @@ public class Acesso extends JFrame {
 		});
 		lblRecuperarSenha.setHorizontalAlignment(SwingConstants.CENTER);
 		lblRecuperarSenha.setForeground(Color.BLUE);
-		lblRecuperarSenha.setBounds(211, 608, 238, 14);
+		lblRecuperarSenha.setBounds(247, 608, 173, 14);
+		lblRecuperarSenha.setEnabled(false);
+		lblRecuperarSenha.setVisible(false);
 		LoginContentPane.add(lblRecuperarSenha);
 
 		// Progress Bar para deixar o layout mais fluido
@@ -332,7 +334,7 @@ public class Acesso extends JFrame {
 		LoginContentPane.add(ProgressBar);
 
 		// Botao para verificar as credencias e acessar a conta
-		JButton btnAcessar = new JButton("ACESSAR CONTA");
+		btnAcessar = new JButton("ACESSAR CONTA");
 		btnAcessar.setBackground(Color.WHITE);
 		btnAcessar.setCursor(cursor);
 		btnAcessar.addActionListener(new ActionListener() {
@@ -352,7 +354,7 @@ public class Acesso extends JFrame {
 			}
 
 		});
-		btnAcessar.setFont(new Font("Felix Titling", Font.PLAIN, 11));
+		// btnAcessar.setFont(new Font("Felix Titling", Font.PLAIN, 11));
 		btnAcessar.setBounds(247, 539, 173, 33);
 		LoginContentPane.add(btnAcessar);
 
