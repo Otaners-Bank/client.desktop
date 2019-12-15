@@ -228,7 +228,6 @@ public class Principal extends JFrame {
 					btnSaque.setEnabled(false);
 					btnTranferencia.setText("CANCELAR TRANSFERENCIA");
 					operacaoEscolhida = "T";
-					btnTranferencia.setText("CONFIRMAR TRANSFERENCIA");
 					AnimarNumPad();
 					txtVisor.grabFocus();
 				} else {

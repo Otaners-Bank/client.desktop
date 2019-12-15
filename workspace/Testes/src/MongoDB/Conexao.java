@@ -28,6 +28,12 @@ public class Conexao {
 			// pelo MongoDB (comente esses códigos se houver duvida)
 			Logger mongoLogger = Logger.getLogger("org.mongodb.driver");
 			mongoLogger.setLevel(Level.SEVERE);
+			
+			connect();
+			
+			// System.out.println(collection.getIndexInfo());
+			
+			collection.find().explain().put("nome", "teste");
 
 			// ficará repetindo até que escrevam 0
 			while (true == true) {

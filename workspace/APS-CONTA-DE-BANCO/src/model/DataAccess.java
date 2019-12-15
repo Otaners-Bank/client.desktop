@@ -53,14 +53,14 @@ public class DataAccess {
 					.append("saldo", c.getSaldo()).append("ultimoAcesso", c.getUltimoAcesso())
 					.append("rendaGerada", c.getRendaGerada());
 
-			System.out.println(conteudoAtual);
+			// System.out.println(conteudoAtual);
 
 			// dados novos
 			BasicDBObject conteudoNovo = new BasicDBObject("conta", c.getConta()).append("CPF", c.getCPF())
 					.append("nome", c.getNome()).append("email", c.getEmail()).append("senha", c.getSenha())
 					.append("saldo", saldo).append("ultimoAcesso", RetornarData()).append("rendaGerada", rendimentos);
 
-			System.out.println(conteudoNovo);
+			// System.out.println(conteudoNovo);
 
 			conectar();
 			collection.update(conteudoAtual, conteudoNovo);

@@ -5,13 +5,14 @@
 		<item key="DIALOG_Y_ORIGIN" value="245"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="rendaTotalGerada = "/>
+		<item key="selection" value=""/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="true"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="Confirmar Tr"/>
 			<item value="rendaTotalGerada = "/>
 			<item value="rendaGerada = "/>
 			<item value="historicoRenda"/>
@@ -26,7 +27,6 @@
 			<item value="&quot;Erro durante execução&quot;"/>
 			<item value="JOptionPane.showMessageDialog(null, MENSAGEM_DE_ERRO + e, &quot;Erro durante execução&quot;,"/>
 			<item value="JOptionPane.showMessageDialog(null, e, &quot;Ocorreu um erro&quot;, JOptionPane.ERROR_MESSAGE);"/>
-			<item value="Exception"/>
 		</list>
 		<list key="replacehistory">
 			<item value="rendaTotalGerada"/>

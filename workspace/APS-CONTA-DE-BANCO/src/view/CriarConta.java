@@ -392,7 +392,7 @@ public class CriarConta extends JFrame {
 		try {
 
 			if (txtCPF.getText().toString().replace(".", "").replace("-", "").equals("")
-					|| txtCPF.getText().equals("000.000.000 00") || txtCPF.getText().equals("111.111.111 11")
+					|| txtCPF.getText().equals("000.000.000-00") || txtCPF.getText().equals("111.111.111 11")
 					|| txtCPF.getText().equals("222.222.222 22") || txtCPF.getText().equals("333.333.333 33")
 					|| txtCPF.getText().equals("444.444.444-44") || txtCPF.getText().equals("555.555.555-55")
 					|| txtCPF.getText().equals("666.666.666-66") || txtCPF.getText().equals("777.777.777-77")

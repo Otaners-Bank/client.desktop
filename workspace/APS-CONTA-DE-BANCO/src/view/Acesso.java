@@ -274,7 +274,8 @@ public class Acesso extends JFrame {
 		LoginContentPane.add(btnApagar);
 
 		// Botao que redireciona para a tela de criacao de conta
-		lblCriarConta = new JLabel("> N\u00C3O POSSUO CONTA");
+		lblCriarConta = new JLabel("> CRIAR CONTA");
+		lblCriarConta.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		// lblCriarConta.setFont(new Font("Felix Titling", Font.PLAIN, 12));
 		lblCriarConta.addMouseListener(new MouseAdapter() {
 			@Override

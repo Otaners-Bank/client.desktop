@@ -19,7 +19,7 @@ public class ContaCorrente extends Conta {
 	}
 
 	// Atributos
-	String limite; // Não será utilizado
+	private String limite; // Não será utilizado
 
 	// Getters e Setters
 	private String getLimite() {
